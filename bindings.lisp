@@ -13,14 +13,6 @@
 (use-foreign-library glib)
 (use-foreign-library gobject)
 
-(defcfun (g-signal-connect-data "g_signal_connect_data") gulong
-    (instance :pointer)
-    (detailed-signal :string)
-    (c-handler :pointer)
-    (data :pointer)
-    (destroy-data :pointer)
-    (connect-flags g-connect-flags))
-
 (defun g-signal-connect (instance detailed-signal c-handler &optional (data nil))
   (g-signal-connect-data instance detailed-signal c-handler (if data data (null-pointer)) (null-pointer) 0))
 
@@ -2628,4 +2620,178 @@
 
 (defcfun (%backend-get-font-name "clutter_backend_get_font_name") :string
     (backend :pointer))
+
+(defcfun (%g-object-set-property "g_object_set_property") :void
+    (object :pointer)
+    (property-name :string)
+    (value :pointer))
+
+(defcfun (%g-object-get-property "g_object_get_property") :void
+    (object :pointer)
+    (property-name :string)
+    (value :pointer))
+
+(defcfun (%g-signal-connect-data "g_signal_connect_data") gulong
+    (instance :pointer)
+    (detailed-signal :string)
+    (c-handler :pointer)
+    (data :pointer)
+    (destroy-data :pointer)
+    (connect-flags g-connect-flags))
+
+(defcfun (%g-value-init "g_value_init") :pointer
+    (value :pointer)
+    (g-type g-type))
+
+(defcfun (%g-value-copy "g_value_copy") :void
+    (src-value :pointer)
+    (dest-value :pointer))
+
+(defcfun (%g-value-reset "g_value_reset") :pointer
+    (value :pointer))
+
+(defcfun (%g-value-unset "g_value_unset") :void
+    (value :pointer))
+
+(defcfun (%g-value-set-instance "g_value_set_instance") :void
+    (value :pointer)
+    (instance :pointer))
+
+(defcfun (%g-value-fits-pointer "g_value_fits_pointer") gboolean
+    (value :pointer))
+
+(defcfun (%g-value-peek-pointer "g_value_peek_pointer") :pointer
+    (value :pointer))
+
+(defcfun (%g-value-type-compatible "g_value_type_compatible") gboolean
+    (src-type g-type)
+    (dest-type g-type))
+
+(defcfun (%g-value-type-transformable "g_value_type_transformable") gboolean
+    (src-type g-type)
+    (dest-type g-type))
+
+(defcfun (%g-value-transform "g_value_transform") gboolean
+    (src-value :pointer)
+    (dest-value :pointer))
+
+(defcfun (%g-value-register-transform-func "g_value_register_transform_func") :void
+    (src-type g-type)
+    (dest-type g-type)
+    (transform-func :pointer))
+
+(defcfun (%g-strdup-value-contents "g_strdup_value_contents") :string
+    (value :pointer))
+
+(defcfun (%g-value-set-boolean "g_value_set_boolean") :void
+    (value :pointer)
+    (v-boolean gboolean))
+
+(defcfun (%g-value-get-boolean "g_value_get_boolean") gboolean
+    (value :pointer))
+
+(defcfun (%g-value-set-char "g_value_set_char") :void
+    (value :pointer)
+    (v-char gchar))
+
+(defcfun (%g-value-get-char "g_value_get_char") gchar
+    (value :pointer))
+
+(defcfun (%g-value-set-uchar "g_value_set_uchar") :void
+    (value :pointer)
+    (v-uchar guchar))
+
+(defcfun (%g-value-get-uchar "g_value_get_uchar") guchar
+    (value :pointer))
+
+(defcfun (%g-value-set-int "g_value_set_int") :void
+    (value :pointer)
+    (v-int gint))
+
+(defcfun (%g-value-get-int "g_value_get_int") gint
+    (value :pointer))
+
+(defcfun (%g-value-set-uint "g_value_set_uint") :void
+    (value :pointer)
+    (v-uint guint))
+
+(defcfun (%g-value-get-uint "g_value_get_uint") guint
+    (value :pointer))
+
+(defcfun (%g-value-set-long "g_value_set_long") :void
+    (value :pointer)
+    (v-long glong))
+
+(defcfun (%g-value-get-long "g_value_get_long") glong
+    (value :pointer))
+
+(defcfun (%g-value-set-ulong "g_value_set_ulong") :void
+    (value :pointer)
+    (v-ulong gulong))
+
+(defcfun (%g-value-get-ulong "g_value_get_ulong") gulong
+    (value :pointer))
+
+(defcfun (%g-value-set-int64 "g_value_set_int64") :void
+    (value :pointer)
+    (v-int64 gint64))
+
+(defcfun (%g-value-get-int64 "g_value_get_int64") gint64
+    (value :pointer))
+
+(defcfun (%g-value-set-uint64 "g_value_set_uint64") :void
+    (value :pointer)
+    (v-uint64 guint64))
+
+(defcfun (%g-value-get-uint64 "g_value_get_uint64") guint64
+    (value :pointer))
+
+(defcfun (%g-value-set-float "g_value_set_float") :void
+    (value :pointer)
+    (v-float :float))
+
+(defcfun (%g-value-get-float "g_value_get_float") :float
+    (value :pointer))
+
+(defcfun (%g-value-set-double "g_value_set_double") :void
+    (value :pointer)
+    (v-double :double))
+
+(defcfun (%g-value-get-double "g_value_get_double") :double
+    (value :pointer))
+
+(defcfun (%g-value-set-enum "g_value_set_enum") :void
+    (value :pointer)
+    (v-enum gint))
+
+(defcfun (%g-value-get-enum "g_value_get_enum") gint
+    (value :pointer))
+
+(defcfun (%g-value-set-flags "g_value_set_flags") :void
+    (value :pointer)
+    (v-flags guint))
+
+(defcfun (%g-value-get-flags "g_value_get_flags") guint
+    (value :pointer))
+
+(defcfun (%g-value-set-string "g_value_set_string") :void
+    (value :pointer)
+    (v-string :string))
+
+(defcfun (%g-value-set-static-string "g_value_set_static_string") :void
+    (value :pointer)
+    (v-string :string))
+
+(defcfun (%g-value-take-string "g_value_take_string") :void
+    (value :pointer)
+    (v-string :string))
+
+(defcfun (%g-value-set-string-take-ownership "g_value_set_string_take_ownership") :void
+    (value :pointer))
+
+(defcfun (%g-value-dup-string "g_value_dup_string") :string
+    (value :pointer))
+
+(defcfun (%g-type-from-name "g_type_from_name") g-type
+    (name :string))
 

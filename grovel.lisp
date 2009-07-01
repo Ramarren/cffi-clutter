@@ -19,6 +19,11 @@
 ;; typedefs
 (ctype va-list "va_list")
 (ctype gunichar "gunichar")
+(ctype guint64 "guint64")
+(ctype gint64 "gint64")
+(ctype glong "glong")
+(ctype guchar "guchar")
+(ctype gchar "gchar")
 (ctype gulong "gulong")
 (ctype guint8 "guint8")
 (ctype guint32 "guint32")
@@ -290,6 +295,8 @@
          (green "green" :type guint8)
          (blue "blue" :type guint8)
          (alpha "alpha" :type guint8))
+
+(cstruct g-value "GValue")
 
 
 ;; unions
