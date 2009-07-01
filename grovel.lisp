@@ -296,7 +296,8 @@
          (blue "blue" :type guint8)
          (alpha "alpha" :type guint8))
 
-(cstruct g-value "GValue")
+(cstruct g-value "GValue"
+         (g-type "g_type" :type g-type))
 
 
 ;; unions

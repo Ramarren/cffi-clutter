@@ -2795,3 +2795,6 @@
 (defcfun (%g-type-from-name "g_type_from_name") g-type
     (name :string))
 
+(defcfun (%g-type-name "g_type_name") :string
+    (type g-type))
+
