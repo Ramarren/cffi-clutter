@@ -103,22 +103,22 @@
 
 (defcfun (%actor-get-preferred-size "clutter_actor_get_preferred_size") :void
     (self :pointer)
-    (min-width-p :pointer)
-    (min-height-p :pointer)
-    (natural-width-p :pointer)
-    (natural-height-p :pointer))
+    (min-width-p (:pointer :float))
+    (min-height-p (:pointer :float))
+    (natural-width-p (:pointer :float))
+    (natural-height-p (:pointer :float)))
 
 (defcfun (%actor-get-preferred-width "clutter_actor_get_preferred_width") :void
     (self :pointer)
     (for-height :float)
-    (min-width-p :pointer)
-    (natural-width-p :pointer))
+    (min-width-p (:pointer :float))
+    (natural-width-p (:pointer :float)))
 
 (defcfun (%actor-get-preferred-height "clutter_actor_get_preferred_height") :void
     (self :pointer)
     (for-width :float)
-    (min-height-p :pointer)
-    (natural-height-p :pointer))
+    (min-height-p (:pointer :float))
+    (natural-height-p (:pointer :float)))
 
 (defcfun (%actor-set-fixed-position-set "clutter_actor_set_fixed_position_set") :void
     (self :pointer)
@@ -142,8 +142,8 @@
 
 (defcfun (%actor-get-size "clutter_actor_get_size") :void
     (self :pointer)
-    (width :pointer)
-    (height :pointer))
+    (width (:pointer :float))
+    (height (:pointer :float)))
 
 (defcfun (%actor-set-position "clutter_actor_set_position") :void
     (self :pointer)
@@ -152,8 +152,8 @@
 
 (defcfun (%actor-get-position "clutter_actor_get_position") :void
     (self :pointer)
-    (x :pointer)
-    (y :pointer))
+    (x (:pointer :float))
+    (y (:pointer :float)))
 
 (defcfun (%actor-set-width "clutter_actor_set_width") :void
     (self :pointer)
@@ -204,9 +204,9 @@
 (defcfun (%actor-get-rotation "clutter_actor_get_rotation") :double
     (self :pointer)
     (axis rotate-axis)
-    (x :pointer)
-    (y :pointer)
-    (z :pointer))
+    (x (:pointer :float))
+    (y (:pointer :float))
+    (z (:pointer :float)))
 
 (defcfun (%actor-get-z-rotation-gravity "clutter_actor_get_z_rotation_gravity") gravity
     (self :pointer))
@@ -246,10 +246,10 @@
 
 (defcfun (%actor-get-clip "clutter_actor_get_clip") :void
     (self :pointer)
-    (xoff :pointer)
-    (yoff :pointer)
-    (width :pointer)
-    (height :pointer))
+    (xoff (:pointer :float))
+    (yoff (:pointer :float))
+    (width (:pointer :float))
+    (height (:pointer :float)))
 
 (defcfun (%actor-set-parent "clutter_actor_set_parent") :void
     (self :pointer)
@@ -309,13 +309,13 @@
 
 (defcfun (%actor-get-scale "clutter_actor_get_scale") :void
     (self :pointer)
-    (scale-x :pointer)
-    (scale-y :pointer))
+    (scale-x (:pointer :double))
+    (scale-y (:pointer :double)))
 
 (defcfun (%actor-get-scale-center "clutter_actor_get_scale_center") :void
     (self :pointer)
-    (center-x :pointer)
-    (center-y :pointer))
+    (center-x (:pointer :float))
+    (center-y (:pointer :float)))
 
 (defcfun (%actor-get-scale-gravity "clutter_actor_get_scale_gravity") gravity
     (self :pointer))
@@ -325,31 +325,31 @@
 
 (defcfun (%actor-apply-transform-to-point "clutter_actor_apply_transform_to_point") :void
     (self :pointer)
-    (point :pointer)
-    (vertex :pointer))
+    (point (:pointer vertex))
+    (vertex (:pointer vertex)))
 
 (defcfun (%actor-transform-stage-point "clutter_actor_transform_stage_point") gboolean
     (self :pointer)
     (x :float)
     (y :float)
-    (x-out :pointer)
-    (y-out :pointer))
+    (x-out (:pointer :float))
+    (y-out (:pointer :float)))
 
 (defcfun (%actor-apply-relative-transform-to-point "clutter_actor_apply_relative_transform_to_point") :void
     (self :pointer)
     (ancestor :pointer)
-    (point :pointer)
-    (vertex :pointer))
+    (point (:pointer vertex))
+    (vertex (:pointer vertex)))
 
 (defcfun (%actor-get-transformed-position "clutter_actor_get_transformed_position") :void
     (self :pointer)
-    (x :pointer)
-    (y :pointer))
+    (x (:pointer :float))
+    (y (:pointer :float)))
 
 (defcfun (%actor-get-transformed-size "clutter_actor_get_transformed_size") :void
     (self :pointer)
-    (width :pointer)
-    (height :pointer))
+    (width (:pointer :float))
+    (height (:pointer :float)))
 
 (defcfun (%actor-get-paint-opacity "clutter_actor_get_paint_opacity") guint8
     (self :pointer))
@@ -372,8 +372,8 @@
 
 (defcfun (%actor-get-anchor-point "clutter_actor_get_anchor_point") :void
     (self :pointer)
-    (anchor-x :pointer)
-    (anchor-y :pointer))
+    (anchor-x (:pointer :float))
+    (anchor-y (:pointer :float)))
 
 (defcfun (%actor-set-anchor-point-from-gravity "clutter_actor_set_anchor_point_from_gravity") :void
     (self :pointer)
@@ -408,7 +408,7 @@
 (defcfun (%actor-set-shader-param "clutter_actor_set_shader_param") :void
     (self :pointer)
     (param :string)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%actor-set-shader-param-float "clutter_actor_set_shader_param_float") :void
     (self :pointer)
@@ -463,13 +463,13 @@
 
 (defcfun (%actor-box-get-origin "clutter_actor_box_get_origin") :void
     (box :pointer)
-    (x :pointer)
-    (y :pointer))
+    (x (:pointer :float))
+    (y (:pointer :float)))
 
 (defcfun (%actor-box-get-size "clutter_actor_box_get_size") :void
     (box :pointer)
-    (width :pointer)
-    (height :pointer))
+    (width (:pointer :float))
+    (height (:pointer :float)))
 
 (defcfun (%actor-box-get-area "clutter_actor_box_get_area") :float
     (box :pointer))
@@ -481,22 +481,22 @@
 
 (defcfun (%actor-box-from-vertices "clutter_actor_box_from_vertices") :void
     (box :pointer)
-    (verts :pointer))
+    (verts (:pointer vertex)))
 
-(defcfun (%vertex-new "clutter_vertex_new") :pointer
+(defcfun (%vertex-new "clutter_vertex_new") (:pointer vertex)
     (x :float)
     (y :float)
     (z :float))
 
-(defcfun (%vertex-copy "clutter_vertex_copy") :pointer
-    (vertex :pointer))
+(defcfun (%vertex-copy "clutter_vertex_copy") (:pointer vertex)
+    (vertex (:pointer vertex)))
 
 (defcfun (%vertex-free "clutter_vertex_free") :void
-    (vertex :pointer))
+    (vertex (:pointer vertex)))
 
 (defcfun (%vertex-equal "clutter_vertex_equal") gboolean
-    (vertex-a :pointer)
-    (vertex-b :pointer))
+    (vertex-a (:pointer vertex))
+    (vertex-b (:pointer vertex)))
 
 (defcfun (%container-add-actor "clutter_container_add_actor") :void
     (container :pointer)
@@ -552,19 +552,19 @@
 
 (defcfun (%container-class-list-child-properties "clutter_container_class_list_child_properties") :pointer
     (klass :pointer)
-    (n-properties :pointer))
+    (n-properties (:pointer guint)))
 
 (defcfun (%container-child-set-property "clutter_container_child_set_property") :void
     (container :pointer)
     (child :pointer)
     (property :string)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%container-child-get-property "clutter_container_child_get_property") :void
     (container :pointer)
     (child :pointer)
     (property :string)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%container-get-child-meta "clutter_container_get_child_meta") :pointer
     (container :pointer)
@@ -620,23 +620,23 @@
 (defcfun (%rectangle-new "clutter_rectangle_new") :pointer)
 
 (defcfun (%rectangle-new-with-color "clutter_rectangle_new_with_color") :pointer
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%rectangle-get-color "clutter_rectangle_get_color") :void
     (rectangle :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%rectangle-set-color "clutter_rectangle_set_color") :void
     (rectangle :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%rectangle-get-border-color "clutter_rectangle_get_border_color") :void
     (rectangle :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%rectangle-set-border-color "clutter_rectangle_set_border_color") :void
     (rectangle :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%rectangle-get-border-width "clutter_rectangle_get_border_width") guint
     (rectangle :pointer))
@@ -661,7 +661,7 @@
 
 (defcfun (%texture-set-from-rgb-data "clutter_texture_set_from_rgb_data") gboolean
     (texture :pointer)
-    (data :pointer)
+    (data (:pointer guchar))
     (has-alpha gboolean)
     (width gint)
     (height gint)
@@ -672,7 +672,7 @@
 
 (defcfun (%texture-set-from-yuv-data "clutter_texture_set_from_yuv_data") gboolean
     (texture :pointer)
-    (data :pointer)
+    (data (:pointer guchar))
     (width gint)
     (height gint)
     (flags texture-flags)
@@ -680,7 +680,7 @@
 
 (defcfun (%texture-set-area-from-rgb-data "clutter_texture_set_area_from_rgb_data") gboolean
     (texture :pointer)
-    (data :pointer)
+    (data (:pointer guchar))
     (has-alpha gboolean)
     (x gint)
     (y gint)
@@ -693,8 +693,8 @@
 
 (defcfun (%texture-get-base-size "clutter_texture_get_base_size") :void
     (texture :pointer)
-    (width :pointer)
-    (height :pointer))
+    (width (:pointer gint))
+    (height (:pointer gint)))
 
 (defcfun (%texture-get-pixel-format "clutter_texture_get_pixel_format") cogl-pixel-format
     (texture :pointer))
@@ -732,8 +732,8 @@
 
 (defcfun (%texture-get-repeat "clutter_texture_get_repeat") :void
     (texture :pointer)
-    (repeat-x :pointer)
-    (repeat-y :pointer))
+    (repeat-x (:pointer gboolean))
+    (repeat-y (:pointer gboolean)))
 
 (defcfun (%texture-set-repeat "clutter_texture_set_repeat") :void
     (texture :pointer)
@@ -776,7 +776,7 @@
 (defcfun (%text-new-full "clutter_text_new_full") :pointer
     (font-name :string)
     (text :string)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%text-new-with-text "clutter_text_new_with_text") :pointer
     (font-name :string)
@@ -809,11 +809,11 @@
 
 (defcfun (%text-set-color "clutter_text_set_color") :void
     (self :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%text-get-color "clutter_text_get_color") :void
     (self :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%text-set-ellipsize "clutter_text_set_ellipsize") :void
     (self :pointer)
@@ -945,19 +945,19 @@
 
 (defcfun (%text-set-cursor-color "clutter_text_set_cursor_color") :void
     (self :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%text-get-cursor-color "clutter_text_get_cursor_color") :void
     (self :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%text-set-selection-color "clutter_text_set_selection_color") :void
     (self :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%text-get-selection-color "clutter_text_get_selection_color") :void
     (self :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%text-set-cursor-position "clutter_text_set_cursor_position") :void
     (self :pointer)
@@ -986,9 +986,9 @@
 (defcfun (%text-position-to-coords "clutter_text_position_to_coords") gboolean
     (self :pointer)
     (position gint)
-    (x :pointer)
-    (y :pointer)
-    (line-height :pointer))
+    (x (:pointer :float))
+    (y (:pointer :float))
+    (line-height (:pointer :float)))
 
 (defcfun (%cairo-texture-new "clutter_cairo_texture_new") :pointer
     (width guint)
@@ -1001,8 +1001,8 @@
 
 (defcfun (%cairo-texture-get-surface-size "clutter_cairo_texture_get_surface_size") :void
     (self :pointer)
-    (width :pointer)
-    (height :pointer))
+    (width (:pointer guint))
+    (height (:pointer guint)))
 
 (defcfun (%cairo-texture-create "clutter_cairo_texture_create") :pointer
     (self :pointer))
@@ -1019,7 +1019,7 @@
 
 (defcfun (%cairo-set-source-color "clutter_cairo_set_source_color") :void
     (cr :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%group-new "clutter_group_new") :pointer)
 
@@ -1042,11 +1042,11 @@
 
 (defcfun (%stage-set-color "clutter_stage_set_color") :void
     (stage :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%stage-get-color "clutter_stage_get_color") :void
     (stage :pointer)
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%stage-set-fullscreen "clutter_stage_set_fullscreen") :void
     (stage :pointer)
@@ -1090,7 +1090,7 @@
 (defcfun (%stage-get-key-focus "clutter_stage_get_key_focus") :pointer
     (stage :pointer))
 
-(defcfun (%stage-read-pixels "clutter_stage_read_pixels") :pointer
+(defcfun (%stage-read-pixels "clutter_stage_read_pixels") (:pointer guchar)
     (stage :pointer)
     (x gint)
     (y gint)
@@ -1212,7 +1212,7 @@
 (defcfun (%timeline-list-markers "clutter_timeline_list_markers") :pointer
     (timeline :pointer)
     (msecs gint)
-    (n-markers :pointer))
+    (n-markers (:pointer gsize)))
 
 (defcfun (%timeline-remove-marker "clutter_timeline_remove_marker") :void
     (timeline :pointer)
@@ -1366,8 +1366,8 @@
 
 (defcfun (%behaviour-depth-get-bounds "clutter_behaviour_depth_get_bounds") :void
     (behaviour :pointer)
-    (depth-start :pointer)
-    (depth-end :pointer))
+    (depth-start (:pointer gint))
+    (depth-end (:pointer gint)))
 
 (defcfun (%behaviour-ellipse-new "clutter_behaviour_ellipse_new") :pointer
     (alpha :pointer)
@@ -1386,8 +1386,8 @@
 
 (defcfun (%behaviour-ellipse-get-center "clutter_behaviour_ellipse_get_center") :void
     (self :pointer)
-    (x :pointer)
-    (y :pointer))
+    (x (:pointer gint))
+    (y (:pointer gint)))
 
 (defcfun (%behaviour-ellipse-set-angle-start "clutter_behaviour_ellipse_set_angle_start") :void
     (self :pointer)
@@ -1434,9 +1434,9 @@
 
 (defcfun (%behaviour-ellipse-get-tilt "clutter_behaviour_ellipse_get_tilt") :void
     (self :pointer)
-    (angle-tilt-x :pointer)
-    (angle-tilt-y :pointer)
-    (angle-tilt-z :pointer))
+    (angle-tilt-x (:pointer :double))
+    (angle-tilt-y (:pointer :double))
+    (angle-tilt-z (:pointer :double)))
 
 (defcfun (%behaviour-ellipse-set-direction "clutter_behaviour_ellipse_set_direction") :void
     (self :pointer)
@@ -1457,8 +1457,8 @@
 
 (defcfun (%behaviour-opacity-get-bounds "clutter_behaviour_opacity_get_bounds") :void
     (behaviour :pointer)
-    (opacity-start :pointer)
-    (opacity-end :pointer))
+    (opacity-start (:pointer guint8))
+    (opacity-end (:pointer guint8)))
 
 (defcfun (%behaviour-path-new "clutter_behaviour_path_new") :pointer
     (alpha :pointer)
@@ -1638,8 +1638,8 @@
 
 (defcfun (%behaviour-rotate-get-bounds "clutter_behaviour_rotate_get_bounds") :void
     (rotate :pointer)
-    (angle-start :pointer)
-    (angle-end :pointer))
+    (angle-start (:pointer :double))
+    (angle-end (:pointer :double)))
 
 (defcfun (%behaviour-rotate-set-center "clutter_behaviour_rotate_set_center") :void
     (rotate :pointer)
@@ -1649,9 +1649,9 @@
 
 (defcfun (%behaviour-rotate-get-center "clutter_behaviour_rotate_get_center") :void
     (rotate :pointer)
-    (x :pointer)
-    (y :pointer)
-    (z :pointer))
+    (x (:pointer gint))
+    (y (:pointer gint))
+    (z (:pointer gint)))
 
 (defcfun (%behaviour-scale-new "clutter_behaviour_scale_new") :pointer
     (alpha :pointer)
@@ -1669,15 +1669,15 @@
 
 (defcfun (%behaviour-scale-get-bounds "clutter_behaviour_scale_get_bounds") :void
     (scale :pointer)
-    (x-scale-start :pointer)
-    (y-scale-start :pointer)
-    (x-scale-end :pointer)
-    (y-scale-end :pointer))
+    (x-scale-start (:pointer :double))
+    (y-scale-start (:pointer :double))
+    (x-scale-end (:pointer :double))
+    (y-scale-end (:pointer :double)))
 
 (defcfun (%interval-new-with-values "clutter_interval_new_with_values") :pointer
     (gtype g-type)
-    (initial :pointer)
-    (final :pointer))
+    (initial (:pointer g-value))
+    (final (:pointer g-value)))
 
 (defcfun (%interval-clone "clutter_interval_clone") :pointer
     (interval :pointer))
@@ -1687,30 +1687,30 @@
 
 (defcfun (%interval-set-initial-value "clutter_interval_set_initial_value") :void
     (interval :pointer)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%interval-get-initial-value "clutter_interval_get_initial_value") :void
     (interval :pointer)
-    (value :pointer))
+    (value (:pointer g-value)))
 
-(defcfun (%interval-peek-initial-value "clutter_interval_peek_initial_value") :pointer
+(defcfun (%interval-peek-initial-value "clutter_interval_peek_initial_value") (:pointer g-value)
     (interval :pointer))
 
 (defcfun (%interval-set-final-value "clutter_interval_set_final_value") :void
     (interval :pointer)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%interval-get-final-value "clutter_interval_get_final_value") :void
     (interval :pointer)
-    (value :pointer))
+    (value (:pointer g-value)))
 
-(defcfun (%interval-peek-final-value "clutter_interval_peek_final_value") :pointer
+(defcfun (%interval-peek-final-value "clutter_interval_peek_final_value") (:pointer g-value)
     (interval :pointer))
 
 (defcfun (%interval-compute-value "clutter_interval_compute_value") gboolean
     (interval :pointer)
     (factor :double)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%interval-validate "clutter_interval_validate") gboolean
     (interval :pointer)
@@ -1770,7 +1770,7 @@
 (defcfun (%animation-bind "clutter_animation_bind") :pointer
     (animation :pointer)
     (property-name :string)
-    (final :pointer))
+    (final (:pointer g-value)))
 
 (defcfun (%animation-bind-interval "clutter_animation_bind_interval") :pointer
     (animation :pointer)
@@ -1800,7 +1800,7 @@
     (duration guint)
     (n-properties gint)
     (properties :pointer)
-    (values :pointer))
+    (values (:pointer g-value)))
 
 (defcfun (%actor-animate-with-timelinev "clutter_actor_animate_with_timelinev") :pointer
     (actor :pointer)
@@ -1808,14 +1808,14 @@
     (timeline :pointer)
     (n-properties gint)
     (properties :pointer)
-    (values :pointer))
+    (values (:pointer g-value)))
 
 (defcfun (%actor-animate-with-alphav "clutter_actor_animate_with_alphav") :pointer
     (actor :pointer)
     (alpha :pointer)
     (n-properties gint)
     (properties :pointer)
-    (values :pointer))
+    (values (:pointer g-value)))
 
 (defcfun (%actor-get-animation "clutter_actor_get_animation") :pointer
     (actor :pointer))
@@ -1824,22 +1824,22 @@
     (animatable :pointer)
     (animation :pointer)
     (property-name :string)
-    (initial-value :pointer)
-    (final-value :pointer)
+    (initial-value (:pointer g-value))
+    (final-value (:pointer g-value))
     (progress :double)
-    (value :pointer))
+    (value (:pointer g-value)))
 
-(defcfun (%color-new "clutter_color_new") :pointer
+(defcfun (%color-new "clutter_color_new") (:pointer color)
     (red guint8)
     (green guint8)
     (blue guint8)
     (alpha guint8))
 
-(defcfun (%color-copy "clutter_color_copy") :pointer
-    (color :pointer))
+(defcfun (%color-copy "clutter_color_copy") (:pointer color)
+    (color (:pointer color)))
 
 (defcfun (%color-free "clutter_color_free") :void
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%color-equal "clutter_color_equal") gboolean
     (v1 :pointer)
@@ -1849,67 +1849,67 @@
     (v :pointer))
 
 (defcfun (%color-from-string "clutter_color_from_string") gboolean
-    (color :pointer)
+    (color (:pointer color))
     (str :string))
 
 (defcfun (%color-to-string "clutter_color_to_string") :string
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%color-from-hls "clutter_color_from_hls") :void
-    (color :pointer)
+    (color (:pointer color))
     (hue :float)
     (luminance :float)
     (saturation :float))
 
 (defcfun (%color-to-hls "clutter_color_to_hls") :void
-    (color :pointer)
-    (hue :pointer)
-    (luminance :pointer)
-    (saturation :pointer))
+    (color (:pointer color))
+    (hue (:pointer :float))
+    (luminance (:pointer :float))
+    (saturation (:pointer :float)))
 
 (defcfun (%color-from-pixel "clutter_color_from_pixel") :void
-    (color :pointer)
+    (color (:pointer color))
     (pixel guint32))
 
 (defcfun (%color-to-pixel "clutter_color_to_pixel") guint32
-    (color :pointer))
+    (color (:pointer color)))
 
 (defcfun (%color-add "clutter_color_add") :void
-    (a :pointer)
-    (b :pointer)
-    (result :pointer))
+    (a (:pointer color))
+    (b (:pointer color))
+    (result (:pointer color)))
 
 (defcfun (%color-subtract "clutter_color_subtract") :void
-    (a :pointer)
-    (b :pointer)
-    (result :pointer))
+    (a (:pointer color))
+    (b (:pointer color))
+    (result (:pointer color)))
 
 (defcfun (%color-lighten "clutter_color_lighten") :void
-    (color :pointer)
-    (result :pointer))
+    (color (:pointer color))
+    (result (:pointer color)))
 
 (defcfun (%color-darken "clutter_color_darken") :void
-    (color :pointer)
-    (result :pointer))
+    (color (:pointer color))
+    (result (:pointer color)))
 
 (defcfun (%color-shade "clutter_color_shade") :void
-    (color :pointer)
+    (color (:pointer color))
     (factor :double)
-    (result :pointer))
+    (result (:pointer color)))
 
 (defcfun (%param-spec-color "clutter_param_spec_color") :pointer
     (name :string)
     (nick :string)
     (blurb :string)
-    (default-value :pointer)
+    (default-value (:pointer color))
     (flags g-param-flags))
 
 (defcfun (%value-set-color "clutter_value_set_color") :void
-    (value :pointer)
-    (color :pointer))
+    (value (:pointer g-value))
+    (color (:pointer color)))
 
-(defcfun (%value-get-color "clutter_value_get_color") :pointer
-    (value :pointer))
+(defcfun (%value-get-color "clutter_value_get_color") (:pointer color)
+    (value (:pointer g-value)))
 
 (defcfun (%binding-pool-new "clutter_binding_pool_new") :pointer
     (name :string))
@@ -1988,8 +1988,8 @@
 
 (defcfun (%event-get-coords "clutter_event_get_coords") :void
     (event :pointer)
-    (x :pointer)
-    (y :pointer))
+    (x (:pointer :float))
+    (y (:pointer :float)))
 
 (defcfun (%event-get-state "clutter_event_get_state") modifier-type
     (event :pointer))
@@ -2060,11 +2060,11 @@
 (defcfun (%get-current-event-time "clutter_get_current_event_time") guint32)
 
 (defcfun (%init "clutter_init") init-error
-    (argc :pointer)
+    (argc (:pointer :int))
     (argv :pointer))
 
 (defcfun (%init-with-args "clutter_init_with_args") init-error
-    (argc :pointer)
+    (argc (:pointer :int))
     (argv :pointer)
     (parameter-string :string)
     (entries :pointer)
@@ -2223,7 +2223,7 @@
 (defcfun (%shader-set-uniform "clutter_shader_set_uniform") :void
     (shader :pointer)
     (name :string)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%shader-get-cogl-program "clutter_shader_get_cogl_program") cogl-handle
     (shader :pointer))
@@ -2235,31 +2235,31 @@
     (shader :pointer))
 
 (defcfun (%value-set-shader-float "clutter_value_set_shader_float") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (size gint)
-    (floats :pointer))
+    (floats (:pointer :float)))
 
-(defcfun (%value-get-shader-float "clutter_value_get_shader_float") :pointer
-    (value :pointer)
-    (length :pointer))
+(defcfun (%value-get-shader-float "clutter_value_get_shader_float") (:pointer :float)
+    (value (:pointer g-value))
+    (length (:pointer gsize)))
 
 (defcfun (%value-set-shader-int "clutter_value_set_shader_int") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (size gint)
-    (ints :pointer))
+    (ints (:pointer gint)))
 
-(defcfun (%value-get-shader-int "clutter_value_get_shader_int") :pointer
-    (value :pointer)
-    (length :pointer))
+(defcfun (%value-get-shader-int "clutter_value_get_shader_int") (:pointer gint)
+    (value (:pointer g-value))
+    (length (:pointer gsize)))
 
 (defcfun (%value-set-shader-matrix "clutter_value_set_shader_matrix") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (size gint)
-    (matrix :pointer))
+    (matrix (:pointer :float)))
 
-(defcfun (%value-get-shader-matrix "clutter_value_get_shader_matrix") :pointer
-    (value :pointer)
-    (length :pointer))
+(defcfun (%value-get-shader-matrix "clutter_value_get_shader_matrix") (:pointer :float)
+    (value (:pointer g-value))
+    (length (:pointer gsize)))
 
 (defcfun (%units-mm "clutter_units_mm") :void
     (units :pointer)
@@ -2315,11 +2315,11 @@
     (flags g-param-flags))
 
 (defcfun (%value-set-units "clutter_value_set_units") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (units :pointer))
 
 (defcfun (%value-get-units "clutter_value_get_units") :pointer
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%util-next-p2 "clutter_util_next_p2") :int
     (a :int))
@@ -2360,11 +2360,11 @@
     (flags g-param-flags))
 
 (defcfun (%value-set-fixed "clutter_value_set_fixed") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (fixed- cogl-fixed))
 
 (defcfun (%value-get-fixed "clutter_value_get_fixed") cogl-fixed
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%script-new "clutter_script_new") :pointer)
 
@@ -2428,7 +2428,7 @@
 (defcfun (%scriptable-parse-custom-node "clutter_scriptable_parse_custom_node") gboolean
     (scriptable :pointer)
     (script :pointer)
-    (value :pointer)
+    (value (:pointer g-value))
     (name :string)
     (node :pointer))
 
@@ -2436,7 +2436,7 @@
     (scriptable :pointer)
     (script :pointer)
     (name :string)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%model-set-names "clutter_model_set_names") :void
     (model :pointer)
@@ -2446,7 +2446,7 @@
 (defcfun (%model-set-types "clutter_model_set_types") :void
     (model :pointer)
     (n-columns guint)
-    (types :pointer))
+    (types (:pointer g-type)))
 
 (defcfun (%model-get-column-name "clutter_model_get_column_name") :string
     (model :pointer)
@@ -2465,27 +2465,27 @@
 (defcfun (%model-appendv "clutter_model_appendv") :void
     (model :pointer)
     (n-columns guint)
-    (columns :pointer)
-    (values :pointer))
+    (columns (:pointer guint))
+    (values (:pointer g-value)))
 
 (defcfun (%model-prependv "clutter_model_prependv") :void
     (model :pointer)
     (n-columns guint)
-    (columns :pointer)
-    (values :pointer))
+    (columns (:pointer guint))
+    (values (:pointer g-value)))
 
 (defcfun (%model-insertv "clutter_model_insertv") :void
     (model :pointer)
     (row guint)
     (n-columns guint)
-    (columns :pointer)
-    (values :pointer))
+    (columns (:pointer guint))
+    (values (:pointer g-value)))
 
 (defcfun (%model-insert-value "clutter_model_insert_value") :void
     (model :pointer)
     (row guint)
     (column guint)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%model-remove "clutter_model_remove") :void
     (model :pointer)
@@ -2550,7 +2550,7 @@
 (defcfun (%model-iter-get-value "clutter_model_iter_get_value") :void
     (iter :pointer)
     (column guint)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%model-iter-set-valist "clutter_model_iter_set_valist") :void
     (iter :pointer)
@@ -2559,7 +2559,7 @@
 (defcfun (%model-iter-set-value "clutter_model_iter_set_value") :void
     (iter :pointer)
     (column guint)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%model-iter-is-first "clutter_model_iter_is_first") gboolean
     (iter :pointer))
@@ -2581,7 +2581,7 @@
 
 (defcfun (%list-model-newv "clutter_list_model_newv") :pointer
     (n-columns guint)
-    (types :pointer)
+    (types (:pointer g-type))
     (names :pointer))
 
 (defcfun (%get-default-backend "clutter_get_default_backend") :pointer)
@@ -2624,12 +2624,12 @@
 (defcfun (%g-object-set-property "g_object_set_property") :void
     (object :pointer)
     (property-name :string)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-object-get-property "g_object_get_property") :void
     (object :pointer)
     (property-name :string)
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-signal-connect-data "g_signal_connect_data") gulong
     (instance :pointer)
@@ -2639,29 +2639,29 @@
     (destroy-data :pointer)
     (connect-flags g-connect-flags))
 
-(defcfun (%g-value-init "g_value_init") :pointer
-    (value :pointer)
+(defcfun (%g-value-init "g_value_init") (:pointer g-value)
+    (value (:pointer g-value))
     (g-type g-type))
 
 (defcfun (%g-value-copy "g_value_copy") :void
-    (src-value :pointer)
-    (dest-value :pointer))
+    (src-value (:pointer g-value))
+    (dest-value (:pointer g-value)))
 
-(defcfun (%g-value-reset "g_value_reset") :pointer
-    (value :pointer))
+(defcfun (%g-value-reset "g_value_reset") (:pointer g-value)
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-unset "g_value_unset") :void
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-instance "g_value_set_instance") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (instance :pointer))
 
 (defcfun (%g-value-fits-pointer "g_value_fits_pointer") gboolean
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-peek-pointer "g_value_peek_pointer") :pointer
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-type-compatible "g_value_type_compatible") gboolean
     (src-type g-type)
@@ -2672,8 +2672,8 @@
     (dest-type g-type))
 
 (defcfun (%g-value-transform "g_value_transform") gboolean
-    (src-value :pointer)
-    (dest-value :pointer))
+    (src-value (:pointer g-value))
+    (dest-value (:pointer g-value)))
 
 (defcfun (%g-value-register-transform-func "g_value_register_transform_func") :void
     (src-type g-type)
@@ -2681,116 +2681,116 @@
     (transform-func :pointer))
 
 (defcfun (%g-strdup-value-contents "g_strdup_value_contents") :string
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-boolean "g_value_set_boolean") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-boolean gboolean))
 
 (defcfun (%g-value-get-boolean "g_value_get_boolean") gboolean
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-char "g_value_set_char") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-char gchar))
 
 (defcfun (%g-value-get-char "g_value_get_char") gchar
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-uchar "g_value_set_uchar") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-uchar guchar))
 
 (defcfun (%g-value-get-uchar "g_value_get_uchar") guchar
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-int "g_value_set_int") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-int gint))
 
 (defcfun (%g-value-get-int "g_value_get_int") gint
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-uint "g_value_set_uint") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-uint guint))
 
 (defcfun (%g-value-get-uint "g_value_get_uint") guint
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-long "g_value_set_long") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-long glong))
 
 (defcfun (%g-value-get-long "g_value_get_long") glong
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-ulong "g_value_set_ulong") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-ulong gulong))
 
 (defcfun (%g-value-get-ulong "g_value_get_ulong") gulong
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-int64 "g_value_set_int64") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-int64 gint64))
 
 (defcfun (%g-value-get-int64 "g_value_get_int64") gint64
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-uint64 "g_value_set_uint64") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-uint64 guint64))
 
 (defcfun (%g-value-get-uint64 "g_value_get_uint64") guint64
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-float "g_value_set_float") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-float :float))
 
 (defcfun (%g-value-get-float "g_value_get_float") :float
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-double "g_value_set_double") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-double :double))
 
 (defcfun (%g-value-get-double "g_value_get_double") :double
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-enum "g_value_set_enum") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-enum gint))
 
 (defcfun (%g-value-get-enum "g_value_get_enum") gint
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-flags "g_value_set_flags") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-flags guint))
 
 (defcfun (%g-value-get-flags "g_value_get_flags") guint
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-set-string "g_value_set_string") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-string :string))
 
 (defcfun (%g-value-set-static-string "g_value_set_static_string") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-string :string))
 
 (defcfun (%g-value-take-string "g_value_take_string") :void
-    (value :pointer)
+    (value (:pointer g-value))
     (v-string :string))
 
 (defcfun (%g-value-set-string-take-ownership "g_value_set_string_take_ownership") :void
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-value-dup-string "g_value_dup_string") :string
-    (value :pointer))
+    (value (:pointer g-value)))
 
 (defcfun (%g-type-from-name "g_type_from_name") g-type
     (name :string))
