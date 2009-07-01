@@ -1,7 +1,7 @@
 (in-package :cffi-clutter)
 
 ;;; Implement tutorial from
-;;; http://www.openismus.com/documents/clutter_tutorial/0.8/docs/tutorial/html/index.html
+;;; http://www.openismus.com/documents/clutter_tutorial/0.9/docs/tutorial/html/index.html
 
 (defun event-get-coords (event-pointer)
   (with-foreign-objects ((x :float) (y :float))
@@ -60,6 +60,8 @@
       (%actor-show stage)
       (g-signal-connect stage "button-press-event" (callback chapter-4-on-stage-button-press))
       (%main)
+      ;; when I click window close button the loops stops, but window doesn't close
+      ;; have to run main loop for a bit so it is hidden
       (%threads-add-idle (callback quit-main-loop-when-idle) (null-pointer))
       (%actor-hide stage)
       (%main))))
