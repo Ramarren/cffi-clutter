@@ -40,7 +40,7 @@
                 (actor-color #xff #xff #xff #x99))
     (init-clutter)
     (let ((stage (%stage-get-default)))
-      (%group-remove-all stage)      
+      (%group-remove-all stage)
       (%actor-set-size stage 200.0 200.0)
       (%stage-set-color stage stage-color)
       (let ((rect (%rectangle-new-with-color actor-color))
@@ -56,6 +56,7 @@
       (%actor-show stage)
       (%main)
       (%threads-add-idle (callback quit-main-loop-when-idle) (null-pointer))
+      (%group-remove-all stage)
       (%actor-hide stage)
       (%main))))
 
@@ -84,6 +85,7 @@
       (%actor-show stage)
       (%main)
       (%threads-add-idle (callback quit-main-loop-when-idle) (null-pointer))
+      (%group-remove-all stage)
       (%actor-hide stage)
       (%main))))
 
@@ -114,6 +116,6 @@
       (%actor-show stage)
       (%main)
       (%threads-add-idle (callback quit-main-loop-when-idle) (null-pointer))
+      (%group-remove-all stage)
       (%actor-hide stage)
       (%main))))
-
