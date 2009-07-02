@@ -31,7 +31,7 @@
                           c-handler
                           (if data data (null-pointer))
                           (if destroy-data destroy-data (null-pointer))
-                          (cenum-collect-values flags 'g-connect-flags)))
+                          flags))
 
 (defun connect-lisp-handler (instance detailed-signal lisp-handler c-dispatch &key (flags nil))
   (let ((foreign-counter (foreign-alloc :uint64 :initial-element *callback-counter*)))
@@ -66,7 +66,7 @@
     (assert (eql (mem-ref (second lisp-callback) :uint64) callback-number))
     (%g-signal-handlers-disconnect-matched
      instance
-     (cenum-collect-values '(:func :data) 'g-signal-match-type)
+     '(:func :data)
      0
      0
      (null-pointer)
