@@ -299,6 +299,12 @@
 (cstruct g-value "GValue"
          (g-type "g_type" :type g-type))
 
+(cstruct g-type-class "GTypeClass"
+         (g-type "g_type" :type g-type))
+
+(cstruct g-type-instance "GTypeInstance"
+         (g-class "g_class" :type :pointer))
+
 
 ;; unions
 (cunion event "ClutterEvent"

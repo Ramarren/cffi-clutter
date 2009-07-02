@@ -16,6 +16,10 @@
 (defun g-signal-connect (instance detailed-signal c-handler &optional (data nil))
   (g-signal-connect-data instance detailed-signal c-handler (if data data (null-pointer)) (null-pointer) 0))
 
+(defun g-type-from-instance (instance)
+  (foreign-slot-value
+   (foreign-slot-value instance 'g-type-instance 'g-class)
+   'g-type-class 'g-type))
 (defctype function-pointer :pointer)
 
 (defcfun (%actor-set-flags "clutter_actor_set_flags") :void
