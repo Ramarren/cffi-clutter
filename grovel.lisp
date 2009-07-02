@@ -33,6 +33,7 @@
 (ctype gsize "gsize")
 (ctype gint "gint")
 (ctype gboolean "gboolean")
+(ctype g-quark "GQuark")
 (ctype g-type "GType")
 (ctype cogl-handle "CoglHandle")
 (ctype cogl-fixed "CoglFixed")
@@ -211,6 +212,14 @@
       ((:realized "CLUTTER_ACTOR_REALIZED"))
       ((:reactive "CLUTTER_ACTOR_REACTIVE"))
       ((:visible "CLUTTER_ACTOR_VISIBLE")))
+
+(cenum g-signal-match-type
+      ((:id "G_SIGNAL_MATCH_ID"))
+      ((:detail "G_SIGNAL_MATCH_DETAIL"))
+      ((:closure "G_SIGNAL_MATCH_CLOSURE"))
+      ((:func "G_SIGNAL_MATCH_FUNC"))
+      ((:data "G_SIGNAL_MATCH_DATA"))
+      ((:unblocked "G_SIGNAL_MATCH_UNBLOCKED")))
 
 
 ;; structs

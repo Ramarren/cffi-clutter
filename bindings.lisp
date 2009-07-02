@@ -2659,6 +2659,32 @@
     (destroy-data function-pointer)
     (connect-flags g-connect-flags))
 
+(defcfun (%g-signal-handler-find "g_signal_handler_find") gulong
+    (instance :pointer)
+    (mask g-signal-match-type)
+    (signal-id guint)
+    (detail g-quark)
+    (closure :pointer)
+    (func :pointer)
+    (data :pointer))
+
+(defcfun (%g-signal-handlers-disconnect-matched "g_signal_handlers_disconnect_matched") guint
+    (instance :pointer)
+    (mask g-signal-match-type)
+    (signal-id guint)
+    (detail g-quark)
+    (closure :pointer)
+    (func :pointer)
+    (data :pointer))
+
+(defcfun (%g-signal-handler-is-connected "g_signal_handler_is_connected") gboolean
+    (instance :pointer)
+    (handler-id gulong))
+
+(defcfun (%g-signal-handler-disconnect "g_signal_handler_disconnect") :void
+    (instance :pointer)
+    (handler-id gulong))
+
 (defcfun (%g-value-init "g_value_init") (:pointer g-value)
     (value (:pointer g-value))
     (g-type g-type))
