@@ -24,7 +24,7 @@
 
 (defun cenum-collect-values (keyword-list type)
   (cond ((null keyword-list) 0)
-        ((atom keyword-list) keyword-list)
+        ((atom keyword-list) (foreign-enum-value type keyword-list))
         (t (reduce #'+
                    (mapcar (curry #'foreign-enum-value type)
                            keyword-list)))))
@@ -32,7 +32,9 @@
 (defun cenum-deconstruct-value (value type)
   (let ((accum nil)
         (k 1))
-    (dotimes (i (integer-length value) accum)
+    (dotimes (i (integer-length value) (if (length= 1 accum)
+                                           (car accum)
+                                           accum))
       (let ((bit (plusp (logand value 1))))
         (when bit
           (let ((value (foreign-enum-keyword type k :errorp nil)))
