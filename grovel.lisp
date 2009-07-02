@@ -326,6 +326,12 @@
 (cstruct g-type-instance "GTypeInstance"
          (g-class "g_class" :type :pointer))
 
+(cstruct geometry "ClutterGeometry"
+         (x "x" :type gint)
+         (y "y" :type gint)
+         (width "width" :type guint)
+         (height "height" :type guint))
+
 
 ;; unions
 (cunion event "ClutterEvent"

@@ -263,7 +263,7 @@
 
 (defcfun (%actor-get-allocation-geometry "clutter_actor_get_allocation_geometry") :void
     (self :pointer)
-    (geom :pointer))
+    (geom (:pointer geometry)))
 
 (defcfun (%actor-get-allocation-vertices "clutter_actor_get_allocation_vertices") :void
     (self :pointer)
@@ -298,11 +298,11 @@
 
 (defcfun (%actor-set-geometry "clutter_actor_set_geometry") :void
     (self :pointer)
-    (geometry :pointer))
+    (geometry (:pointer geometry)))
 
 (defcfun (%actor-get-geometry "clutter_actor_get_geometry") :void
     (self :pointer)
-    (geometry :pointer))
+    (geometry (:pointer geometry)))
 
 (defcfun (%actor-set-size "clutter_actor_set_size") :void
     (self :pointer)
