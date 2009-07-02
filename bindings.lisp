@@ -2798,3 +2798,52 @@
 (defcfun (%g-type-name "g_type_name") :string
     (type g-type))
 
+(defcfun (%g-object-ref "g_object_ref") :pointer
+    (object :pointer))
+
+(defcfun (%g-object-unref "g_object_unref") :void
+    (object :pointer))
+
+(defcfun (%g-object-ref-sink "g_object_ref_sink") :pointer
+    (object :pointer))
+
+(defcfun (%g-object-is-floating "g_object_is_floating") gboolean
+    (object :pointer))
+
+(defcfun (%g-object-force-floating "g_object_force_floating") :void
+    (object :pointer))
+
+(defcfun (%g-object-weak-ref "g_object_weak_ref") :void
+    (object :pointer)
+    (notify :pointer)
+    (data :pointer))
+
+(defcfun (%g-object-weak-unref "g_object_weak_unref") :void
+    (object :pointer)
+    (notify :pointer)
+    (data :pointer))
+
+(defcfun (%g-object-add-weak-pointer "g_object_add_weak_pointer") :void
+    (object :pointer)
+    (weak-pointer-location (:pointer :pointer)))
+
+(defcfun (%g-object-remove-weak-pointer "g_object_remove_weak_pointer") :void
+    (object :pointer)
+    (weak-pointer-location (:pointer :pointer)))
+
+(defcfun (%g-object-add-toggle-ref "g_object_add_toggle_ref") :void
+    (object :pointer)
+    (notify :pointer)
+    (data :pointer))
+
+(defcfun (%g-object-remove-toggle-ref "g_object_remove_toggle_ref") :void
+    (object :pointer)
+    (notify :pointer)
+    (data :pointer))
+
+(defcfun (%g-object-freeze-notify "g_object_freeze_notify") :void
+    (object :pointer))
+
+(defcfun (%g-object-thaw-notify "g_object_thaw_notify") :void
+    (object :pointer))
+
