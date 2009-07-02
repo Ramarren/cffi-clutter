@@ -16,6 +16,8 @@
 (defun g-signal-connect (instance detailed-signal c-handler &optional (data nil))
   (g-signal-connect-data instance detailed-signal c-handler (if data data (null-pointer)) (null-pointer) 0))
 
+(defctype function-pointer :pointer)
+
 (defcfun (%actor-set-flags "clutter_actor_set_flags") :void
     (self :pointer)
     (flags actor-flags))
@@ -521,12 +523,12 @@
 
 (defcfun (%container-foreach "clutter_container_foreach") :void
     (container :pointer)
-    (callback :pointer)
+    (callback function-pointer)
     (user-data :pointer))
 
 (defcfun (%container-foreach-with-internals "clutter_container_foreach_with_internals") :void
     (container :pointer)
-    (callback :pointer)
+    (callback function-pointer)
     (user-data :pointer))
 
 (defcfun (%container-find-child-by-name "clutter_container_find_child_by_name") :pointer
@@ -1279,9 +1281,9 @@
 
 (defcfun (%alpha-new-with-func "clutter_alpha_new_with_func") :pointer
     (timeline :pointer)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer)
-    (destroy :pointer))
+    (destroy function-pointer))
 
 (defcfun (%alpha-set-timeline "clutter_alpha_set_timeline") :void
     (alpha :pointer)
@@ -1302,9 +1304,9 @@
 
 (defcfun (%alpha-set-func "clutter_alpha_set_func") :void
     (alpha :pointer)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer)
-    (destroy :pointer))
+    (destroy function-pointer))
 
 (defcfun (%alpha-set-closure "clutter_alpha_set_closure") :void
     (alpha :pointer)
@@ -1314,7 +1316,7 @@
     (closure :pointer))
 
 (defcfun (%alpha-register-func "clutter_alpha_register_func") gulong
-    (func :pointer)
+    (func function-pointer)
     (data :pointer))
 
 (defcfun (%behaviour-apply "clutter_behaviour_apply") :void
@@ -1334,7 +1336,7 @@
 
 (defcfun (%behaviour-actors-foreach "clutter_behaviour_actors_foreach") :void
     (behave :pointer)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer))
 
 (defcfun (%behaviour-get-actors "clutter_behaviour_get_actors") :pointer
@@ -1561,7 +1563,7 @@
 
 (defcfun (%path-foreach "clutter_path_foreach") :void
     (path :pointer)
-    (callback :pointer)
+    (callback function-pointer)
     (user-data :pointer))
 
 (defcfun (%path-insert-node "clutter_path_insert_node") :void
@@ -1718,7 +1720,7 @@
 
 (defcfun (%interval-register-progress-func "clutter_interval_register_progress_func") :void
     (value-type g-type)
-    (func :pointer))
+    (func function-pointer))
 
 (defcfun (%animation-new "clutter_animation_new") :pointer)
 
@@ -1925,9 +1927,9 @@
     (action-name :string)
     (key-val guint)
     (modifiers modifier-type)
-    (callback :pointer)
+    (callback function-pointer)
     (data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%binding-pool-install-closure "clutter_binding_pool_install_closure") :void
     (pool :pointer)
@@ -1940,9 +1942,9 @@
     (pool :pointer)
     (key-val guint)
     (modifiers modifier-type)
-    (callback :pointer)
+    (callback function-pointer)
     (data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%binding-pool-override-closure "clutter_binding_pool_override_closure") :void
     (pool :pointer)
@@ -2110,8 +2112,8 @@
 (defcfun (%get-font-map "clutter_get_font_map") :pointer)
 
 (defcfun (%threads-set-lock-functions "clutter_threads_set_lock_functions") :void
-    (enter-fn :pointer)
-    (leave-fn :pointer))
+    (enter-fn function-pointer)
+    (leave-fn function-pointer))
 
 (defcfun (%threads-init "clutter_threads_init") :void)
 
@@ -2120,43 +2122,43 @@
 (defcfun (%threads-leave "clutter_threads_leave") :void)
 
 (defcfun (%threads-add-idle "clutter_threads_add_idle") guint
-    (func :pointer)
+    (func function-pointer)
     (data :pointer))
 
 (defcfun (%threads-add-idle-full "clutter_threads_add_idle_full") guint
     (priority gint)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%threads-add-timeout "clutter_threads_add_timeout") guint
     (interval guint)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer))
 
 (defcfun (%threads-add-timeout-full "clutter_threads_add_timeout_full") guint
     (priority gint)
     (interval guint)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%threads-add-frame-source "clutter_threads_add_frame_source") guint
     (fps guint)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer))
 
 (defcfun (%threads-add-frame-source-full "clutter_threads_add_frame_source_full") guint
     (priority gint)
     (fps guint)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%threads-add-repaint-func "clutter_threads_add_repaint_func") guint
-    (func :pointer)
+    (func function-pointer)
     (data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%threads-remove-repaint-func "clutter_threads_remove_repaint_func") :void
     (handle-id guint))
@@ -2330,9 +2332,9 @@
 (defcfun (%timeout-pool-add "clutter_timeout_pool_add") guint
     (pool :pointer)
     (fps guint)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%timeout-pool-remove "clutter_timeout_pool_remove") :void
     (pool :pointer)
@@ -2340,15 +2342,15 @@
 
 (defcfun (%frame-source-add "clutter_frame_source_add") guint
     (fps guint)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer))
 
 (defcfun (%frame-source-add-full "clutter_frame_source_add_full") guint
     (priority gint)
     (fps guint)
-    (func :pointer)
+    (func function-pointer)
     (data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%param-spec-fixed "clutter_param_spec_fixed") :pointer
     (name :string)
@@ -2408,7 +2410,7 @@
 
 (defcfun (%script-connect-signals-full "clutter_script_connect_signals_full") :void
     (script :pointer)
-    (func :pointer)
+    (func function-pointer)
     (user-data :pointer))
 
 (defcfun (%script-get-type-from-name "clutter_script_get_type_from_name") g-type
@@ -2493,7 +2495,7 @@
 
 (defcfun (%model-foreach "clutter_model_foreach") :void
     (model :pointer)
-    (func :pointer)
+    (func function-pointer)
     (user-data :pointer))
 
 (defcfun (%model-set-sorting-column "clutter_model_set_sorting_column") :void
@@ -2506,18 +2508,18 @@
 (defcfun (%model-set-sort "clutter_model_set_sort") :void
     (model :pointer)
     (column guint)
-    (func :pointer)
+    (func function-pointer)
     (user-data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%model-resort "clutter_model_resort") :void
     (model :pointer))
 
 (defcfun (%model-set-filter "clutter_model_set_filter") :void
     (model :pointer)
-    (func :pointer)
+    (func function-pointer)
     (user-data :pointer)
-    (notify :pointer))
+    (notify function-pointer))
 
 (defcfun (%model-get-filter-set "clutter_model_get_filter_set") gboolean
     (model :pointer))
@@ -2634,9 +2636,9 @@
 (defcfun (%g-signal-connect-data "g_signal_connect_data") gulong
     (instance :pointer)
     (detailed-signal :string)
-    (c-handler :pointer)
+    (c-handler function-pointer)
     (data :pointer)
-    (destroy-data :pointer)
+    (destroy-data function-pointer)
     (connect-flags g-connect-flags))
 
 (defcfun (%g-value-init "g_value_init") (:pointer g-value)
@@ -2678,7 +2680,7 @@
 (defcfun (%g-value-register-transform-func "g_value_register_transform_func") :void
     (src-type g-type)
     (dest-type g-type)
-    (transform-func :pointer))
+    (transform-func function-pointer))
 
 (defcfun (%g-strdup-value-contents "g_strdup_value_contents") :string
     (value (:pointer g-value)))
@@ -2815,12 +2817,12 @@
 
 (defcfun (%g-object-weak-ref "g_object_weak_ref") :void
     (object :pointer)
-    (notify :pointer)
+    (notify function-pointer)
     (data :pointer))
 
 (defcfun (%g-object-weak-unref "g_object_weak_unref") :void
     (object :pointer)
-    (notify :pointer)
+    (notify function-pointer)
     (data :pointer))
 
 (defcfun (%g-object-add-weak-pointer "g_object_add_weak_pointer") :void
@@ -2833,12 +2835,12 @@
 
 (defcfun (%g-object-add-toggle-ref "g_object_add_toggle_ref") :void
     (object :pointer)
-    (notify :pointer)
+    (notify function-pointer)
     (data :pointer))
 
 (defcfun (%g-object-remove-toggle-ref "g_object_remove_toggle_ref") :void
     (object :pointer)
-    (notify :pointer)
+    (notify function-pointer)
     (data :pointer))
 
 (defcfun (%g-object-freeze-notify "g_object_freeze_notify") :void
