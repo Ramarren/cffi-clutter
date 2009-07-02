@@ -8,6 +8,7 @@
     (%event-get-coords event x y)
     (list (mem-ref x :float) (mem-ref y :float))))
 
+;; on the other hand, is there a point of those single line wrappers?
 (declaim (inline make-color free-color copy-color))
 (defun make-color (red green blue &optional (alpha 255))
   (%color-new red green blue alpha))
