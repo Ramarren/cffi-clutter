@@ -2,7 +2,8 @@
 
 ;; wrap callbacks in dispatcher function to enable use of lisp functions
 ;; signals are disconnected when objects are freed
-;; note that signals connected to stage just pile up
+;; note that signals connected to stage just pile up if not disconnected, since the default stage
+;; is created once on init-clutter
 
 (defvar *callbacks* (make-hash-table))
 (defvar *callback-counter* 0)
@@ -18,7 +19,7 @@
 (defcallback unregister-callback :void
     ((data :pointer) (closure :pointer))
   (declare (ignore closure))
-  (remhash (print (mem-ref data :uint64)) *callbacks*)
+  (remhash (mem-ref data :uint64) *callbacks*)
   (foreign-free data))
 
 (defun connect-signal (instance detailed-signal lisp-handler &key (flags nil))
