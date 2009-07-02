@@ -20,8 +20,10 @@
 
 (defun chapter-4 ()
   (with-color (stage-color 0 0 0 255)
-    (init)
+    (init-clutter)
     (let ((stage (%stage-get-default)))
+      ;; in case other examples were run before
+      (%group-remove-all stage)
       (%actor-set-size stage 200.0 200.0)
       (%stage-set-color stage stage-color)
       (%actor-show stage)
@@ -38,6 +40,7 @@
                 (actor-color #xff #xff #xff #x99))
     (init-clutter)
     (let ((stage (%stage-get-default)))
+      (%group-remove-all stage)      
       (%actor-set-size stage 200.0 200.0)
       (%stage-set-color stage stage-color)
       (let ((rect (%rectangle-new-with-color actor-color))
