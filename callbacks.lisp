@@ -25,6 +25,14 @@
   (remhash (mem-ref data :uint64) *callbacks*)
   (foreign-free data))
 
+(defun g-signal-connect (instance detailed-signal c-handler &key (data nil) (destroy-data nil) (flags nil))
+  (%g-signal-connect-data instance
+                          detailed-signal
+                          c-handler
+                          (if data data (null-pointer))
+                          (if destroy-data destroy-data (null-pointer))
+                          (cenum-collect-values flags 'g-connect-flags)))
+
 (defun connect-lisp-handler (instance detailed-signal lisp-handler c-dispatch &key (flags nil))
   (let ((foreign-counter (foreign-alloc :uint64 :initial-element *callback-counter*)))
     (setf (gethash *callback-counter* *callbacks*)
