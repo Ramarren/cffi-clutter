@@ -12,6 +12,7 @@
 	       (cffi-grovel:grovel-file "grovel" :depends-on ("package"))
 	       (:file "bindings" :depends-on ("package" "grovel"))
                (:file "wrappers" :depends-on ("package" "grovel" "bindings"))
-               (:file "tutorial" :depends-on ("package" "grovel" "bindings" "wrappers"))))
+               (:file "callbacks" :depends-on ("package" "grovel" "bindings"))
+               (:file "tutorial" :depends-on ("package" "grovel" "bindings" "wrappers" "callbacks"))))
 
 
