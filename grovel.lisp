@@ -222,6 +222,18 @@
       ((:unblocked "G_SIGNAL_MATCH_UNBLOCKED")))
 
 
+;; composite enums
+(ctype modifier-type-composite "ClutterModifierType")
+(ctype texture-flags-composite "ClutterTextureFlags")
+(ctype g-param-flags-composite "GParamFlags")
+(ctype g-connect-flags-composite "GConnectFlags")
+(ctype event-flags-composite "ClutterEventFlags")
+(ctype stage-state-composite "ClutterStageState")
+(ctype font-flags-composite "ClutterFontFlags")
+(ctype allocation-flags-composite "ClutterAllocationFlags")
+(ctype actor-flags-composite "ClutterActorFlags")
+(ctype g-signal-match-type-composite "GSignalMatchType")
+
 ;; structs
 (cstruct vertex "ClutterVertex"
          (x "x" :type :float)
@@ -231,12 +243,12 @@
 (cstruct button-event "ClutterButtonEvent"
          (type "type" :type event-type)
          (time "time" :type guint32)
-         (flags "flags" :type event-flags)
+         (flags "flags" :type event-flags-composite)
          (stage "stage" :type :pointer)
          (source "source" :type :pointer)
          (x "x" :type :float)
          (y "y" :type :float)
-         (modifier-state "modifier_state" :type modifier-type)
+         (modifier-state "modifier_state" :type modifier-type-composite)
          (button "button" :type guint32)
          (click-count "click_count" :type guint)
          (axes "axes" :type :pointer)
@@ -245,10 +257,10 @@
 (cstruct key-event "ClutterKeyEvent"
          (type "type" :type event-type)
          (time "time" :type guint32)
-         (flags "flags" :type event-flags)
+         (flags "flags" :type event-flags-composite)
          (stage "stage" :type :pointer)
          (source "source" :type :pointer)
-         (modifier-state "modifier_state" :type modifier-type)
+         (modifier-state "modifier_state" :type modifier-type-composite)
          (keyval "keyval" :type guint)
          (hardware-keycode "hardware_keycode" :type guint16)
          (unicode-value "unicode_value" :type gunichar)
@@ -257,41 +269,41 @@
 (cstruct motion-event "ClutterMotionEvent"
          (type "type" :type event-type)
          (time "time" :type guint32)
-         (flags "flags" :type event-flags)
+         (flags "flags" :type event-flags-composite)
          (stage "stage" :type :pointer)
          (source "source" :type :pointer)
          (x "x" :type :float)
          (y "y" :type :float)
-         (modifier-state "modifier_state" :type modifier-type)
+         (modifier-state "modifier_state" :type modifier-type-composite)
          (axes "axes" :type :pointer)
          (device "device" :type :pointer))
 
 (cstruct scroll-event "ClutterScrollEvent"
          (type "type" :type event-type)
          (time "time" :type guint32)
-         (flags "flags" :type event-flags)
+         (flags "flags" :type event-flags-composite)
          (stage "stage" :type :pointer)
          (source "source" :type :pointer)
          (x "x" :type :float)
          (y "y" :type :float)
          (direction "direction" :type scroll-direction)
-         (modifier-state "modifier_state" :type modifier-type)
+         (modifier-state "modifier_state" :type modifier-type-composite)
          (axes "axes" :type :pointer)
          (device "device" :type :pointer))
 
 (cstruct stage-state-event "ClutterStageStateEvent"
          (type "type" :type event-type)
          (time "time" :type guint32)
-         (flags "flags" :type event-flags)
+         (flags "flags" :type event-flags-composite)
          (stage "stage" :type :pointer)
          (source "source" :type :pointer)
-         (changed-mask "changed_mask" :type stage-state)
-         (new-state "new_state" :type stage-state))
+         (changed-mask "changed_mask" :type stage-state-composite)
+         (new-state "new_state" :type stage-state-composite))
 
 (cstruct crossing-event "ClutterCrossingEvent"
          (type "type" :type event-type)
          (time "time" :type guint32)
-         (flags "flags" :type event-flags)
+         (flags "flags" :type event-flags-composite)
          (stage "stage" :type :pointer)
          (source "source" :type :pointer)
          (x "x" :type :float)

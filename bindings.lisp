@@ -13,6 +13,14 @@
 (use-foreign-library glib)
 (use-foreign-library gobject)
 
+(defun g-type-from-instance (instance)
+  (foreign-slot-value
+   (foreign-slot-value instance 'g-type-instance 'g-class)
+   'g-type-class 'g-type))
+
+(defctype function-pointer :pointer)
+
+;; composite enum construction/deconstruction
 
 (defun cenum-collect-values (keyword-list type)
   (cond ((null keyword-list) 0)
@@ -21,30 +29,169 @@
                    (mapcar (curry #'foreign-enum-value type)
                            keyword-list)))))
 
-(defun g-signal-connect (instance detailed-signal c-handler &key (data nil) (destroy-data nil) (flags nil))
-  (%g-signal-connect-data instance
-                          detailed-signal
-                          c-handler
-                          (if data data (null-pointer))
-                          (if destroy-data destroy-data (null-pointer))
-                          (cenum-collect-values flags 'g-connect-flags)))
+(defun cenum-deconstruct-value (value type)
+  (let ((accum nil)
+        (k 1))
+    (dotimes (i (integer-length value) accum)
+      (let ((bit (plusp (logand value 1))))
+        (when bit
+          (let ((value (foreign-enum-keyword type k :errorp nil)))
+            (when value
+              (push value accum)))))
+      (setf k (ash k 1)
+            value (ash value -1)))));; composite enum translations
 
-(defun g-type-from-instance (instance)
-  (foreign-slot-value
-   (foreign-slot-value instance 'g-type-instance 'g-class)
-   'g-type-class 'g-type))
+(define-foreign-type modifier-type-composite-enum ()
+   ()
+   (:actual-type modifier-type-composite)
+   (:simple-parser modifier-type-composite-enum))
 
-(defctype function-pointer :pointer)
+(define-parse-method modifier-type-composite-enum ()
+   (make-instance 'modifier-type-composite-enum))
+
+(defmethod translate-to-foreign (value (type modifier-type-composite-enum))
+   (cenum-collect-values value 'modifier-type))
+
+(defmethod translate-from-foreign (value (type modifier-type-composite-enum))
+   (cenum-deconstruct-value value 'modifier-type))
+
+(define-foreign-type texture-flags-composite-enum ()
+   ()
+   (:actual-type texture-flags-composite)
+   (:simple-parser texture-flags-composite-enum))
+
+(define-parse-method texture-flags-composite-enum ()
+   (make-instance 'texture-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type texture-flags-composite-enum))
+   (cenum-collect-values value 'texture-flags))
+
+(defmethod translate-from-foreign (value (type texture-flags-composite-enum))
+   (cenum-deconstruct-value value 'texture-flags))
+
+(define-foreign-type g-param-flags-composite-enum ()
+   ()
+   (:actual-type g-param-flags-composite)
+   (:simple-parser g-param-flags-composite-enum))
+
+(define-parse-method g-param-flags-composite-enum ()
+   (make-instance 'g-param-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type g-param-flags-composite-enum))
+   (cenum-collect-values value 'g-param-flags))
+
+(defmethod translate-from-foreign (value (type g-param-flags-composite-enum))
+   (cenum-deconstruct-value value 'g-param-flags))
+
+(define-foreign-type g-connect-flags-composite-enum ()
+   ()
+   (:actual-type g-connect-flags-composite)
+   (:simple-parser g-connect-flags-composite-enum))
+
+(define-parse-method g-connect-flags-composite-enum ()
+   (make-instance 'g-connect-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type g-connect-flags-composite-enum))
+   (cenum-collect-values value 'g-connect-flags))
+
+(defmethod translate-from-foreign (value (type g-connect-flags-composite-enum))
+   (cenum-deconstruct-value value 'g-connect-flags))
+
+(define-foreign-type event-flags-composite-enum ()
+   ()
+   (:actual-type event-flags-composite)
+   (:simple-parser event-flags-composite-enum))
+
+(define-parse-method event-flags-composite-enum ()
+   (make-instance 'event-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type event-flags-composite-enum))
+   (cenum-collect-values value 'event-flags))
+
+(defmethod translate-from-foreign (value (type event-flags-composite-enum))
+   (cenum-deconstruct-value value 'event-flags))
+
+(define-foreign-type stage-state-composite-enum ()
+   ()
+   (:actual-type stage-state-composite)
+   (:simple-parser stage-state-composite-enum))
+
+(define-parse-method stage-state-composite-enum ()
+   (make-instance 'stage-state-composite-enum))
+
+(defmethod translate-to-foreign (value (type stage-state-composite-enum))
+   (cenum-collect-values value 'stage-state))
+
+(defmethod translate-from-foreign (value (type stage-state-composite-enum))
+   (cenum-deconstruct-value value 'stage-state))
+
+(define-foreign-type font-flags-composite-enum ()
+   ()
+   (:actual-type font-flags-composite)
+   (:simple-parser font-flags-composite-enum))
+
+(define-parse-method font-flags-composite-enum ()
+   (make-instance 'font-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type font-flags-composite-enum))
+   (cenum-collect-values value 'font-flags))
+
+(defmethod translate-from-foreign (value (type font-flags-composite-enum))
+   (cenum-deconstruct-value value 'font-flags))
+
+(define-foreign-type allocation-flags-composite-enum ()
+   ()
+   (:actual-type allocation-flags-composite)
+   (:simple-parser allocation-flags-composite-enum))
+
+(define-parse-method allocation-flags-composite-enum ()
+   (make-instance 'allocation-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type allocation-flags-composite-enum))
+   (cenum-collect-values value 'allocation-flags))
+
+(defmethod translate-from-foreign (value (type allocation-flags-composite-enum))
+   (cenum-deconstruct-value value 'allocation-flags))
+
+(define-foreign-type actor-flags-composite-enum ()
+   ()
+   (:actual-type actor-flags-composite)
+   (:simple-parser actor-flags-composite-enum))
+
+(define-parse-method actor-flags-composite-enum ()
+   (make-instance 'actor-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type actor-flags-composite-enum))
+   (cenum-collect-values value 'actor-flags))
+
+(defmethod translate-from-foreign (value (type actor-flags-composite-enum))
+   (cenum-deconstruct-value value 'actor-flags))
+
+(define-foreign-type g-signal-match-type-composite-enum ()
+   ()
+   (:actual-type g-signal-match-type-composite)
+   (:simple-parser g-signal-match-type-composite-enum))
+
+(define-parse-method g-signal-match-type-composite-enum ()
+   (make-instance 'g-signal-match-type-composite-enum))
+
+(defmethod translate-to-foreign (value (type g-signal-match-type-composite-enum))
+   (cenum-collect-values value 'g-signal-match-type))
+
+(defmethod translate-from-foreign (value (type g-signal-match-type-composite-enum))
+   (cenum-deconstruct-value value 'g-signal-match-type))
+
+;; function definitions
 
 (defcfun (%actor-set-flags "clutter_actor_set_flags") :void
     (self :pointer)
-    (flags actor-flags))
+    (flags actor-flags-composite-enum))
 
 (defcfun (%actor-unset-flags "clutter_actor_unset_flags") :void
     (self :pointer)
-    (flags actor-flags))
+    (flags actor-flags-composite-enum))
 
-(defcfun (%actor-get-flags "clutter_actor_get_flags") actor-flags
+(defcfun (%actor-get-flags "clutter_actor_get_flags") actor-flags-composite-enum
     (self :pointer))
 
 (defcfun (%actor-show "clutter_actor_show") :void
@@ -94,11 +241,11 @@
 (defcfun (%actor-allocate "clutter_actor_allocate") :void
     (self :pointer)
     (box :pointer)
-    (flags allocation-flags))
+    (flags allocation-flags-composite-enum))
 
 (defcfun (%actor-allocate-preferred-size "clutter_actor_allocate_preferred_size") :void
     (self :pointer)
-    (flags allocation-flags))
+    (flags allocation-flags-composite-enum))
 
 (defcfun (%actor-allocate-available-size "clutter_actor_allocate_available_size") :void
     (self :pointer)
@@ -106,7 +253,7 @@
     (y :float)
     (available-width :float)
     (available-height :float)
-    (flags allocation-flags))
+    (flags allocation-flags-composite-enum))
 
 (defcfun (%actor-get-allocation-box "clutter_actor_get_allocation_box") :void
     (self :pointer)
@@ -687,7 +834,7 @@
     (height gint)
     (rowstride gint)
     (bpp gint)
-    (flags texture-flags)
+    (flags texture-flags-composite-enum)
     (error :pointer))
 
 (defcfun (%texture-set-from-yuv-data "clutter_texture_set_from_yuv_data") gboolean
@@ -695,7 +842,7 @@
     (data (:pointer guchar))
     (width gint)
     (height gint)
-    (flags texture-flags)
+    (flags texture-flags-composite-enum)
     (error :pointer))
 
 (defcfun (%texture-set-area-from-rgb-data "clutter_texture_set_area_from_rgb_data") gboolean
@@ -708,7 +855,7 @@
     (height gint)
     (rowstride gint)
     (bpp gint)
-    (flags texture-flags)
+    (flags texture-flags-composite-enum)
     (error :pointer))
 
 (defcfun (%texture-get-base-size "clutter_texture_get_base_size") :void
@@ -1922,7 +2069,7 @@
     (nick :string)
     (blurb :string)
     (default-value (:pointer color))
-    (flags g-param-flags))
+    (flags g-param-flags-composite-enum))
 
 (defcfun (%value-set-color "clutter_value_set_color") :void
     (value (:pointer g-value))
@@ -1944,7 +2091,7 @@
     (pool :pointer)
     (action-name :string)
     (key-val guint)
-    (modifiers modifier-type)
+    (modifiers modifier-type-composite-enum)
     (callback function-pointer)
     (data :pointer)
     (notify function-pointer))
@@ -1953,13 +2100,13 @@
     (pool :pointer)
     (action-name :string)
     (key-val guint)
-    (modifiers modifier-type)
+    (modifiers modifier-type-composite-enum)
     (closure :pointer))
 
 (defcfun (%binding-pool-override-action "clutter_binding_pool_override_action") :void
     (pool :pointer)
     (key-val guint)
-    (modifiers modifier-type)
+    (modifiers modifier-type-composite-enum)
     (callback function-pointer)
     (data :pointer)
     (notify function-pointer))
@@ -1967,18 +2114,18 @@
 (defcfun (%binding-pool-override-closure "clutter_binding_pool_override_closure") :void
     (pool :pointer)
     (key-val guint)
-    (modifiers modifier-type)
+    (modifiers modifier-type-composite-enum)
     (closure :pointer))
 
 (defcfun (%binding-pool-find-action "clutter_binding_pool_find_action") :string
     (pool :pointer)
     (key-val guint)
-    (modifiers modifier-type))
+    (modifiers modifier-type-composite-enum))
 
 (defcfun (%binding-pool-remove-action "clutter_binding_pool_remove_action") :void
     (pool :pointer)
     (key-val guint)
-    (modifiers modifier-type))
+    (modifiers modifier-type-composite-enum))
 
 (defcfun (%binding-pool-block-action "clutter_binding_pool_block_action") :void
     (pool :pointer)
@@ -1991,7 +2138,7 @@
 (defcfun (%binding-pool-activate "clutter_binding_pool_activate") gboolean
     (pool :pointer)
     (key-val guint)
-    (modifiers modifier-type)
+    (modifiers modifier-type-composite-enum)
     (gobject :pointer))
 
 (defcfun (%event-new "clutter_event_new") :pointer
@@ -2011,7 +2158,7 @@
     (x (:pointer :float))
     (y (:pointer :float)))
 
-(defcfun (%event-get-state "clutter_event_get_state") modifier-type
+(defcfun (%event-get-state "clutter_event_get_state") modifier-type-composite-enum
     (event :pointer))
 
 (defcfun (%event-get-time "clutter_event_get_time") guint32
@@ -2023,7 +2170,7 @@
 (defcfun (%event-get-stage "clutter_event_get_stage") :pointer
     (event :pointer))
 
-(defcfun (%event-get-flags "clutter_event_get_flags") event-flags
+(defcfun (%event-get-flags "clutter_event_get_flags") event-flags-composite-enum
     (event :pointer))
 
 (defcfun (%event-get "clutter_event_get") :pointer)
@@ -2123,9 +2270,9 @@
 (defcfun (%clear-glyph-cache "clutter_clear_glyph_cache") :void)
 
 (defcfun (%set-font-flags "clutter_set_font_flags") :void
-    (flags font-flags))
+    (flags font-flags-composite-enum))
 
-(defcfun (%get-font-flags "clutter_get_font_flags") font-flags)
+(defcfun (%get-font-flags "clutter_get_font_flags") font-flags-composite-enum)
 
 (defcfun (%get-font-map "clutter_get_font_map") :pointer)
 
@@ -2332,7 +2479,7 @@
     (minimum :float)
     (maximum :float)
     (default-value :float)
-    (flags g-param-flags))
+    (flags g-param-flags-composite-enum))
 
 (defcfun (%value-set-units "clutter_value_set_units") :void
     (value (:pointer g-value))
@@ -2377,7 +2524,7 @@
     (minimum cogl-fixed)
     (maximum cogl-fixed)
     (default-value cogl-fixed)
-    (flags g-param-flags))
+    (flags g-param-flags-composite-enum))
 
 (defcfun (%value-set-fixed "clutter_value_set_fixed") :void
     (value (:pointer g-value))
@@ -2657,11 +2804,11 @@
     (c-handler function-pointer)
     (data :pointer)
     (destroy-data function-pointer)
-    (connect-flags g-connect-flags))
+    (connect-flags g-connect-flags-composite-enum))
 
 (defcfun (%g-signal-handler-find "g_signal_handler_find") gulong
     (instance :pointer)
-    (mask g-signal-match-type)
+    (mask g-signal-match-type-composite-enum)
     (signal-id guint)
     (detail g-quark)
     (closure :pointer)
@@ -2670,7 +2817,7 @@
 
 (defcfun (%g-signal-handlers-disconnect-matched "g_signal_handlers_disconnect_matched") guint
     (instance :pointer)
-    (mask g-signal-match-type)
+    (mask g-signal-match-type-composite-enum)
     (signal-id guint)
     (detail g-quark)
     (closure :pointer)
