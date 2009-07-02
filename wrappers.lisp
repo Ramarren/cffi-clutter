@@ -24,6 +24,13 @@
      (unwind-protect (progn ,@body)
        (free-color ,var))))
 
+(defmacro with-colors (color-specs &body body)
+  (if (cdr color-specs)
+      `(with-color ,(car color-specs)
+         (with-colors ,(cdr color-specs) ,@body))
+      `(with-color ,(car color-specs)
+         ,@body)))
+
 (defun init-clutter (&rest clutter-argument-list)
   (if clutter-argument-list
       (let ((argc (length clutter-argument-list))
