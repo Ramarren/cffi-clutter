@@ -22,17 +22,20 @@
   (remhash (mem-ref data :uint64) *callbacks*)
   (foreign-free data))
 
-(defun connect-event-handler (instance detailed-signal lisp-handler &key (flags nil))
+(defun connect-lisp-handler (instance detailed-signal lisp-handler c-dispatch &key (flags nil))
   (let ((foreign-counter (foreign-alloc :uint64 :initial-element *callback-counter*)))
     (setf (gethash *callback-counter* *callbacks*)
           (cons lisp-handler foreign-counter))
     (g-signal-connect instance
                       detailed-signal
-                      (callback clutter-event-callback)
+                      c-dispatch
                       :data foreign-counter
                       :destroy-data (callback unregister-callback)
                       :flags flags))
   (1- (incf *callback-counter*)))
+
+(defun connect-event-handler (instance detailed-signal lisp-handler &key (flags nil))
+  (connect-lisp-handler instance detailed-signal lisp-handler (callback clutter-event-callback) :flags flags))
 
 (defun disconnect-lisp-signals (instance)
   (%g-signal-handlers-disconnect-matched
