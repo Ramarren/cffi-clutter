@@ -36,4 +36,7 @@
           (setf (mem-ref argc-pointer :int) argc)
           (unwind-protect
                (%init argc-pointer argvs)
-            (mapc #'foreign-string-free argvs))))))
+            (mapc #'foreign-string-free argvs))))
+      (with-foreign-object (argc :int)
+        (setf (mem-ref argc :int) 0)
+        (%init argc (null-pointer)))))
