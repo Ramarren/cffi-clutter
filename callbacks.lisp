@@ -16,6 +16,9 @@
         (let ((result (funcall lisp-callback actor event)))
           (if result +true+ +false+)))))
 
+(defparameter *lisp-signal-wrappers*
+  (list (callback clutter-event-callback)))
+
 (defcallback unregister-callback :void
     ((data :pointer) (closure :pointer))
   (declare (ignore closure))
@@ -25,7 +28,7 @@
 (defun connect-lisp-handler (instance detailed-signal lisp-handler c-dispatch &key (flags nil))
   (let ((foreign-counter (foreign-alloc :uint64 :initial-element *callback-counter*)))
     (setf (gethash *callback-counter* *callbacks*)
-          (cons lisp-handler foreign-counter))
+          (list lisp-handler foreign-counter c-dispatch))
     (g-signal-connect instance
                       detailed-signal
                       c-dispatch
@@ -38,25 +41,26 @@
   (connect-lisp-handler instance detailed-signal lisp-handler (callback clutter-event-callback) :flags flags))
 
 (defun disconnect-lisp-signals (instance)
-  (%g-signal-handlers-disconnect-matched
-   instance
-   :func
-   0
-   0
-   (null-pointer)
-   (callback clutter-event-callback)
-   (null-pointer)))
+  (dolist (c-dispatch *lisp-signal-wrappers*)
+    (%g-signal-handlers-disconnect-matched
+     instance
+     :func
+     0
+     0
+     (null-pointer)
+     c-dispatch
+     (null-pointer))))
 
 (defun disconnect-lisp-signal (instance callback-number)
   "Disconnect signal using Lisp side callback number (returned by connect-signal)"
-  (let ((lisp-callback-cons (gethash callback-number *callbacks*)))
-    (assert lisp-callback-cons)
-    (assert (eql (mem-ref (cdr lisp-callback-cons) :uint64) callback-number))
+  (let ((lisp-callback (gethash callback-number *callbacks*)))
+    (assert lisp-callback)
+    (assert (eql (mem-ref (second lisp-callback) :uint64) callback-number))
     (%g-signal-handlers-disconnect-matched
      instance
      (cenum-collect-values '(:func :data) 'g-signal-match-type)
      0
      0
      (null-pointer)
-     (callback clutter-event-callback)
-     (cdr lisp-callback-cons))))
+     (third lisp-callback)
+     (second lisp-callback))))
