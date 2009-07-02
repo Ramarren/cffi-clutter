@@ -8,16 +8,60 @@
 (defvar *callbacks* (make-hash-table))
 (defvar *callback-counter* 0)
 
-(defcallback clutter-event-callback gboolean
-    ((actor :pointer) (event :pointer) (user-data :pointer))
+(declaim (inline call-lisp-callback))
+(defun call-lisp-callback (user-data &rest arguments)
   (let ((lisp-callback (car (gethash (mem-ref user-data :uint64) *callbacks*))))
     (if (null lisp-callback)
-        +false+
-        (let ((result (funcall lisp-callback actor event)))
-          (if result +true+ +false+)))))
+        (warn "Tried to call inexistent callback nr. ~a" (mem-ref user-data :uint64))
+        (apply lisp-callback arguments))))
+
+;;; Now add callback wrappers for all Clutter signal signatures
+
+(defcallback clutter-event-callback gboolean
+    ((actor :pointer) (event :pointer) (user-data :pointer))
+  (if (call-lisp-callback user-data actor event)
+      +true+
+      +false+))
+
+(defcallback allocation-changed-callback :void
+    ((actor :pointer) (box :pointer) (flags allocation-flags-composite-enum) (user-data :pointer))
+  (call-lisp-callback user-data actor box flags))
+
+(defcallback one-pointer-callback :void
+    ((instance :pointer) (user-data :pointer))
+  (call-lisp-callback user-data instance))
+
+(defcallback two-pointer-callback :void
+    ((instance1 :pointer) (instance2 :pointer) (user-data :pointer))
+  (call-lisp-callback user-data instance1 instance2))
+
+(defcallback spatial-change-callback :void
+    ((instance :pointer) (width gint) (height gint) (user-data :pointer))
+  (call-lisp-callback user-data instance width height))
+
+(defcallback marker-reached-callback :void
+    ((timeline :pointer) (marker-name :string) (msecs gint) (user-data :pointer))
+  (call-lisp-callback user-data timeline marker-name msecs))
+
+(defcallback new-frame-callback :void
+    ((timeline :pointer) (msecs gint) (user-data :pointer))
+  (call-lisp-callback user-data timeline msecs))
+
+(defcallback knot-reached-callback :void
+    ((path-b :pointer) (knot-num guint) (user-data :pointer))
+  (call-lisp-callback user-data path-b knot-num))
+
+;; list all callbacks for automatic disconnection of all lisp handlers
 
 (defparameter *lisp-signal-wrappers*
-  (list (callback clutter-event-callback)))
+  (list (callback clutter-event-callback)
+        (callback allocation-changed-callback)
+        (callback one-pointer-callback)
+        (callback two-pointer-callback)
+        (callback spatial-change-callback)
+        (callback marker-reached-callback)
+        (callback new-frame-callback)
+        (callback knot-reached-callback)))
 
 (defcallback unregister-callback :void
     ((data :pointer) (closure :pointer))
@@ -48,8 +92,8 @@
 (defun connect-event-handler (instance detailed-signal lisp-handler &key (flags nil))
   (connect-lisp-handler instance detailed-signal lisp-handler (callback clutter-event-callback) :flags flags))
 
-(defun disconnect-lisp-signals (instance)
-  (dolist (c-dispatch *lisp-signal-wrappers*)
+(defun disconnect-lisp-signals (instance &optional (callbacks *lisp-signal-wrappers*))
+  (dolist (c-dispatch (ensure-list callbacks))
     (%g-signal-handlers-disconnect-matched
      instance
      :func
