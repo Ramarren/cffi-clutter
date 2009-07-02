@@ -22,7 +22,7 @@
   (remhash (mem-ref data :uint64) *callbacks*)
   (foreign-free data))
 
-(defun connect-signal (instance detailed-signal lisp-handler &key (flags nil))
+(defun connect-event-handler (instance detailed-signal lisp-handler &key (flags nil))
   (let ((foreign-counter (foreign-alloc :uint64 :initial-element *callback-counter*)))
     (setf (gethash *callback-counter* *callbacks*)
           (cons lisp-handler foreign-counter))
