@@ -25,4 +25,5 @@
                       (callback clutter-event-callback)
                       :data foreign-counter
                       :destroy-data (callback unregister-callback)
-                      :flags flags)))
+                      :flags flags))
+  (1- (incf *callback-counter*)))
