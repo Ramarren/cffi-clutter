@@ -5,12 +5,11 @@
 
 
 
-(defcallback chapter-4-on-stage-button-press gboolean
-    ((stage :pointer) (event :pointer) (data :pointer))
-  (declare (ignore stage data))
+(defun chapter-4-on-stage-button-press (stage event)
+  (declare (ignore stage))
   (destructuring-bind (x y) (event-get-coords event)
     (format t "Stage clicked at ~a ~a~&" x y))
-  +true+)
+  (values t))
 
 (defcallback quit-main-loop-when-idle gboolean
     ((data :pointer))
@@ -27,11 +26,12 @@
       (%actor-set-size stage 200.0 200.0)
       (%stage-set-color stage stage-color)
       (%actor-show stage)
-      (g-signal-connect stage "button-press-event" (callback chapter-4-on-stage-button-press))
+      (connect-signal stage "button-press-event" #'chapter-4-on-stage-button-press)
       (%main)
       ;; when I click window close button the loops stops, but window doesn't close
       ;; have to run main loop for a bit so it is hidden
       (%threads-add-idle (callback quit-main-loop-when-idle) (null-pointer))
+      (disconnect-lisp-signals stage)
       (%actor-hide stage)
       (%main))))
 
@@ -120,50 +120,43 @@
       (%actor-hide stage)
       (%main))))
 
-(defcallback chapter-5-4-on-stage-button-press gboolean
-    ((stage :pointer) (event :pointer) (data :pointer))
-  (declare (ignore data))
+(defun chapter-5-4-on-stage-button-press (stage event)
   (destructuring-bind (x y) (event-get-coords event)
     (format t "Clicked stage at (~a, ~a)~&" x y)
     (let ((maybe-rec (%stage-get-actor-at-pos stage :all (truncate x) (truncate y))))
       (cond ((null-pointer-p maybe-rec)
-             +false+)
+             nil)
             ((eql (%g-type-from-name "ClutterRectangle") (g-type-from-instance maybe-rec))
              (format t "A rectangle is at that position.~&")
-             +true+)
-            (t +true+)))))
+             t)
+            (t t)))))
 
-(defcallback chapter-5-4-on-rect-button-press gboolean
-    ((rect :pointer) (event :pointer) (data :pointer))
-  (declare (ignore rect data))
+(defun chapter-5-4-on-rect-button-press (rect event)
+  (declare (ignore rect))
   (destructuring-bind (x y) (event-get-coords event)
     (format t "Clicked rectangle at (~a, ~a)~&" x y)
-    +false+))
+    nil))
 
-(defcallback chapter-5-4-on-rect-button-release gboolean
-    ((rect :pointer) (event :pointer) (data :pointer))
-  (declare (ignore rect data))
+(defun chapter-5-4-on-rect-button-release (rect event)
+  (declare (ignore rect))
   (destructuring-bind (x y) (event-get-coords event)
     (format t "Click-release rectangle at (~a, ~a)~&" x y)
-    +true+))
+    t))
 
-(defcallback chapter-5-4-on-rect-motion gboolean
-    ((rect :pointer) (event :pointer) (data :pointer))
-  (declare (ignore rect data event))
+(defun chapter-5-4-on-rect-motion (rect event)
+  (declare (ignore rect event))
   (format t "Motion in rectangle.~&")
-  +true+)
+  t)
 
-(defcallback chapter-5-4-on-rect-enter gboolean
-    ((rect :pointer) (event :pointer) (data :pointer))
-  (declare (ignore rect data event))
+(defun chapter-5-4-on-rect-enter (rect event)
+  (declare (ignore rect event))
   (format t "Entered rectangle.~&")
-  +true+)
+  t)
 
-(defcallback chapter-5-4-on-rect-leave gboolean
-    ((rect :pointer) (event :pointer) (data :pointer))
-  (declare (ignore rect data event))
+(defun chapter-5-4-on-rect-leave (rect event)
+  (declare (ignore rect event))
   (format t "Left rectangle.~&")
-  +true+)
+  t)
 
 (defun chapter-5-4 ()
   (with-colors ((stage-color 0 0 0)
@@ -173,21 +166,22 @@
       (%group-remove-all stage)
       (%actor-set-size stage 200.0 200.0)
       (%stage-set-color stage stage-color)
-      (g-signal-connect stage "button-press-event" (callback chapter-5-4-on-stage-button-press))
+      (connect-signal stage "button-press-event" #'chapter-5-4-on-stage-button-press)
       (let ((rect (%rectangle-new-with-color actor-color)))
         (%actor-set-size rect 100.0 100.0)
         (%actor-set-position rect 50.0 50.0)
         (%actor-show rect)
         (%container-add-actor stage rect)
         (%actor-set-reactive rect +true+)
-        (g-signal-connect rect "button-press-event" (callback chapter-5-4-on-rect-button-press))
-        (g-signal-connect rect "button-release-event" (callback chapter-5-4-on-rect-button-release))
-        (g-signal-connect rect "motion-event" (callback chapter-5-4-on-rect-motion))
-        (g-signal-connect rect "enter-event" (callback chapter-5-4-on-rect-enter))
-        (g-signal-connect rect "leave-event" (callback chapter-5-4-on-rect-leave)))
+        (connect-signal rect "button-press-event" #'chapter-5-4-on-rect-button-press)
+        (connect-signal rect "button-release-event" #'chapter-5-4-on-rect-button-release)
+        (connect-signal rect "motion-event" #'chapter-5-4-on-rect-motion)
+        (connect-signal rect "enter-event" #'chapter-5-4-on-rect-enter)
+        (connect-signal rect "leave-event" #'chapter-5-4-on-rect-leave))
       (%actor-show stage)
       (%main)
       (%threads-add-idle (callback quit-main-loop-when-idle) (null-pointer))
       (%group-remove-all stage)
+      (disconnect-lisp-signals stage)
       (%actor-hide stage)
       (%main))))
