@@ -13,13 +13,27 @@
 (use-foreign-library glib)
 (use-foreign-library gobject)
 
-(defun g-signal-connect (instance detailed-signal c-handler &optional (data nil))
-  (g-signal-connect-data instance detailed-signal c-handler (if data data (null-pointer)) (null-pointer) 0))
+
+(defun cenum-collect-values (keyword-list type)
+  (cond ((null keyword-list) 0)
+        ((atom keyword-list) keyword-list)
+        (t (reduce #'+
+                   (mapcar (curry #'foreign-enum-value type)
+                           keyword-list)))))
+
+(defun g-signal-connect (instance detailed-signal c-handler &key (data nil) (destroy-data nil) (flags nil))
+  (%g-signal-connect-data instance
+                          detailed-signal
+                          c-handler
+                          (if data data (null-pointer))
+                          (if destroy-data destroy-data (null-pointer))
+                          (cenum-collect-values flags 'g-connect-flags)))
 
 (defun g-type-from-instance (instance)
   (foreign-slot-value
    (foreign-slot-value instance 'g-type-instance 'g-class)
    'g-type-class 'g-type))
+
 (defctype function-pointer :pointer)
 
 (defcfun (%actor-set-flags "clutter_actor_set_flags") :void
