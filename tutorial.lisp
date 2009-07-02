@@ -3,10 +3,7 @@
 ;;; Implement tutorial from
 ;;; http://www.openismus.com/documents/clutter_tutorial/0.9/docs/tutorial/html/index.html
 
-(defun event-get-coords (event-pointer)
-  (with-foreign-objects ((x :float) (y :float))
-    (%event-get-coords event-pointer x y)
-    (list (mem-ref x :float) (mem-ref y :float))))
+
 
 (defcallback chapter-4-on-stage-button-press gboolean
     ((stage :pointer) (event :pointer) (data :pointer))
@@ -20,36 +17,6 @@
   (declare (ignore data))
   (%main-quit)
   +false+)
-
-(defun make-color (red green blue alpha)
-  (let ((color (foreign-alloc 'color)))
-    (setf (foreign-slot-value color 'color 'red) red
-	  (foreign-slot-value color 'color 'green) green
-	  (foreign-slot-value color 'color 'blue) blue
-	  (foreign-slot-value color 'color 'alpha) alpha)
-    color))
-
-(defmacro with-color ((var red green blue alpha) &body body)
-  `(let ((,var (make-color ,red ,green ,blue ,alpha)))
-     (unwind-protect (progn ,@body)
-       (foreign-free ,var))))
-
-(defun init (&optional (clutter-argument-list nil))
-  (if clutter-argument-list
-      (let ((argc (length clutter-argument-list))
-	    (argvs (mapcar #'foreign-string-alloc clutter-argument-list)))
-	(with-foreign-object (argc-pointer :int)
-	  (with-foreign-object (argv-pointer :pointer argc)
-	    (iter (for p in argvs)
-		  (for i from 0)
-		  (setf (mem-aref argv-pointer :pointer i) p))
-	    (setf (mem-ref argc-pointer :int) argc)
-	    (prog1
-		(%init argc-pointer argvs)
-	      (mapc #'foreign-string-free argvs)))))
-      (with-foreign-object (argc :int)
-	(setf (mem-ref argc :int) 0)
-	(%init argc (null-pointer)))))
 
 (defun chapter-4 ()
   (with-color (stage-color 0 0 0 255)
