@@ -185,3 +185,56 @@
       (disconnect-lisp-signals stage)
       (%actor-hide stage)
       (%main))))
+
+(defun make-chapter-6-1-on-new-frame (rect color-object color1 color2)
+  #'(lambda (timeline msec)
+      (declare (ignore msec))
+      (let ((progress (%timeline-get-progress timeline)))
+        (let ((sin-progress (expt (sin (* pi progress)) 2)))
+         (let ((angle (* progress 720d0))
+               (color (mapcar #'truncate
+                              (mapcar #'+
+                                      (mapcar (curry #'* sin-progress) color1)
+                                      (mapcar (curry #'* (- 1 sin-progress)) color2)))))
+           (%actor-set-rotation rect :x-axis angle 0.0 0.0 0.0)
+           (destructuring-bind (r g b a) color
+             (setf (foreign-slot-value color-object 'color 'red) r
+                   (foreign-slot-value color-object 'color 'green) g
+                   (foreign-slot-value color-object 'color 'blue) b
+                   (foreign-slot-value color-object 'color 'alpha) a))
+           (%rectangle-set-color rect color-object))))))
+
+(defun chapter-6-1 ()
+  (with-colors ((stage-color 0 0 0)
+                (rect-color #xff #xff #xff #x99))
+    
+    (init-clutter)
+    (let ((stage (%stage-get-default))
+          (timeline (%timeline-new 6000)))
+      (%group-remove-all stage)
+      (%actor-set-size stage 200.0 200.0)
+      (%stage-set-color stage stage-color)
+      (let ((rect (%rectangle-new-with-color rect-color)))
+        (%actor-set-size rect 70.0 70.0)
+        (%actor-set-position rect 50.0 100.0)
+        (%container-add-actor stage rect)
+        (%actor-show rect)
+        (%timeline-add-marker-at-time timeline "clutter-tutorial" 3000)
+        (connect-lisp-handler timeline "new-frame"
+                              (make-chapter-6-1-on-new-frame rect rect-color '(0 0 255 255) '(0 255 0 255))
+                              (callback new-frame-callback))
+        (connect-lisp-handler timeline "marker-reached"
+                              #'(lambda (timeline marker-name msec)
+                                  (declare (ignore timeline))
+                                  (format t "~&Reached marker ~a at time ~a msec.~&" marker-name msec))
+                              (callback marker-reached-callback))
+        (%timeline-set-loop timeline +true+)
+        (%timeline-start timeline))
+      (%actor-show stage)
+      (%main)
+      (%threads-add-idle (callback quit-main-loop-when-idle) (null-pointer))
+      (%group-remove-all stage)
+      (disconnect-lisp-signals stage)
+      (%actor-hide stage)
+      (%g-object-unref timeline)
+      (%main))))
