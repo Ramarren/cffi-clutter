@@ -38,25 +38,29 @@
       `(with-color ,(car color-specs)
          ,@body)))
 
+(defvar *clutter-initialized* nil)
+
 (defun init-clutter (&key (clutter-argument-list nil) (threading t))
-  (when threading
-    (%g-thread-init (null-pointer))
-    (%threads-init))
-  (if clutter-argument-list
-      (let ((argc (length clutter-argument-list))
-	    (argvs (mapcar #'foreign-string-alloc clutter-argument-list)))
-	(with-foreign-objects ((argc-pointer :int)
-                               (argv-pointer :pointer argc))
-          (loop for p in argvs
-                for i from 0
-                do (setf (mem-aref argv-pointer :pointer i) p))
-          (setf (mem-ref argc-pointer :int) argc)
-          (unwind-protect
-               (%init argc-pointer argvs)
-            (mapc #'foreign-string-free argvs))))
-      (with-foreign-object (argc :int)
-        (setf (mem-ref argc :int) 0)
-        (%init argc (null-pointer)))))
+  (unless *clutter-initialized*
+    (setf *clutter-initialized* t)
+    (when threading
+      (%g-thread-init (null-pointer))
+      (%threads-init))
+    (if clutter-argument-list
+        (let ((argc (length clutter-argument-list))
+              (argvs (mapcar #'foreign-string-alloc clutter-argument-list)))
+          (with-foreign-objects ((argc-pointer :int)
+                                 (argv-pointer :pointer argc))
+            (loop for p in argvs
+                  for i from 0
+                  do (setf (mem-aref argv-pointer :pointer i) p))
+            (setf (mem-ref argc-pointer :int) argc)
+            (unwind-protect
+                 (%init argc-pointer argvs)
+              (mapc #'foreign-string-free argvs))))
+        (with-foreign-object (argc :int)
+          (setf (mem-ref argc :int) 0)
+          (%init argc (null-pointer))))))
 
 (defun main-with-cleanup (stage &rest objects-to-unref)
   (%actor-show stage)
@@ -69,3 +73,11 @@
   (dolist (object objects-to-unref)
     (%g-object-unref object))
   (%main))
+
+(defun animation-mode (mode)
+  (if (keywordp mode)
+      (foreign-enum-value 'animation-mode mode)
+      mode))
+
+(defun alpha-set-mode (alpha mode)
+  (%alpha-set-mode alpha (animation-mode mode)))

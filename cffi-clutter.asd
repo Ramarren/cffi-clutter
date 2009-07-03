@@ -11,8 +11,11 @@
   :components ((:file "package")
 	       (cffi-grovel:grovel-file "grovel" :depends-on ("package"))
 	       (:file "bindings" :depends-on ("package" "grovel"))
-               (:file "wrappers" :depends-on ("package" "grovel" "bindings" "callbacks"))
-               (:file "callbacks" :depends-on ("package" "grovel" "bindings"))))
+               (:file "properties-typemap" :depends-on ("package" "grovel" "bindings"))
+               (:file "g-values" :depends-on ("package" "grovel" "bindings" "properties-typemap"))
+               (:file "wrappers" :depends-on ("package" "grovel" "bindings" "callbacks" "properties-typemap"))
+               (:file "callbacks" :depends-on ("package" "grovel" "bindings"))
+               (:file "animations" :depends-on ("package" "grovel" "bindings" "wrappers" "callbacks" "g-values"))))
 
 
 

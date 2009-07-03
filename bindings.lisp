@@ -2985,6 +2985,10 @@
     (v-string :string))
 
 (defcfun (%g-value-set-string-take-ownership "g_value_set_string_take_ownership") :void
+    (value (:pointer g-value))
+    (v-string :string))
+
+(defcfun (%g-value-get-string "g_value_get_string") :string
     (value (:pointer g-value)))
 
 (defcfun (%g-value-dup-string "g_value_dup_string") :string

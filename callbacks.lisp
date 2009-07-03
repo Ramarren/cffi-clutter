@@ -126,6 +126,8 @@
      (third lisp-callback)
      (second lisp-callback))))
 
+;; callbacks for idle/timeouts
+
 (defcallback source-callback gboolean
     ((data :pointer))
   (if (call-lisp-callback data)
@@ -168,3 +170,27 @@
 
 (defun remove-repaint-function (function-id)
   (%threads-remove-repaint-func function-id))
+
+;; alpha functions
+
+(defcallback alpha-callback :double
+    ((alpha :pointer) (data :pointer))
+  (call-lisp-callback data alpha))
+
+(defun alpha-new-with-function (timeline function)
+  (let ((foreign-counter (register-lisp-callback function (callback alpha-callback))))
+    (%alpha-new-with-func timeline
+                          (callback alpha-callback)
+                          foreign-counter
+                          (callback destroy-notify-callback))))
+
+(defun alpha-set-function (alpha function)
+  (let ((foreign-counter (register-lisp-callback function (callback alpha-callback))))
+    (%alpha-set-func alpha
+                     (callback alpha-callback)
+                     foreign-counter
+                     (callback destroy-notify-callback))))
+
+(defun alpha-register-function (function)
+  (let ((foreign-counter (register-lisp-callback function (callback alpha-callback))))
+    (%alpha-register-func (callback alpha-callback) foreign-counter)))
