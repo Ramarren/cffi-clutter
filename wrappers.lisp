@@ -123,3 +123,12 @@
     (%actor-get-size actor width height)
     (values (mem-ref width :float) 
             (mem-ref height :float)))) 
+
+(defun get-actor-at-position (stage pick-mode x y)
+  (let ((result (%stage-get-actor-at-pos stage pick-mode x y)))
+    (if (null-pointer-p result)
+        nil
+        result)))
+
+(defun score-append (score parent timeline)
+  (%score-append score (if parent parent (null-pointer)) timeline))

@@ -857,4 +857,8 @@
    #:get-preferred-size
    #:get-preferred-width
    #:get-preferred-height
-   #:get-size))
+   #:get-size
+   #:get-actor-at-position
+   #:connect-new-frame-handler
+   #:connect-marker-reached-handler
+   #:score-append))

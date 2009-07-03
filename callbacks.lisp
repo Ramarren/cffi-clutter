@@ -101,6 +101,16 @@
 (defun connect-event-handler (instance detailed-signal lisp-handler &key (flags nil))
   (connect-lisp-handler instance detailed-signal lisp-handler (callback clutter-event-callback) :flags flags))
 
+(defun connect-new-frame-handler (timeline handler)
+  (connect-lisp-handler timeline "new-frame"
+                        handler
+                        (callback new-frame-callback)))
+
+(defun connect-marker-reached-handler (timeline handler)
+  (connect-lisp-handler timeline "marker-reached"
+                        handler
+                        (callback marker-reached-callback)))
+
 (defun disconnect-lisp-signals (instance &optional (callbacks *lisp-signal-wrappers*))
   (dolist (c-dispatch (ensure-list callbacks))
     (%g-signal-handlers-disconnect-matched

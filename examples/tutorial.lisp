@@ -95,8 +95,8 @@
 (defun chapter-5-4-on-stage-button-press (stage event)
   (destructuring-bind (x y) (event-get-coords event)
     (format t "Clicked stage at (~a, ~a)~&" x y)
-    (let ((maybe-rec (%stage-get-actor-at-pos stage :all (truncate x) (truncate y))))
-      (cond ((null-pointer-p maybe-rec)
+    (let ((maybe-rec (get-actor-at-position stage :all (truncate x) (truncate y))))
+      (cond ((null maybe-rec)
              nil)
             ((eql (%g-type-from-name "ClutterRectangle") (g-type-from-instance maybe-rec))
              (format t "A rectangle is at that position.~&")
@@ -181,14 +181,15 @@
         (%container-add-actor stage rect)
         (%actor-show rect)
         (%timeline-add-marker-at-time timeline "clutter-tutorial" 3000)
-        (connect-lisp-handler timeline "new-frame"
-                              (make-chapter-6-1-on-new-frame rect rect-color '(0 0 255 255) '(0 255 0 255))
-                              (callback new-frame-callback))
-        (connect-lisp-handler timeline "marker-reached"
-                              #'(lambda (timeline marker-name msec)
-                                  (declare (ignore timeline))
-                                  (format t "~&Reached marker ~a at time ~a msec.~&" marker-name msec))
-                              (callback marker-reached-callback))
+        (connect-new-frame-handler timeline (make-chapter-6-1-on-new-frame
+                                             rect
+                                             rect-color
+                                             '(0 0 255 255)
+                                             '(0 255 0 255)))
+        (connect-marker-reached-handler timeline
+                                        #'(lambda (timeline marker-name msec)
+                                            (declare (ignore timeline))
+                                            (format t "~&Reached marker ~a at time ~a msec.~&" marker-name msec)))
         (%timeline-set-loop timeline +true+)
         (%timeline-start timeline))
       (main-with-cleanup stage timeline))))
@@ -216,13 +217,13 @@
         (%actor-set-position rect 50.0 100.0)
         (%container-add-actor stage rect)
         (%actor-show rect)
-        (connect-lisp-handler timeline1 "new-frame"
-                              (make-chapter-6-1-on-new-frame rect rect-color '(0 0 255 255) '(0 255 0 255))
-                              (callback new-frame-callback))
-        (connect-lisp-handler timeline2 "new-frame"
-                              (make-chapter-6-2-on-new-frame-move rect)
-                              (callback new-frame-callback))
-        (%score-append score (null-pointer) timeline1)
+        (connect-new-frame-handler timeline1 (make-chapter-6-1-on-new-frame rect
+                                                                            rect-color
+                                                                            '(0 0 255 255)
+                                                                            '(0 255 0 255)))
+        (connect-new-frame-handler timeline2 
+                              (make-chapter-6-2-on-new-frame-move rect))
+        (score-append score nil timeline1)
         (%score-append score timeline1 timeline2)
         (%score-set-loop score +true+)
         (%score-start score))

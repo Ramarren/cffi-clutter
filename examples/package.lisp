@@ -1,2 +1,2 @@
 (defpackage #:clutter-examples
-    (:use #:cl #:iterate #:alexandria #:cffi-clutter #:cffi))
+    (:use #:cl #:iterate #:alexandria #:cffi-clutter))
