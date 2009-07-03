@@ -831,4 +831,8 @@
    #:disconnect-lisp-signal
    #:set-color
    #:main-with-cleanup
-   #:add-idle))
+   #:add-idle
+   #:add-timeout
+   #:add-frame-source
+   #:add-repaint-function
+   #:remove-repaint-function))
