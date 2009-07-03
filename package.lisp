@@ -845,13 +845,11 @@
    #:animate-actor-with-alpha
    #:animation-mode
    #:with-g-value-block
-   #:get-g-value-in-block
-   #:set-g-value-in-block
+   #:g-value-in-block
    #:init-g-value-in-block
    #:free-g-value-block
    #:make-g-value-block
    #:with-g-value
    #:free-g-value
    #:make-g-value
-   #:get-g-value
-   #:set-g-value))
+   #:g-value))

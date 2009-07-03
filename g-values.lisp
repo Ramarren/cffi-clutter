@@ -1,7 +1,7 @@
 (in-package :cffi-clutter)
 
-(defun set-g-value (g-value new-value ffi-type)
-  (ecase ffi-type
+(defun (setf g-value) (new-value g-value)
+  (ecase (g-type-to-ffi-type (foreign-slot-value g-value 'g-value 'g-type))
     ((request-mode cogl-pixel-format pango-wrap-mode
                    pango-alignment texture-quality pango-ellipsize-mode
                    rotate-direction rotate-axis gravity)
@@ -19,7 +19,7 @@
     (:double (%g-value-set-double g-value new-value))
     (:string (%g-value-set-string g-value new-value))))
 
-(defun get-g-value (g-value)
+(defun g-value (g-value)
   (let ((g-type (foreign-slot-value g-value 'g-value 'g-type)))
     (let ((ffi-type (g-type-to-ffi-type g-type)))
       (ecase ffi-type
@@ -45,7 +45,7 @@
     (loop for i from 0 below size-of-g-value
           do (setf (mem-aref (inc-pointer g-value i) :uint8) 0))
     (%g-value-init g-value g-type)
-    (set-g-value g-value value (g-type-to-ffi-type g-type))
+    (setf (g-value g-value) value)
     g-value))
 
 (defun free-g-value (g-value)
@@ -74,19 +74,18 @@
   (let ((pointer-into-block (inc-pointer (cdr g-value-block) (* n size-of-g-value))))
     (%g-value-init pointer-into-block g-type)
     (when value-supplied-p
-      (set-g-value pointer-into-block
-                   value
-                   (g-type-to-ffi-type g-type)))))
+      (setf (g-value pointer-into-block)
+            value))))
 
-(defun set-g-value-in-block (g-value-block n ffi-type value)
+(defun (setf g-value-in-block) (new-value g-value-block n)
   (assert (< n (car g-value-block)))
   (let ((pointer-into-block (inc-pointer (cdr g-value-block) (* n size-of-g-value))))
-    (set-g-value pointer-into-block value ffi-type)))
+    (setf (g-value pointer-into-block) new-value)))
 
-(defun get-g-value-in-block (g-value-block n)
+(defun g-value-in-block (g-value-block n)
   (assert (< n (car g-value-block)))
   (let ((pointer-into-block (inc-pointer (cdr g-value-block) (* n size-of-g-value))))
-    (get-g-value pointer-into-block)))
+    (g-value pointer-into-block)))
 
 (defmacro with-g-value-block ((g-value-block g-value-block-pointer n) &body body)
   `(let ((,g-value-block (make-g-value-block ,n)))
