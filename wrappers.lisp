@@ -39,8 +39,9 @@
          ,@body)))
 
 (defun init-clutter (&key (clutter-argument-list nil) (threading t))
-  (%g-thread-init (null-pointer))
-  (%threads-init)
+  (when threading
+    (%g-thread-init (null-pointer))
+    (%threads-init))
   (if clutter-argument-list
       (let ((argc (length clutter-argument-list))
 	    (argvs (mapcar #'foreign-string-alloc clutter-argument-list)))
