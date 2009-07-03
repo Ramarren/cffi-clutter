@@ -853,4 +853,8 @@
    #:free-g-value
    #:make-g-value
    #:g-value
-   #:make-behaviour-path-with-knots))
+   #:make-behaviour-path-with-knots
+   #:get-preferred-size
+   #:get-preferred-width
+   #:get-preferred-height
+   #:get-size))

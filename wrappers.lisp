@@ -92,3 +92,34 @@
                  (setf (foreign-slot-value knot 'knot 'x) x
                        (foreign-slot-value knot 'knot 'y) y)))
       (%behaviour-path-new-with-knots alpha knots n))))
+
+(defun get-preferred-size (actor)
+  (with-foreign-objects ((min-width :float)
+                         (min-height :float)
+                         (natural-width :float)
+                         (natural-height :float))
+    (%actor-get-preferred-size actor min-width min-height natural-width natural-height)
+    (values (mem-ref min-width :float) (mem-ref min-height :float)
+            (mem-ref natural-width :float) (mem-ref natural-height :float))))
+
+(defun get-preferred-width (actor for-height)
+  (with-foreign-objects ((min-width :float)
+                         (natural-width :float))
+    (%actor-get-preferred-width actor for-height min-width  natural-width)
+    (values (mem-ref min-width :float) 
+            (mem-ref natural-width :float))))
+
+(defun get-preferred-height (actor for-width)
+  (with-foreign-objects ((min-height :float)
+                         (natural-height :float))
+    (%actor-get-preferred-height actor for-width min-height  natural-height)
+    (values (mem-ref min-height :float) 
+            (mem-ref natural-height :float))))
+
+
+(defun get-size (actor)
+  (with-foreign-objects ((width :float)
+                         (height :float))
+    (%actor-get-size actor width height)
+    (values (mem-ref width :float) 
+            (mem-ref height :float)))) 

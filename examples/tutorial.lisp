@@ -274,3 +274,47 @@
           (let ((path-behaviour (make-behaviour-path-with-knots alpha 10 10 150 150)))
             (%behaviour-apply path-behaviour rect)
             (main-with-cleanup stage timeline)))))))
+
+(defun chapter-9 ()
+  (with-colors ((stage-color 0 0 0)
+                (text-color #xff #xff #xcc #xff)
+                (selection-color #x00 #x50 #xff #x80))
+    (init-clutter)
+    (let ((stage (%stage-get-default)))
+      (%group-remove-all stage)
+      (%actor-set-size stage 800.0 200.0)
+      (%stage-set-color stage stage-color)
+      (let ((text (%text-new)))
+        (%text-set-color text text-color)
+        (%text-set-text text "Non-editable text: Wizard imps and sweat sock pimps, interstellar mongrel nymphs.")
+        (%text-set-font-name text "Sans 12")
+        (%text-set-editable text +false+)
+        (%text-set-line-wrap text +false+)
+        (let ((preferred-height (nth-value 1 (get-preferred-height text 750.0))))
+          (%actor-set-size text 750.0 preferred-height))
+        (%actor-set-position text 5.0 5.0)
+        (%container-add-actor stage text)
+        (%actor-show text))
+      (let ((text (%text-new)))
+        (%text-set-color text text-color)
+        (%text-set-text text
+                        (concatenate 'string
+                                     "Editable text: And as I sat there brooding on the old, unknown world, I thought of "
+                                     "Gatsby's wonder when he first picked out the green light at the end of "
+                                     "Daisy's dock. He had come a long way to this blue lawn and his dream "
+                                     "must have seemed so close that he could hardly fail to grasp it. He did "
+                                     "not know that it was already behind him, somewhere back in that vast "
+                                     "obscurity beyond the city, where the dark fields of the republic rolled "
+                                     "on under the night."))
+        (%text-set-font-name text "Sans 12")
+        (%text-set-editable text +true+)
+        (%text-set-line-wrap text +true+)
+        (%actor-set-reactive text +true+)
+        (%text-set-selection-color text selection-color)
+        (let ((preferred-height (nth-value 1 (get-preferred-height text 750.0))))
+          (%actor-set-size text 750.0 preferred-height))
+        (%actor-set-position text 5.0 50.0)
+        (%container-add-actor stage text)
+        (%actor-show text)
+        (%stage-set-key-focus stage text))
+      (main-with-cleanup stage))))
