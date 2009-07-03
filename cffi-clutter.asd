@@ -7,12 +7,12 @@
   :maintainer " <ramarren@cignet.higersbergernet>"
   :author " <ramarren@cignet.higersbergernet>"
   :licence "BSD-style"
-  :depends-on (:cffi :iterate :alexandria)
+  :depends-on (:cffi :alexandria)
   :components ((:file "package")
 	       (cffi-grovel:grovel-file "grovel" :depends-on ("package"))
 	       (:file "bindings" :depends-on ("package" "grovel"))
                (:file "wrappers" :depends-on ("package" "grovel" "bindings" "callbacks"))
-               (:file "callbacks" :depends-on ("package" "grovel" "bindings"))
-               (:file "tutorial" :depends-on ("package" "grovel" "bindings" "wrappers" "callbacks"))))
+               (:file "callbacks" :depends-on ("package" "grovel" "bindings"))))
+
 
 

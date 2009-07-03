@@ -1,4 +1,4 @@
-(in-package :cffi-clutter)
+(in-package :clutter-examples)
 
 ;;; Implement tutorial from
 ;;; http://www.openismus.com/documents/clutter_tutorial/0.9/docs/tutorial/html/index.html
@@ -197,11 +197,7 @@
                                       (mapcar (curry #'* sin-progress) color1)
                                       (mapcar (curry #'* (- 1 sin-progress)) color2)))))
            (%actor-set-rotation rect :x-axis angle 0.0 0.0 0.0)
-           (destructuring-bind (r g b a) color
-             (setf (foreign-slot-value color-object 'color 'red) r
-                   (foreign-slot-value color-object 'color 'green) g
-                   (foreign-slot-value color-object 'color 'blue) b
-                   (foreign-slot-value color-object 'color 'alpha) a))
+           (apply #'set-color color-object color)
            (%rectangle-set-color rect color-object))))))
 
 (defun chapter-6-1 ()

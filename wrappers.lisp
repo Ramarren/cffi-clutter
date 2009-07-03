@@ -9,7 +9,7 @@
     (list (mem-ref x :float) (mem-ref y :float))))
 
 ;; on the other hand, is there a point of those single line wrappers?
-(declaim (inline make-color free-color copy-color))
+(declaim (inline make-color free-color copy-color set-color))
 (defun make-color (red green blue &optional (alpha 255))
   (%color-new red green blue alpha))
 
@@ -18,6 +18,13 @@
 
 (defun copy-color (color)
   (%color-copy color))
+
+(defun set-color (color r g b &optional (a 255))
+  (setf (foreign-slot-value color 'color 'red) r
+        (foreign-slot-value color 'color 'green) g
+        (foreign-slot-value color 'color 'blue) b
+        (foreign-slot-value color 'color 'alpha) a)
+  color)
 
 (defmacro with-color ((var red green blue &optional (alpha 255)) &body body)
   `(let ((,var (make-color ,red ,green ,blue ,alpha)))
@@ -37,9 +44,9 @@
 	    (argvs (mapcar #'foreign-string-alloc clutter-argument-list)))
 	(with-foreign-objects ((argc-pointer :int)
                                (argv-pointer :pointer argc))
-          (iter (for p in argvs)
-                (for i from 0)
-                (setf (mem-aref argv-pointer :pointer i) p))
+          (loop for p in argvs
+                for i from 0
+                do (setf (mem-aref argv-pointer :pointer i) p))
           (setf (mem-ref argc-pointer :int) argc)
           (unwind-protect
                (%init argc-pointer argvs)
