@@ -142,3 +142,29 @@
                             (callback source-callback)
                             foreign-counter
                             (callback destroy-notify-callback))))
+
+(defun add-timeout (timeout-function interval &key (priority +priority-default+))
+    (let ((foreign-counter (register-lisp-callback timeout-function (callback source-callback))))
+      (%threads-add-timeout-full priority
+                                 interval
+                                 (callback source-callback)
+                                 foreign-counter
+                                 (callback destroy-notify-callback))))
+
+(defun add-frame-source (frame-source-function fps &key (priority +priority-default+))
+  (let ((foreign-counter (register-lisp-callback frame-source-function (callback source-callback))))
+    (%threads-add-frame-source-full priority
+                                    fps
+                                    (callback source-callback)
+                                    foreign-counter
+                                    (callback destroy-notify-callback))))
+
+
+(defun add-repaint-function (repaint-function)
+  (let ((foreign-counter (register-lisp-callback repaint-function (callback source-callback))))
+    (%threads-add-repaint-func (callback source-callback)
+                               foreign-counter
+                               (callback destroy-notify-callback))))
+
+(defun remove-repaint-function (function-id)
+  (%threads-remove-repaint-func function-id))
