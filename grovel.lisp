@@ -13,6 +13,13 @@
 
 (include "clutter/clutter.h")
 
+
+;; constants
+(constant (+priority-high+ "G_PRIORITY_HIGH"))
+(constant (+priority-default+ "G_PRIORITY_DEFAULT"))
+(constant (+priority-high-idle+ "G_PRIORITY_HIGH_IDLE"))
+(constant (+priority-default-idle+ "G_PRIORITY_DEFAULT_IDLE"))
+(constant (+priority-low+ "G_PRIORITY_LOW"))
 (constant (+true+ "TRUE"))
 (constant (+false+ "FALSE"))
 

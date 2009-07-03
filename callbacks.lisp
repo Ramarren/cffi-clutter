@@ -63,11 +63,22 @@
         (callback new-frame-callback)
         (callback knot-reached-callback)))
 
+(defun register-lisp-callback (lisp-callback c-dispatch)
+  (let ((foreign-counter (foreign-alloc :uint64 :initial-element *callback-counter*)))
+    (setf (gethash *callback-counter* *callbacks*)
+          (list lisp-callback foreign-counter c-dispatch))
+    (incf *callback-counter*)
+    foreign-counter))
+
+(defun unregister-lisp-callback (foreign-counter)
+  (remhash (mem-ref foreign-counter :uint64) *callbacks*)
+  (foreign-free foreign-counter)
+  (values))
+
 (defcallback unregister-callback :void
     ((data :pointer) (closure :pointer))
   (declare (ignore closure))
-  (remhash (mem-ref data :uint64) *callbacks*)
-  (foreign-free data))
+  (unregister-lisp-callback data))
 
 (defun g-signal-connect (instance detailed-signal c-handler &key (data nil) (destroy-data nil) (flags nil))
   (%g-signal-connect-data instance
@@ -78,16 +89,14 @@
                           flags))
 
 (defun connect-lisp-handler (instance detailed-signal lisp-handler c-dispatch &key (flags nil))
-  (let ((foreign-counter (foreign-alloc :uint64 :initial-element *callback-counter*)))
-    (setf (gethash *callback-counter* *callbacks*)
-          (list lisp-handler foreign-counter c-dispatch))
+  (let ((foreign-counter (register-lisp-callback lisp-handler c-dispatch)))
     (g-signal-connect instance
                       detailed-signal
                       c-dispatch
                       :data foreign-counter
                       :destroy-data (callback unregister-callback)
-                      :flags flags))
-  (1- (incf *callback-counter*)))
+                      :flags flags)
+    (mem-ref foreign-counter :uint64)))
 
 (defun connect-event-handler (instance detailed-signal lisp-handler &key (flags nil))
   (connect-lisp-handler instance detailed-signal lisp-handler (callback clutter-event-callback) :flags flags))
@@ -116,3 +125,20 @@
      (null-pointer)
      (third lisp-callback)
      (second lisp-callback))))
+
+(defcallback source-callback gboolean
+    ((data :pointer))
+  (if (call-lisp-callback data)
+      +true+
+      +false+))
+
+(defcallback destroy-notify-callback :void
+    ((data :pointer))
+  (unregister-lisp-callback data))
+
+(defun add-idle (idle-function &key (priority +priority-default-idle+))
+  (let ((foreign-counter (register-lisp-callback idle-function (callback source-callback))))
+    (%threads-add-idle-full priority
+                            (callback source-callback)
+                            foreign-counter
+                            (callback destroy-notify-callback))))
