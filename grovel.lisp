@@ -378,6 +378,10 @@
          (width "width" :type guint)
          (height "height" :type guint))
 
+(cstruct knot "ClutterKnot"
+         (x "x" :type gint)
+         (y "y" :type gint))
+
 
 ;; unions
 (cunion event "ClutterEvent"

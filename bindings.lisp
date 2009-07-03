@@ -1639,7 +1639,7 @@
 
 (defcfun (%behaviour-path-new-with-knots "clutter_behaviour_path_new_with_knots") :pointer
     (alpha :pointer)
-    (knots :pointer)
+    (knots (:pointer knot))
     (n-knots guint))
 
 (defcfun (%behaviour-path-set-path "clutter_behaviour_path_set_path") :void
@@ -1649,15 +1649,15 @@
 (defcfun (%behaviour-path-get-path "clutter_behaviour_path_get_path") :pointer
     (pathb :pointer))
 
-(defcfun (%knot-copy "clutter_knot_copy") :pointer
-    (knot :pointer))
+(defcfun (%knot-copy "clutter_knot_copy") (:pointer knot)
+    (knot (:pointer knot)))
 
 (defcfun (%knot-free "clutter_knot_free") :void
-    (knot :pointer))
+    (knot (:pointer knot)))
 
 (defcfun (%knot-equal "clutter_knot_equal") gboolean
-    (knot-a :pointer)
-    (knot-b :pointer))
+    (knot-a (:pointer knot))
+    (knot-b (:pointer knot)))
 
 (defcfun (%path-new "clutter_path_new") :pointer)
 
@@ -1764,7 +1764,7 @@
 (defcfun (%path-get-position "clutter_path_get_position") guint
     (path :pointer)
     (progress :double)
-    (position :pointer))
+    (position (:pointer knot)))
 
 (defcfun (%path-get-length "clutter_path_get_length") guint
     (path :pointer))

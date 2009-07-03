@@ -81,3 +81,14 @@
 
 (defun alpha-set-mode (alpha mode)
   (%alpha-set-mode alpha (animation-mode mode)))
+
+(defun make-behaviour-path-with-knots (alpha &rest knots-xy)
+  (assert (zerop (mod (length knots-xy) 2)))
+  (let ((n (/ (length knots-xy) 2)))
+    (let ((knots (foreign-alloc 'knot :count n)))
+      (loop for (x y . nil) on knots-xy by #'cddr
+            for i from 0
+            do (let ((knot (mem-aref knots 'knot i)))
+                 (setf (foreign-slot-value knot 'knot 'x) x
+                       (foreign-slot-value knot 'knot 'y) y)))
+      (%behaviour-path-new-with-knots alpha knots n))))

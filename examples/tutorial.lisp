@@ -250,3 +250,27 @@
           ;; doesn't work in 9.6.0 due to http://bugzilla.openedhand.com/show_bug.cgi?id=1674
           (animate-actor-with-alpha rect alpha "x" 150.0 "y" 150.0 "opacity" 0)
           (main-with-cleanup stage timeline))))))
+
+(defun chapter-8 ()
+  (with-colors ((stage-color 0 0 0)
+                (rect-color #xff #xff #xff #x99))
+    (init-clutter)
+    (let ((stage (%stage-get-default)))
+      (%group-remove-all stage)
+      (%actor-set-size stage 200.0 200.0)
+      (%stage-set-color stage stage-color)
+      (let ((rect (%rectangle-new-with-color rect-color))
+            (timeline (%timeline-new 5000)))
+        (%actor-set-size rect 40.0 40.0)
+        (%actor-set-position rect 10.0 10.0)
+        (%container-add-actor stage rect)
+        (%actor-show rect)
+        (%timeline-set-loop timeline +true+)
+        (%timeline-start timeline)
+        (let ((alpha (alpha-new-with-function timeline
+                                              #'(lambda (alpha)
+                                                  (%timeline-get-progress
+                                                   (%alpha-get-timeline alpha))))))
+          (let ((path-behaviour (make-behaviour-path-with-knots alpha 10 10 150 150)))
+            (%behaviour-apply path-behaviour rect)
+            (main-with-cleanup stage timeline)))))))

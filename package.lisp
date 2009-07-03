@@ -852,4 +852,5 @@
    #:with-g-value
    #:free-g-value
    #:make-g-value
-   #:g-value))
+   #:g-value
+   #:make-behaviour-path-with-knots))
