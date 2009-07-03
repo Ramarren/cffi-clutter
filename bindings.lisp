@@ -2790,6 +2790,9 @@
 (defcfun (%backend-get-font-name "clutter_backend_get_font_name") :string
     (backend :pointer))
 
+(defcfun (%g-thread-init "g_thread_init") :void
+    (vtable :pointer))
+
 (defcfun (%g-object-set-property "g_object_set_property") :void
     (object :pointer)
     (property-name :string)
