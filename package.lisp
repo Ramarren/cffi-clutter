@@ -823,4 +823,5 @@
            #:connect-event-handler
            #:disconnect-lisp-signals
            #:disconnect-lisp-signal
-           #:set-color))
+           #:set-color
+           #:main-with-cleanup))

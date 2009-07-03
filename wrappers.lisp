@@ -54,3 +54,20 @@
       (with-foreign-object (argc :int)
         (setf (mem-ref argc :int) 0)
         (%init argc (null-pointer)))))
+
+(defcallback quit-main-loop-when-idle gboolean
+    ((data :pointer))
+  (declare (ignore data))
+  (%main-quit)
+  +false+)
+
+(defun main-with-cleanup (stage &rest objects-to-unref)
+  (%actor-show stage)
+  (%main)
+  (%threads-add-idle (callback quit-main-loop-when-idle) (null-pointer))
+  (%group-remove-all stage)
+  (disconnect-lisp-signals stage)
+  (%actor-hide stage)
+  (dolist (object objects-to-unref)
+    (%g-object-unref object))
+  (%main))
