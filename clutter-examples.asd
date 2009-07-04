@@ -8,4 +8,5 @@
   :components ((:module "examples"
                         :components
                         ((:file "package")
-                         (:file "tutorial" :depends-on ("package"))))))
+                         (:file "tutorial" :depends-on ("package"))
+                         (:file "triangle" :depends-on ("package"))))))
