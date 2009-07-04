@@ -26,6 +26,12 @@
         (foreign-slot-value color 'color 'alpha) a)
   color)
 
+(defun get-color (color)
+  (list (foreign-slot-value color 'color 'red)
+        (foreign-slot-value color 'color 'green)
+        (foreign-slot-value color 'color 'blue)
+        (foreign-slot-value color 'color 'alpha)))
+
 (defmacro with-color ((var red green blue &optional (alpha 255)) &body body)
   `(let ((,var (make-color ,red ,green ,blue ,alpha)))
      (unwind-protect (progn ,@body)
@@ -132,3 +138,11 @@
 
 (defun score-append (score parent timeline)
   (%score-append score (if parent parent (null-pointer)) timeline))
+
+(defun get-geometry (actor)
+  (with-foreign-object (geometry 'geometry)
+    (%actor-get-geometry actor geometry)
+    (list (foreign-slot-value geometry 'geometry 'x)
+          (foreign-slot-value geometry 'geometry 'y)
+          (foreign-slot-value geometry 'geometry 'width)
+          (foreign-slot-value geometry 'geometry 'height))))

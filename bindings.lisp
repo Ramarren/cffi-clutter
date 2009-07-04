@@ -183,6 +183,62 @@
 (defmethod translate-from-foreign (value (type g-signal-match-type-composite-enum))
    (cenum-deconstruct-value value 'g-signal-match-type))
 
+(define-foreign-type cogl-texture-flags-composite-enum ()
+   ()
+   (:actual-type cogl-texture-flags-composite)
+   (:simple-parser cogl-texture-flags-composite-enum))
+
+(define-parse-method cogl-texture-flags-composite-enum ()
+   (make-instance 'cogl-texture-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type cogl-texture-flags-composite-enum))
+   (cenum-collect-values value 'cogl-texture-flags))
+
+(defmethod translate-from-foreign (value (type cogl-texture-flags-composite-enum))
+   (cenum-deconstruct-value value 'cogl-texture-flags))
+
+(define-foreign-type cogl-feature-flags-composite-enum ()
+   ()
+   (:actual-type cogl-feature-flags-composite)
+   (:simple-parser cogl-feature-flags-composite-enum))
+
+(define-parse-method cogl-feature-flags-composite-enum ()
+   (make-instance 'cogl-feature-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type cogl-feature-flags-composite-enum))
+   (cenum-collect-values value 'cogl-feature-flags))
+
+(defmethod translate-from-foreign (value (type cogl-feature-flags-composite-enum))
+   (cenum-deconstruct-value value 'cogl-feature-flags))
+
+(define-foreign-type cogl-read-pixels-flags-composite-enum ()
+   ()
+   (:actual-type cogl-read-pixels-flags-composite)
+   (:simple-parser cogl-read-pixels-flags-composite-enum))
+
+(define-parse-method cogl-read-pixels-flags-composite-enum ()
+   (make-instance 'cogl-read-pixels-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type cogl-read-pixels-flags-composite-enum))
+   (cenum-collect-values value 'cogl-read-pixels-flags))
+
+(defmethod translate-from-foreign (value (type cogl-read-pixels-flags-composite-enum))
+   (cenum-deconstruct-value value 'cogl-read-pixels-flags))
+
+(define-foreign-type cogl-buffer-target-composite-enum ()
+   ()
+   (:actual-type cogl-buffer-target-composite)
+   (:simple-parser cogl-buffer-target-composite-enum))
+
+(define-parse-method cogl-buffer-target-composite-enum ()
+   (make-instance 'cogl-buffer-target-composite-enum))
+
+(defmethod translate-to-foreign (value (type cogl-buffer-target-composite-enum))
+   (cenum-collect-values value 'cogl-buffer-target))
+
+(defmethod translate-from-foreign (value (type cogl-buffer-target-composite-enum))
+   (cenum-deconstruct-value value 'cogl-buffer-target))
+
 ;; function definitions
 
 (defcfun (%actor-set-flags "clutter_actor_set_flags") :void
@@ -2789,6 +2845,829 @@
 
 (defcfun (%backend-get-font-name "clutter_backend_get_font_name") :string
     (backend :pointer))
+
+(defcfun (%cogl-handle-ref "cogl_handle_ref") cogl-handle
+    (handle cogl-handle))
+
+(defcfun (%cogl-handle-unref "cogl_handle_unref") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-get-features "cogl_get_features") cogl-feature-flags-composite-enum)
+
+(defcfun (%cogl-features-available "cogl_features_available") gboolean
+    (features cogl-feature-flags-composite-enum))
+
+(defcfun (%cogl-check-extension "cogl_check_extension") gboolean
+    (name :string)
+    (ext :string))
+
+(defcfun (%cogl-get-proc-address "cogl_get_proc_address") function-pointer
+    (name :string))
+
+(defcfun (%cogl-get-option-group "cogl_get_option_group") :pointer)
+
+(defcfun (%cogl-gl-error-to-string "cogl_gl_error_to_string") :string
+    (error-code g-lenum))
+
+(defcfun (%cogl-push-matrix "cogl_push_matrix") :void)
+
+(defcfun (%cogl-pop-matrix "cogl_pop_matrix") :void)
+
+(defcfun (%cogl-scale "cogl_scale") :void
+    (x :float)
+    (y :float)
+    (z :float))
+
+(defcfun (%cogl-translate "cogl_translate") :void
+    (x :float)
+    (y :float)
+    (z :float))
+
+(defcfun (%cogl-rotate "cogl_rotate") :void
+    (angle :float)
+    (x :float)
+    (y :float)
+    (z :float))
+
+(defcfun (%cogl-frustum "cogl_frustum") :void
+    (left :float)
+    (right :float)
+    (bottom :float)
+    (top :float)
+    (z-near :float)
+    (z-far :float))
+
+(defcfun (%cogl-perspective "cogl_perspective") :void
+    (fovy :float)
+    (aspect :float)
+    (z-near :float)
+    (z-far :float))
+
+(defcfun (%cogl-ortho "cogl_ortho") :void
+    (left :float)
+    (right :float)
+    (bottom :float)
+    (top :float)
+    (near :float)
+    (far :float))
+
+(defcfun (%cogl-get-modelview-matrix "cogl_get_modelview_matrix") :void
+    (matrix :pointer))
+
+(defcfun (%cogl-set-modelview-matrix "cogl_set_modelview_matrix") :void
+    (matrix :pointer))
+
+(defcfun (%cogl-get-projection-matrix "cogl_get_projection_matrix") :void
+    (matrix :pointer))
+
+(defcfun (%cogl-set-projection-matrix "cogl_set_projection_matrix") :void
+    (matrix :pointer))
+
+(defcfun (%cogl-viewport "cogl_viewport") :void
+    (width guint)
+    (height guint))
+
+(defcfun (%cogl-get-viewport "cogl_get_viewport") :void
+    (v[4] :float))
+
+(defcfun (%cogl-clear "cogl_clear") :void
+    (color :pointer)
+    (buffers gulong))
+
+(defcfun (%cogl-get-bitmasks "cogl_get_bitmasks") :void
+    (red (:pointer gint))
+    (green (:pointer gint))
+    (blue (:pointer gint))
+    (alpha (:pointer gint)))
+
+(defcfun (%cogl-set-depth-test-enabled "cogl_set_depth_test_enabled") :void
+    (setting gboolean))
+
+(defcfun (%cogl-get-depth-test-enabled "cogl_get_depth_test_enabled") gboolean)
+
+(defcfun (%cogl-set-backface-culling-enabled "cogl_set_backface_culling_enabled") :void
+    (setting gboolean))
+
+(defcfun (%cogl-get-backface-culling-enabled "cogl_get_backface_culling_enabled") gboolean)
+
+(defcfun (%cogl-set-fog "cogl_set_fog") :void
+    (fog-color :pointer)
+    (mode cogl-fog-mode)
+    (density :float)
+    (z-near :float)
+    (z-far :float))
+
+(defcfun (%cogl-disable-fog "cogl_disable_fog") :void)
+
+(defcfun (%cogl-set-source "cogl_set_source") :void
+    (material cogl-handle))
+
+(defcfun (%cogl-set-source-color "cogl_set_source_color") :void
+    (color :pointer))
+
+(defcfun (%cogl-set-source-color4ub "cogl_set_source_color4ub") :void
+    (red guint8)
+    (green guint8)
+    (blue guint8)
+    (alpha guint8))
+
+(defcfun (%cogl-set-source-color4f "cogl_set_source_color4f") :void
+    (red :float)
+    (green :float)
+    (blue :float)
+    (alpha :float))
+
+(defcfun (%cogl-set-source-texture "cogl_set_source_texture") :void
+    (texture-handle cogl-handle))
+
+(defcfun (%cogl-read-pixels "cogl_read_pixels") :void
+    (x :int)
+    (y :int)
+    (width :int)
+    (height :int)
+    (source cogl-read-pixels-flags-composite-enum)
+    (format cogl-pixel-format)
+    (pixels (:pointer guint8)))
+
+(defcfun (%cogl-flush "cogl_flush") :void)
+
+(defcfun (%cogl-begin-gl "cogl_begin_gl") :void)
+
+(defcfun (%cogl-end-gl "cogl_end_gl") :void)
+
+(defcfun (%cogl-color-new "cogl_color_new") :pointer)
+
+(defcfun (%cogl-color-copy "cogl_color_copy") :pointer
+    (color :pointer))
+
+(defcfun (%cogl-color-free "cogl_color_free") :void
+    (color :pointer))
+
+(defcfun (%cogl-color-set-from-4ub "cogl_color_set_from_4ub") :void
+    (dest :pointer)
+    (red guint8)
+    (green guint8)
+    (blue guint8)
+    (alpha guint8))
+
+(defcfun (%cogl-color-set-from-4f "cogl_color_set_from_4f") :void
+    (dest :pointer)
+    (red :float)
+    (green :float)
+    (blue :float)
+    (alpha :float))
+
+(defcfun (%cogl-color-get-red "cogl_color_get_red") :float
+    (color :pointer))
+
+(defcfun (%cogl-color-get-green "cogl_color_get_green") :float
+    (color :pointer))
+
+(defcfun (%cogl-color-get-blue "cogl_color_get_blue") :float
+    (color :pointer))
+
+(defcfun (%cogl-color-get-alpha "cogl_color_get_alpha") :float
+    (color :pointer))
+
+(defcfun (%cogl-color-get-red-byte "cogl_color_get_red_byte") :unsigned-char
+    (color :pointer))
+
+(defcfun (%cogl-color-get-green-byte "cogl_color_get_green_byte") :unsigned-char
+    (color :pointer))
+
+(defcfun (%cogl-color-get-blue-byte "cogl_color_get_blue_byte") :unsigned-char
+    (color :pointer))
+
+(defcfun (%cogl-color-get-alpha-byte "cogl_color_get_alpha_byte") :unsigned-char
+    (color :pointer))
+
+(defcfun (%cogl-color-get-red-float "cogl_color_get_red_float") :float
+    (color :pointer))
+
+(defcfun (%cogl-color-get-green-float "cogl_color_get_green_float") :float
+    (color :pointer))
+
+(defcfun (%cogl-color-get-blue-float "cogl_color_get_blue_float") :float
+    (color :pointer))
+
+(defcfun (%cogl-color-get-alpha-float "cogl_color_get_alpha_float") :float
+    (color :pointer))
+
+(defcfun (%cogl-texture-new-with-size "cogl_texture_new_with_size") cogl-handle
+    (width guint)
+    (height guint)
+    (flags cogl-texture-flags-composite-enum)
+    (internal-format cogl-pixel-format))
+
+(defcfun (%cogl-texture-new-from-file "cogl_texture_new_from_file") cogl-handle
+    (filename :string)
+    (flags cogl-texture-flags-composite-enum)
+    (internal-format cogl-pixel-format)
+    (error :pointer))
+
+(defcfun (%cogl-texture-new-from-data "cogl_texture_new_from_data") cogl-handle
+    (width guint)
+    (height guint)
+    (flags cogl-texture-flags-composite-enum)
+    (format cogl-pixel-format)
+    (internal-format cogl-pixel-format)
+    (rowstride guint)
+    (data (:pointer guchar)))
+
+(defcfun (%cogl-texture-new-from-foreign "cogl_texture_new_from_foreign") cogl-handle
+    (gl-handle g-luint)
+    (gl-target g-lenum)
+    (width g-luint)
+    (height g-luint)
+    (x-pot-waste g-luint)
+    (y-pot-waste g-luint)
+    (format cogl-pixel-format))
+
+(defcfun (%cogl-texture-new-from-bitmap "cogl_texture_new_from_bitmap") cogl-handle
+    (bmp-handle cogl-handle)
+    (flags cogl-texture-flags-composite-enum)
+    (internal-format cogl-pixel-format))
+
+(defcfun (%cogl-is-texture "cogl_is_texture") gboolean
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-ref "cogl_texture_ref") cogl-handle
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-unref "cogl_texture_unref") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-get-width "cogl_texture_get_width") guint
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-get-height "cogl_texture_get_height") guint
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-get-format "cogl_texture_get_format") cogl-pixel-format
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-get-rowstride "cogl_texture_get_rowstride") guint
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-get-max-waste "cogl_texture_get_max_waste") gint
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-is-sliced "cogl_texture_is_sliced") gboolean
+    (handle cogl-handle))
+
+(defcfun (%cogl-texture-get-gl-texture "cogl_texture_get_gl_texture") gboolean
+    (handle cogl-handle)
+    (out-gl-handle (:pointer g-luint))
+    (out-gl-target (:pointer g-lenum)))
+
+(defcfun (%cogl-texture-get-data "cogl_texture_get_data") gint
+    (handle cogl-handle)
+    (format cogl-pixel-format)
+    (rowstride guint)
+    (data (:pointer guchar)))
+
+(defcfun (%cogl-texture-set-region "cogl_texture_set_region") gboolean
+    (handle cogl-handle)
+    (src-x gint)
+    (src-y gint)
+    (dst-x gint)
+    (dst-y gint)
+    (dst-width guint)
+    (dst-height guint)
+    (width gint)
+    (height gint)
+    (format cogl-pixel-format)
+    (rowstride guint)
+    (data (:pointer guchar)))
+
+(defcfun (%cogl-material-new "cogl_material_new") cogl-handle)
+
+(defcfun (%cogl-material-ref "cogl_material_ref") cogl-handle
+    (handle cogl-handle))
+
+(defcfun (%cogl-material-unref "cogl_material_unref") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-is-material "cogl_is_material") gboolean
+    (handle cogl-handle))
+
+(defcfun (%cogl-material-set-color "cogl_material_set_color") :void
+    (material cogl-handle)
+    (color :pointer))
+
+(defcfun (%cogl-material-set-color4ub "cogl_material_set_color4ub") :void
+    (material cogl-handle)
+    (red guint8)
+    (green guint8)
+    (blue guint8)
+    (alpha guint8))
+
+(defcfun (%cogl-material-set-color4f "cogl_material_set_color4f") :void
+    (material cogl-handle)
+    (red :float)
+    (green :float)
+    (blue :float)
+    (alpha :float))
+
+(defcfun (%cogl-material-get-color "cogl_material_get_color") :void
+    (material cogl-handle)
+    (color :pointer))
+
+(defcfun (%cogl-material-set-ambient "cogl_material_set_ambient") :void
+    (material cogl-handle)
+    (ambient :pointer))
+
+(defcfun (%cogl-material-get-ambient "cogl_material_get_ambient") :void
+    (material cogl-handle)
+    (ambient :pointer))
+
+(defcfun (%cogl-material-set-diffuse "cogl_material_set_diffuse") :void
+    (material cogl-handle)
+    (diffuse :pointer))
+
+(defcfun (%cogl-material-get-diffuse "cogl_material_get_diffuse") :void
+    (material cogl-handle)
+    (diffuse :pointer))
+
+(defcfun (%cogl-material-set-ambient-and-diffuse "cogl_material_set_ambient_and_diffuse") :void
+    (material cogl-handle)
+    (color :pointer))
+
+(defcfun (%cogl-material-set-emission "cogl_material_set_emission") :void
+    (material cogl-handle)
+    (emission :pointer))
+
+(defcfun (%cogl-material-get-emission "cogl_material_get_emission") :void
+    (material cogl-handle)
+    (emission :pointer))
+
+(defcfun (%cogl-material-set-specular "cogl_material_set_specular") :void
+    (material cogl-handle)
+    (specular :pointer))
+
+(defcfun (%cogl-material-get-specular "cogl_material_get_specular") :void
+    (material cogl-handle)
+    (specular :pointer))
+
+(defcfun (%cogl-material-set-shininess "cogl_material_set_shininess") :void
+    (material cogl-handle)
+    (shininess :float))
+
+(defcfun (%cogl-material-get-shininess "cogl_material_get_shininess") :float
+    (material cogl-handle))
+
+(defcfun (%cogl-material-set-alpha-test-function "cogl_material_set_alpha_test_function") :void
+    (material cogl-handle)
+    (alpha-func cogl-material-alpha-func)
+    (alpha-reference :float))
+
+(defcfun (%cogl-material-set-blend "cogl_material_set_blend") gboolean
+    (material cogl-handle)
+    (blend-string :string)
+    (error :pointer))
+
+(defcfun (%cogl-material-set-blend-constant "cogl_material_set_blend_constant") :void
+    (material cogl-handle)
+    (constant-color :pointer))
+
+(defcfun (%cogl-material-set-layer "cogl_material_set_layer") :void
+    (material cogl-handle)
+    (layer-index :int)
+    (texture cogl-handle))
+
+(defcfun (%cogl-material-remove-layer "cogl_material_remove_layer") :void
+    (material cogl-handle)
+    (layer-index gint))
+
+(defcfun (%cogl-material-set-layer-combine "cogl_material_set_layer_combine") gboolean
+    (material cogl-handle)
+    (layer-index gint)
+    (blend-string :string)
+    (error :pointer))
+
+(defcfun (%cogl-material-set-layer-combine-constant "cogl_material_set_layer_combine_constant") :void
+    (material cogl-handle)
+    (layer-index :int)
+    (constant :pointer))
+
+(defcfun (%cogl-material-set-layer-matrix "cogl_material_set_layer_matrix") :void
+    (material cogl-handle)
+    (layer-index :int)
+    (matrix :pointer))
+
+(defcfun (%cogl-material-get-layers "cogl_material_get_layers") :pointer
+    (material cogl-handle))
+
+(defcfun (%cogl-material-set-layer-filters "cogl_material_set_layer_filters") :void
+    (handle cogl-handle)
+    (layer-index gint)
+    (min-filter cogl-material-filter)
+    (mag-filter cogl-material-filter))
+
+(defcfun (%cogl-material-layer-get-type "cogl_material_layer_get_type") cogl-material-layer-type
+    (layer-handle cogl-handle))
+
+(defcfun (%cogl-material-layer-get-texture "cogl_material_layer_get_texture") cogl-handle
+    (layer-handle cogl-handle))
+
+(defcfun (%cogl-material-layer-get-min-filter "cogl_material_layer_get_min_filter") cogl-material-filter
+    (layer-handle cogl-handle))
+
+(defcfun (%cogl-material-layer-get-mag-filter "cogl_material_layer_get_mag_filter") cogl-material-filter
+    (layer-handle cogl-handle))
+
+(defcfun (%cogl-rectangle "cogl_rectangle") :void
+    (x-1 :float)
+    (y-1 :float)
+    (x-2 :float)
+    (y-2 :float))
+
+(defcfun (%cogl-rectangles "cogl_rectangles") :void
+    (verts (:pointer :float))
+    (n-rects guint))
+
+(defcfun (%cogl-rectangle-with-texture-coords "cogl_rectangle_with_texture_coords") :void
+    (x1 :float)
+    (y1 :float)
+    (x2 :float)
+    (y2 :float)
+    (tx1 :float)
+    (ty1 :float)
+    (tx2 :float)
+    (ty2 :float))
+
+(defcfun (%cogl-rectangles-with-texture-coords "cogl_rectangles_with_texture_coords") :void
+    (verts (:pointer :float))
+    (n-rects guint))
+
+(defcfun (%cogl-rectangle-with-multitexture-coords "cogl_rectangle_with_multitexture_coords") :void
+    (x1 :float)
+    (y1 :float)
+    (x2 :float)
+    (y2 :float)
+    (tex-coords (:pointer :float))
+    (tex-coords-len gint))
+
+(defcfun (%cogl-polygon "cogl_polygon") :void
+    (vertices :pointer)
+    (n-vertices guint)
+    (use-color gboolean))
+
+(defcfun (%cogl-path-new "cogl_path_new") :void)
+
+(defcfun (%cogl-path-move-to "cogl_path_move_to") :void
+    (x :float)
+    (y :float))
+
+(defcfun (%cogl-path-close "cogl_path_close") :void)
+
+(defcfun (%cogl-path-line-to "cogl_path_line_to") :void
+    (x :float)
+    (y :float))
+
+(defcfun (%cogl-path-curve-to "cogl_path_curve_to") :void
+    (x-1 :float)
+    (y-1 :float)
+    (x-2 :float)
+    (y-2 :float)
+    (x-3 :float)
+    (y-3 :float))
+
+(defcfun (%cogl-path-arc "cogl_path_arc") :void
+    (center-x :float)
+    (center-y :float)
+    (radius-x :float)
+    (radius-y :float)
+    (angle-1 :float)
+    (angle-2 :float))
+
+(defcfun (%cogl-path-rel-move-to "cogl_path_rel_move_to") :void
+    (x :float)
+    (y :float))
+
+(defcfun (%cogl-path-rel-line-to "cogl_path_rel_line_to") :void
+    (x :float)
+    (y :float))
+
+(defcfun (%cogl-path-rel-curve-to "cogl_path_rel_curve_to") :void
+    (x-1 :float)
+    (y-1 :float)
+    (x-2 :float)
+    (y-2 :float)
+    (x-3 :float)
+    (y-3 :float))
+
+(defcfun (%cogl-path-line "cogl_path_line") :void
+    (x-1 :float)
+    (y-1 :float)
+    (x-2 :float)
+    (y-2 :float))
+
+(defcfun (%cogl-path-polyline "cogl_path_polyline") :void
+    (coords (:pointer :float))
+    (num-points gint))
+
+(defcfun (%cogl-path-polygon "cogl_path_polygon") :void
+    (coords (:pointer :float))
+    (num-points gint))
+
+(defcfun (%cogl-path-rectangle "cogl_path_rectangle") :void
+    (x-1 :float)
+    (y-1 :float)
+    (x-2 :float)
+    (y-2 :float))
+
+(defcfun (%cogl-path-round-rectangle "cogl_path_round_rectangle") :void
+    (x-1 :float)
+    (y-1 :float)
+    (x-2 :float)
+    (y-2 :float)
+    (radius :float)
+    (arc-step :float))
+
+(defcfun (%cogl-path-ellipse "cogl_path_ellipse") :void
+    (center-x :float)
+    (center-y :float)
+    (radius-x :float)
+    (radius-y :float))
+
+(defcfun (%cogl-path-fill "cogl_path_fill") :void)
+
+(defcfun (%cogl-path-fill-preserve "cogl_path_fill_preserve") :void)
+
+(defcfun (%cogl-path-stroke "cogl_path_stroke") :void)
+
+(defcfun (%cogl-path-stroke-preserve "cogl_path_stroke_preserve") :void)
+
+(defcfun (%cogl-vertex-buffer-new "cogl_vertex_buffer_new") cogl-handle
+    (n-vertices guint))
+
+(defcfun (%cogl-vertex-buffer-get-n-vertices "cogl_vertex_buffer_get_n_vertices") guint
+    (handle cogl-handle))
+
+(defcfun (%cogl-vertex-buffer-ref "cogl_vertex_buffer_ref") cogl-handle
+    (handle cogl-handle))
+
+(defcfun (%cogl-vertex-buffer-unref "cogl_vertex_buffer_unref") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-vertex-buffer-add "cogl_vertex_buffer_add") :void
+    (handle cogl-handle)
+    (attribute-name :string)
+    (n-components guint8)
+    (type cogl-attribute-type)
+    (normalized gboolean)
+    (stride guint16)
+    (pointer (:pointer :void)))
+
+(defcfun (%cogl-vertex-buffer-delete "cogl_vertex_buffer_delete") :void
+    (handle cogl-handle)
+    (attribute-name :string))
+
+(defcfun (%cogl-vertex-buffer-submit "cogl_vertex_buffer_submit") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-vertex-buffer-disable "cogl_vertex_buffer_disable") :void
+    (handle cogl-handle)
+    (attribute-name :string))
+
+(defcfun (%cogl-vertex-buffer-enable "cogl_vertex_buffer_enable") :void
+    (handle cogl-handle)
+    (attribute-name :string))
+
+(defcfun (%cogl-vertex-buffer-draw "cogl_vertex_buffer_draw") :void
+    (handle cogl-handle)
+    (mode cogl-vertices-mode)
+    (first :int)
+    (count :int))
+
+(defcfun (%cogl-vertex-buffer-indices-new "cogl_vertex_buffer_indices_new") cogl-handle
+    (indices-type cogl-indices-type)
+    (indices-array (:pointer :void))
+    (indices-len :int))
+
+(defcfun (%cogl-vertex-buffer-delete-indices "cogl_vertex_buffer_delete_indices") :void
+    (handle cogl-handle)
+    (indices-id :int))
+
+(defcfun (%cogl-vertex-buffer-draw-elements "cogl_vertex_buffer_draw_elements") :void
+    (handle cogl-handle)
+    (mode cogl-vertices-mode)
+    (indices cogl-handle)
+    (min-index :int)
+    (max-index :int)
+    (indices-offset :int)
+    (count :int))
+
+(defcfun (%cogl-vertex-buffer-indices-get-for-quads "cogl_vertex_buffer_indices_get_for_quads") cogl-handle
+    (n-indices guint))
+
+(defcfun (%cogl-matrix-init-identity "cogl_matrix_init_identity") :void
+    (matrix :pointer))
+
+(defcfun (%cogl-matrix-frustum "cogl_matrix_frustum") :void
+    (matrix :pointer)
+    (left :float)
+    (right :float)
+    (bottom :float)
+    (top :float)
+    (z-near :float)
+    (z-far :float))
+
+(defcfun (%cogl-matrix-ortho "cogl_matrix_ortho") :void
+    (matrix :pointer)
+    (left :float)
+    (right :float)
+    (bottom :float)
+    (top :float)
+    (z-near :float)
+    (z-far :float))
+
+(defcfun (%cogl-matrix-perspective "cogl_matrix_perspective") :void
+    (matrix :pointer)
+    (fov-y :float)
+    (aspect :float)
+    (z-near :float)
+    (z-far :float))
+
+(defcfun (%cogl-matrix-transform-point "cogl_matrix_transform_point") :void
+    (matrix :pointer)
+    (x (:pointer :float))
+    (y (:pointer :float))
+    (z (:pointer :float))
+    (w (:pointer :float)))
+
+(defcfun (%cogl-matrix-multiply "cogl_matrix_multiply") :void
+    (result :pointer)
+    (a :pointer)
+    (b :pointer))
+
+(defcfun (%cogl-matrix-rotate "cogl_matrix_rotate") :void
+    (matrix :pointer)
+    (angle :float)
+    (x :float)
+    (y :float)
+    (z :float))
+
+(defcfun (%cogl-matrix-translate "cogl_matrix_translate") :void
+    (matrix :pointer)
+    (x :float)
+    (y :float)
+    (z :float))
+
+(defcfun (%cogl-matrix-scale "cogl_matrix_scale") :void
+    (matrix :pointer)
+    (sx :float)
+    (sy :float)
+    (sz :float))
+
+(defcfun (%cogl-matrix-init-from-array "cogl_matrix_init_from_array") :void
+    (matrix :pointer)
+    (array (:pointer :float)))
+
+(defcfun (%cogl-matrix-get-array "cogl_matrix_get_array") (:pointer :float)
+    (matrix :pointer))
+
+(defcfun (%cogl-create-shader "cogl_create_shader") cogl-handle
+    (shader-type cogl-shader-type))
+
+(defcfun (%cogl-shader-ref "cogl_shader_ref") cogl-handle
+    (handle cogl-handle))
+
+(defcfun (%cogl-shader-unref "cogl_shader_unref") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-is-shader "cogl_is_shader") gboolean
+    (handle cogl-handle))
+
+(defcfun (%cogl-shader-source "cogl_shader_source") :void
+    (shader cogl-handle)
+    (source :string))
+
+(defcfun (%cogl-shader-compile "cogl_shader_compile") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-shader-get-info-log "cogl_shader_get_info_log") :string
+    (handle cogl-handle))
+
+(defcfun (%cogl-shader-get-type "cogl_shader_get_type") cogl-shader-type
+    (handle cogl-handle))
+
+(defcfun (%cogl-shader-is-compiled "cogl_shader_is_compiled") gboolean
+    (handle cogl-handle))
+
+(defcfun (%cogl-create-program "cogl_create_program") cogl-handle)
+
+(defcfun (%cogl-program-ref "cogl_program_ref") cogl-handle
+    (handle cogl-handle))
+
+(defcfun (%cogl-program-unref "cogl_program_unref") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-is-program "cogl_is_program") gboolean
+    (handle cogl-handle))
+
+(defcfun (%cogl-program-attach-shader "cogl_program_attach_shader") :void
+    (program-handle cogl-handle)
+    (shader-handle cogl-handle))
+
+(defcfun (%cogl-program-link "cogl_program_link") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-program-use "cogl_program_use") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-program-get-uniform-location "cogl_program_get_uniform_location") :int
+    (handle cogl-handle)
+    (uniform-name :string))
+
+(defcfun (%cogl-program-uniform-1f "cogl_program_uniform_1f") :void
+    (uniform-no :int)
+    (value :float))
+
+(defcfun (%cogl-program-uniform-1i "cogl_program_uniform_1i") :void
+    (uniform-no :int)
+    (value :int))
+
+(defcfun (%cogl-program-uniform-float "cogl_program_uniform_float") :void
+    (uniform-no :int)
+    (size :int)
+    (count :int)
+    (value :pointer))
+
+(defcfun (%cogl-program-uniform-int "cogl_program_uniform_int") :void
+    (uniform-no :int)
+    (size :int)
+    (count :int)
+    (value (:pointer :int)))
+
+(defcfun (%cogl-program-uniform-matrix "cogl_program_uniform_matrix") :void
+    (uniform-no :int)
+    (size :int)
+    (count :int)
+    (transpose gboolean)
+    (value (:pointer :float)))
+
+(defcfun (%cogl-offscreen-new-to-texture "cogl_offscreen_new_to_texture") cogl-handle
+    (handle cogl-handle))
+
+(defcfun (%cogl-offscreen-ref "cogl_offscreen_ref") cogl-handle
+    (handle cogl-handle))
+
+(defcfun (%cogl-offscreen-unref "cogl_offscreen_unref") :void
+    (handle cogl-handle))
+
+(defcfun (%cogl-is-offscreen "cogl_is_offscreen") gboolean
+    (handle cogl-handle))
+
+(defcfun (%cogl-set-draw-buffer "cogl_set_draw_buffer") :void
+    (target cogl-buffer-target-composite-enum)
+    (offscreen cogl-handle))
+
+(defcfun (%cogl-pop-draw-buffer "cogl_pop_draw_buffer") :void)
+
+(defcfun (%cogl-push-draw-buffer "cogl_push_draw_buffer") :void)
+
+(defcfun (%cogl-sqrti "cogl_sqrti") gint
+    (x gint))
+
+(defcfun (%cogl-fixed-atan2 "cogl_fixed_atan2") cogl-fixed
+    (a cogl-fixed)
+    (b cogl-fixed))
+
+(defcfun (%cogl-fixed-atani "cogl_fixed_atani") cogl-fixed
+    (a cogl-fixed))
+
+(defcfun (%cogl-fixed-cos "cogl_fixed_cos") cogl-fixed
+    (angle cogl-fixed))
+
+(defcfun (%cogl-fixed-log2 "cogl_fixed_log2") cogl-fixed
+    (x guint))
+
+(defcfun (%cogl-fixed-pow "cogl_fixed_pow") guint
+    (x guint)
+    (y cogl-fixed))
+
+(defcfun (%cogl-fixed-pow2 "cogl_fixed_pow2") guint
+    (x cogl-fixed))
+
+(defcfun (%cogl-fixed-sin "cogl_fixed_sin") cogl-fixed
+    (angle cogl-fixed))
+
+(defcfun (%cogl-fixed-sqrt "cogl_fixed_sqrt") cogl-fixed
+    (x cogl-fixed))
+
+(defcfun (%cogl-fixed-tan "cogl_fixed_tan") cogl-fixed
+    (angle cogl-fixed))
+
+(defcfun (%cogl-angle-cos "cogl_angle_cos") cogl-fixed
+    (angle cogl-angle))
+
+(defcfun (%cogl-angle-sin "cogl_angle_sin") cogl-fixed
+    (angle cogl-angle))
+
+(defcfun (%cogl-angle-tan "cogl_angle_tan") cogl-fixed
+    (angle cogl-angle))
 
 (defcfun (%g-thread-init "g_thread_init") :void
     (vtable :pointer))

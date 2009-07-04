@@ -111,6 +111,12 @@
                         handler
                         (callback marker-reached-callback)))
 
+(defun connect-one-pointer-signal (instance detailed-signal handler &key (flags nil))
+  (connect-lisp-handler instance detailed-signal handler (callback one-pointer-callback) :flags flags))
+
+(defun connect-two-pointer-signal (instance detailed-signal handler &key (flags nil))
+  (connect-lisp-handler instance detailed-signal handler (callback two-pointer-callback) :flags flags))
+
 (defun disconnect-lisp-signals (instance &optional (callbacks *lisp-signal-wrappers*))
   (dolist (c-dispatch (ensure-list callbacks))
     (%g-signal-handlers-disconnect-matched

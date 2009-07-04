@@ -861,4 +861,9 @@
    #:get-actor-at-position
    #:connect-new-frame-handler
    #:connect-marker-reached-handler
-   #:score-append))
+   #:score-append
+   #:get-geometry
+   #:get-color
+   #:get-color
+   #:connect-one-pointer-signal
+   #:connect-two-pointer-signal))

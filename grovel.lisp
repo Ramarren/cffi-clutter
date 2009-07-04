@@ -12,7 +12,9 @@
 (flag "-I/usr/include/pixman-1")
 
 (include "clutter/clutter.h")
-
+(include "clutter/cogl/cogl.h")
+(include "clutter/cogl/common/cogl-blend-string.h")
+(include "clutter/cogl/common/cogl-current-matrix.h")
 
 ;; constants
 (constant (+priority-high+ "G_PRIORITY_HIGH"))
@@ -22,8 +24,43 @@
 (constant (+priority-low+ "G_PRIORITY_LOW"))
 (constant (+true+ "TRUE"))
 (constant (+false+ "FALSE"))
+(constant (+pixel-format-24+ "COGL_PIXEL_FORMAT_24"))
+(constant (+pixel-format-32+ "COGL_PIXEL_FORMAT_32"))
+(constant (+a-bit+ "COGL_A_BIT"))
+(constant (+bgr-bit+ "COGL_BGR_BIT"))
+(constant (+afirst-bit+ "COGL_AFIRST_BIT"))
+(constant (+premult-bit+ "COGL_PREMULT_BIT"))
+(constant (+unordered-mask+ "COGL_UNORDERED_MASK"))
+(constant (+unpremult-mask+ "COGL_UNPREMULT_MASK"))
+(constant (+fixed-bits+ "COGL_FIXED_BITS"))
+(constant (+fixed-q+ "COGL_FIXED_Q"))
+(constant (+fixed-max+ "COGL_FIXED_MAX"))
+(constant (+fixed-min+ "COGL_FIXED_MIN"))
+(constant (+fixed-epsilon+ "COGL_FIXED_EPSILON"))
+(constant (+fixed-1+ "COGL_FIXED_1"))
+(constant (+fixed-0-5+ "COGL_FIXED_0_5"))
+(constant (+fixed-30+ "COGL_FIXED_30"))
+(constant (+fixed-45+ "COGL_FIXED_45"))
+(constant (+fixed-60+ "COGL_FIXED_60"))
+(constant (+fixed-90+ "COGL_FIXED_90"))
+(constant (+fixed-120+ "COGL_FIXED_120"))
+(constant (+fixed-180+ "COGL_FIXED_180"))
+(constant (+fixed-240+ "COGL_FIXED_240"))
+(constant (+fixed-255+ "COGL_FIXED_255"))
+(constant (+fixed-270+ "COGL_FIXED_270"))
+(constant (+fixed-360+ "COGL_FIXED_360"))
+(constant (+fixed-2-pi+ "COGL_FIXED_2_PI"))
+(constant (+fixed-pi+ "COGL_FIXED_PI"))
+(constant (+fixed-pi-2+ "COGL_FIXED_PI_2"))
+(constant (+fixed-pi-4+ "COGL_FIXED_PI_4"))
+(constant (+radians-to-degrees+ "COGL_RADIANS_TO_DEGREES"))
+(constant (+sqrti-arg-10-percent+ "COGL_SQRTI_ARG_10_PERCENT"))
+(constant (+sqrti-arg-5-percent+ "COGL_SQRTI_ARG_5_PERCENT"))
+(constant (+sqrti-arg-max+ "COGL_SQRTI_ARG_MAX"))
 
 ;; typedefs
+(ctype g-lenum "GLenum")
+(ctype g-luint "GLuint")
 (ctype va-list "va_list")
 (ctype gunichar "gunichar")
 (ctype guint64 "guint64")
@@ -43,6 +80,7 @@
 (ctype g-quark "GQuark")
 (ctype g-type "GType")
 (ctype cogl-handle "CoglHandle")
+(ctype cogl-angle "CoglAngle")
 (ctype cogl-fixed "CoglFixed")
 
 ;; enums
@@ -267,6 +305,121 @@
       ((:ease-in-out-bounce "CLUTTER_EASE_IN_OUT_BOUNCE"))
       ((:animation-last "CLUTTER_ANIMATION_LAST")))
 
+(cenum cogl-texture-flags
+      ((:none "COGL_TEXTURE_NONE"))
+      ((:no-auto-mipmap "COGL_TEXTURE_NO_AUTO_MIPMAP"))
+      ((:no-slicing "COGL_TEXTURE_NO_SLICING")))
+
+(cenum cogl-material-alpha-func
+      ((:never "COGL_MATERIAL_ALPHA_FUNC_NEVER"))
+      ((:less "COGL_MATERIAL_ALPHA_FUNC_LESS"))
+      ((:equal "COGL_MATERIAL_ALPHA_FUNC_EQUAL"))
+      ((:lequal "COGL_MATERIAL_ALPHA_FUNC_LEQUAL"))
+      ((:greater "COGL_MATERIAL_ALPHA_FUNC_GREATER"))
+      ((:notequal "COGL_MATERIAL_ALPHA_FUNC_NOTEQUAL"))
+      ((:gequal "COGL_MATERIAL_ALPHA_FUNC_GEQUAL"))
+      ((:always "COGL_MATERIAL_ALPHA_FUNC_ALWAYS")))
+
+(cenum cogl-blend-string-channel-mask
+      ((:rgb "COGL_BLEND_STRING_CHANNEL_MASK_RGB"))
+      ((:alpha "COGL_BLEND_STRING_CHANNEL_MASK_ALPHA"))
+      ((:rgba "COGL_BLEND_STRING_CHANNEL_MASK_RGBA")))
+
+(cenum cogl-blend-string-color-source-type
+      ((:src-color "COGL_BLEND_STRING_COLOR_SOURCE_SRC_COLOR"))
+      ((:dst-color "COGL_BLEND_STRING_COLOR_SOURCE_DST_COLOR"))
+      ((:constant "COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT"))
+      ((:texture "COGL_BLEND_STRING_COLOR_SOURCE_TEXTURE"))
+      ((:texture-n "COGL_BLEND_STRING_COLOR_SOURCE_TEXTURE_N"))
+      ((:primary "COGL_BLEND_STRING_COLOR_SOURCE_PRIMARY"))
+      ((:previous "COGL_BLEND_STRING_COLOR_SOURCE_PREVIOUS")))
+
+(cenum cogl-blend-string-context
+      ((:blending "COGL_BLEND_STRING_CONTEXT_BLENDING"))
+      ((:texture-combine "COGL_BLEND_STRING_CONTEXT_TEXTURE_COMBINE")))
+
+(cenum cogl-blend-string-error
+      ((:parse-error "COGL_BLEND_STRING_ERROR_PARSE_ERROR"))
+      ((:argument-parse-error "COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR"))
+      ((:invalid-error "COGL_BLEND_STRING_ERROR_INVALID_ERROR"))
+      ((:gpu-unsupported-error "COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR")))
+
+(cenum cogl-blend-string-function-type
+      ((:auto-composite "COGL_BLEND_STRING_FUNCTION_AUTO_COMPOSITE"))
+      ((:add "COGL_BLEND_STRING_FUNCTION_ADD"))
+      ((:replace "COGL_BLEND_STRING_FUNCTION_REPLACE"))
+      ((:modulate "COGL_BLEND_STRING_FUNCTION_MODULATE"))
+      ((:add-signed "COGL_BLEND_STRING_FUNCTION_ADD_SIGNED"))
+      ((:interpolate "COGL_BLEND_STRING_FUNCTION_INTERPOLATE"))
+      ((:subtract "COGL_BLEND_STRING_FUNCTION_SUBTRACT"))
+      ((:dot3-rgb "COGL_BLEND_STRING_FUNCTION_DOT3_RGB"))
+      ((:dot3-rgba "COGL_BLEND_STRING_FUNCTION_DOT3_RGBA")))
+
+(cenum cogl-material-filter
+      ((:nearest "COGL_MATERIAL_FILTER_NEAREST"))
+      ((:linear "COGL_MATERIAL_FILTER_LINEAR"))
+      ((:nearest-mipmap-nearest "COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST"))
+      ((:linear-mipmap-nearest "COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST"))
+      ((:nearest-mipmap-linear "COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR"))
+      ((:linear-mipmap-linear "COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR")))
+
+(cenum cogl-indices-type
+      ((:unsigned-byte "COGL_INDICES_TYPE_UNSIGNED_BYTE"))
+      ((:unsigned-short "COGL_INDICES_TYPE_UNSIGNED_SHORT")))
+
+(cenum cogl-matrix-mode
+      ((:modelview "COGL_MATRIX_MODELVIEW"))
+      ((:projection "COGL_MATRIX_PROJECTION"))
+      ((:texture "COGL_MATRIX_TEXTURE")))
+
+(cenum cogl-shader-type
+      ((:vertex "COGL_SHADER_TYPE_VERTEX"))
+      ((:fragment "COGL_SHADER_TYPE_FRAGMENT")))
+
+(cenum cogl-feature-flags
+      ((:texture-rectangle "COGL_FEATURE_TEXTURE_RECTANGLE"))
+      ((:texture-npot "COGL_FEATURE_TEXTURE_NPOT"))
+      ((:texture-yuv "COGL_FEATURE_TEXTURE_YUV"))
+      ((:texture-read-pixels "COGL_FEATURE_TEXTURE_READ_PIXELS"))
+      ((:shaders-glsl "COGL_FEATURE_SHADERS_GLSL"))
+      ((:offscreen "COGL_FEATURE_OFFSCREEN"))
+      ((:offscreen-multisample "COGL_FEATURE_OFFSCREEN_MULTISAMPLE"))
+      ((:offscreen-blit "COGL_FEATURE_OFFSCREEN_BLIT"))
+      ((:four-clip-planes "COGL_FEATURE_FOUR_CLIP_PLANES"))
+      ((:stencil-buffer "COGL_FEATURE_STENCIL_BUFFER"))
+      ((:vbos "COGL_FEATURE_VBOS")))
+
+(cenum cogl-fog-mode
+      ((:linear "COGL_FOG_MODE_LINEAR"))
+      ((:exponential "COGL_FOG_MODE_EXPONENTIAL"))
+      ((:exponential-squared "COGL_FOG_MODE_EXPONENTIAL_SQUARED")))
+
+(cenum cogl-read-pixels-flags
+      ((:color-buffer "COGL_READ_PIXELS_COLOR_BUFFER")))
+
+(cenum cogl-material-layer-type
+      ((:texture "COGL_MATERIAL_LAYER_TYPE_TEXTURE")))
+
+(cenum cogl-vertices-mode
+      ((:points "COGL_VERTICES_MODE_POINTS"))
+      ((:line-strip "COGL_VERTICES_MODE_LINE_STRIP"))
+      ((:line-loop "COGL_VERTICES_MODE_LINE_LOOP"))
+      ((:lines "COGL_VERTICES_MODE_LINES"))
+      ((:triangle-strip "COGL_VERTICES_MODE_TRIANGLE_STRIP"))
+      ((:triangle-fan "COGL_VERTICES_MODE_TRIANGLE_FAN"))
+      ((:triangles "COGL_VERTICES_MODE_TRIANGLES")))
+
+(cenum cogl-buffer-target
+      ((:window-buffer "COGL_WINDOW_BUFFER"))
+      ((:offscreen-buffer "COGL_OFFSCREEN_BUFFER")))
+
+(cenum cogl-attribute-type
+      ((:byte "COGL_ATTRIBUTE_TYPE_BYTE"))
+      ((:unsigned-byte "COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE"))
+      ((:short "COGL_ATTRIBUTE_TYPE_SHORT"))
+      ((:unsigned-short "COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT"))
+      ((:float "COGL_ATTRIBUTE_TYPE_FLOAT")))
+
 
 ;; composite enums
 (ctype modifier-type-composite "ClutterModifierType")
@@ -279,6 +432,10 @@
 (ctype allocation-flags-composite "ClutterAllocationFlags")
 (ctype actor-flags-composite "ClutterActorFlags")
 (ctype g-signal-match-type-composite "GSignalMatchType")
+(ctype cogl-texture-flags-composite "CoglTextureFlags")
+(ctype cogl-feature-flags-composite "CoglFeatureFlags")
+(ctype cogl-read-pixels-flags-composite "CoglReadPixelsFlags")
+(ctype cogl-buffer-target-composite "CoglBufferTarget")
 
 ;; structs
 (cstruct vertex "ClutterVertex"
