@@ -80,6 +80,14 @@
     (%g-object-unref object))
   (%main))
 
+;; if threads are not initialized %threads-enter/leave are a noop on C level
+;; it doesn't need to be called in callbacks or threads-idle etc.
+(defmacro with-clutter-lock (&body body)
+  `(progn
+     (%threads-enter)
+     (unwind-protect (progn ,@body)
+       (%threads-leave))))
+
 (defun animation-mode (mode)
   (if (keywordp mode)
       (foreign-enum-value 'animation-mode mode)
