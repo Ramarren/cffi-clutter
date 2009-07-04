@@ -771,7 +771,7 @@
 (defcfun (%container-sort-depth-order "clutter_container_sort_depth_order") :void
     (container :pointer))
 
-(defcfun (%container-class-find-child-property "clutter_container_class_find_child_property") :pointer
+(defcfun (%container-class-find-child-property "clutter_container_class_find_child_property") (:pointer g-param-spec)
     (klass :pointer)
     (property-name :string))
 
@@ -1939,7 +1939,7 @@
 
 (defcfun (%interval-validate "clutter_interval_validate") gboolean
     (interval :pointer)
-    (pspec :pointer))
+    (pspec (:pointer g-param-spec)))
 
 (defcfun (%interval-register-progress-func "clutter_interval_register_progress_func") :void
     (value-type g-type)
@@ -2122,7 +2122,7 @@
     (factor :double)
     (result (:pointer color)))
 
-(defcfun (%param-spec-color "clutter_param_spec_color") :pointer
+(defcfun (%param-spec-color "clutter_param_spec_color") (:pointer g-param-spec)
     (name :string)
     (nick :string)
     (blurb :string)
@@ -2529,7 +2529,7 @@
 (defcfun (%units-to-string "clutter_units_to_string") :string
     (units :pointer))
 
-(defcfun (%param-spec-units "clutter_param_spec_units") :pointer
+(defcfun (%param-spec-units "clutter_param_spec_units") (:pointer g-param-spec)
     (name :string)
     (nick :string)
     (blurb :string)
@@ -2575,7 +2575,7 @@
     (data :pointer)
     (notify function-pointer))
 
-(defcfun (%param-spec-fixed "clutter_param_spec_fixed") :pointer
+(defcfun (%param-spec-fixed "clutter_param_spec_fixed") (:pointer g-param-spec)
     (name :string)
     (nick :string)
     (blurb :string)
@@ -3730,6 +3730,32 @@
 (defcfun (%g-signal-handler-disconnect "g_signal_handler_disconnect") :void
     (instance :pointer)
     (handler-id gulong))
+
+(defcfun (%g-signal-handler-block "g_signal_handler_block") :void
+    (instance :pointer)
+    (handler-id gulong))
+
+(defcfun (%g-signal-handler-unblock "g_signal_handler_unblock") :void
+    (instance :pointer)
+    (handler-id gulong))
+
+(defcfun (%g-signal-handlers-block-matched "g_signal_handlers_block_matched") guint
+    (instance :pointer)
+    (mask g-signal-match-type-composite-enum)
+    (signal-id guint)
+    (detail g-quark)
+    (closure :pointer)
+    (func :pointer)
+    (data :pointer))
+
+(defcfun (%g-signal-handlers-unblock-matched "g_signal_handlers_unblock_matched") guint
+    (instance :pointer)
+    (mask g-signal-match-type-composite-enum)
+    (signal-id guint)
+    (detail g-quark)
+    (closure :pointer)
+    (func :pointer)
+    (data :pointer))
 
 (defcfun (%g-value-init "g_value_init") (:pointer g-value)
     (value (:pointer g-value))

@@ -1068,4 +1068,8 @@
    #:get-color
    #:get-color
    #:connect-one-pointer-signal
-   #:connect-two-pointer-signal))
+   #:connect-two-pointer-signal
+   #:%g-signal-handler-block
+   #:%g-signal-handler-unblock
+   #:%g-signal-handlers-block-matched
+   #:%g-signal-handlers-unblock-matched))

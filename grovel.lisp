@@ -539,6 +539,12 @@
          (x "x" :type gint)
          (y "y" :type gint))
 
+(cstruct g-param-spec "GParamSpec"
+         (name "name" :type :string)
+         (flags "flags" :type g-param-flags-composite)
+         (	value-type "value_type" :type g-type)
+         (	owner-type "owner_type" :type g-type))
+
 
 ;; unions
 (cunion event "ClutterEvent"
