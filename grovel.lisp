@@ -420,6 +420,10 @@
       ((:unsigned-short "COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT"))
       ((:float "COGL_ATTRIBUTE_TYPE_FLOAT")))
 
+(cenum g-type-flags
+      ((:abstract "G_TYPE_FLAG_ABSTRACT"))
+      ((:value-abstract "G_TYPE_FLAG_VALUE_ABSTRACT")))
+
 
 ;; composite enums
 (ctype modifier-type-composite "ClutterModifierType")
@@ -436,6 +440,7 @@
 (ctype cogl-feature-flags-composite "CoglFeatureFlags")
 (ctype cogl-read-pixels-flags-composite "CoglReadPixelsFlags")
 (ctype cogl-buffer-target-composite "CoglBufferTarget")
+(ctype g-type-flags-composite "GTypeFlags")
 
 ;; structs
 (cstruct vertex "ClutterVertex"
@@ -542,8 +547,28 @@
 (cstruct g-param-spec "GParamSpec"
          (name "name" :type :string)
          (flags "flags" :type g-param-flags-composite)
-         (	value-type "value_type" :type g-type)
-         (	owner-type "owner_type" :type g-type))
+         (value-type "value_type" :type g-type)
+         (owner-type "owner_type" :type g-type))
+
+(cstruct g-type-info "GTypeInfo"
+         (class-size "class_size" :type guint16)
+         (base-init "base_init" :type function-pointer)
+         (base-finalize "base_finalize" :type function-pointer)
+         (class-init "class_init" :type function-pointer)
+         (class-finalize "class_finalize" :type function-pointer)
+         (class-data "class_data" :type :pointer)
+         (instance-size "instance_size" :type guint16)
+         (n-preallocs "n_preallocs" :type guint16)
+         (instance-init "instance_init" :type function-pointer)
+         (value-table "value_table" :type :pointer))
+
+(cstruct g-type-value-table "GTypeValueTable")
+
+(cstruct g-type-query "GTypeQuery"
+         (type "type" :type g-type)
+         (type-name "type_name" :type :string)
+         (class-size "class_size" :type guint)
+         (instance-size "instance_size" :type guint))
 
 
 ;; unions

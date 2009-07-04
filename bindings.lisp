@@ -239,6 +239,20 @@
 (defmethod translate-from-foreign (value (type cogl-buffer-target-composite-enum))
    (cenum-deconstruct-value value 'cogl-buffer-target))
 
+(define-foreign-type g-type-flags-composite-enum ()
+   ()
+   (:actual-type g-type-flags-composite)
+   (:simple-parser g-type-flags-composite-enum))
+
+(define-parse-method g-type-flags-composite-enum ()
+   (make-instance 'g-type-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type g-type-flags-composite-enum))
+   (cenum-collect-values value 'g-type-flags))
+
+(defmethod translate-from-foreign (value (type g-type-flags-composite-enum))
+   (cenum-deconstruct-value value 'g-type-flags))
+
 ;; function definitions
 
 (defcfun (%actor-set-flags "clutter_actor_set_flags") :void
@@ -3968,4 +3982,105 @@
 
 (defcfun (%g-object-thaw-notify "g_object_thaw_notify") :void
     (object :pointer))
+
+(defcfun (%g-type-register-static "g_type_register_static") g-type
+    (parent-type g-type)
+    (type-name :string)
+    (info (:pointer g-type-info))
+    (flags g-type-flags-composite-enum))
+
+(defcfun (%g-type-register-static-simple "g_type_register_static_simple") g-type
+    (parent-type g-type)
+    (type-name :string)
+    (class-size guint)
+    (class-init function-pointer)
+    (instance-size guint)
+    (instance-init function-pointer)
+    (flags g-type-flags-composite-enum))
+
+(defcfun (%g-type-qname "g_type_qname") g-quark
+    (type g-type))
+
+(defcfun (%g-type-parent "g_type_parent") g-type
+    (type g-type))
+
+(defcfun (%g-type-depth "g_type_depth") guint
+    (type g-type))
+
+(defcfun (%g-type-next-base "g_type_next_base") g-type
+    (leaf-type g-type)
+    (root-type g-type))
+
+(defcfun (%g-type-is-a "g_type_is_a") gboolean
+    (type g-type)
+    (is-a-type g-type))
+
+(defcfun (%g-type-class-ref "g_type_class_ref") :pointer
+    (type g-type))
+
+(defcfun (%g-type-class-peek "g_type_class_peek") :pointer
+    (type g-type))
+
+(defcfun (%g-type-class-peek-static "g_type_class_peek_static") :pointer
+    (type g-type))
+
+(defcfun (%g-type-class-unref "g_type_class_unref") :void
+    (g-class :pointer))
+
+(defcfun (%g-type-class-peek-parent "g_type_class_peek_parent") :pointer
+    (g-class :pointer))
+
+(defcfun (%g-type-class-add-private "g_type_class_add_private") :void
+    (g-class :pointer)
+    (private-size gsize))
+
+(defcfun (%g-type-interface-peek "g_type_interface_peek") :pointer
+    (instance-class :pointer)
+    (iface-type g-type))
+
+(defcfun (%g-type-interface-peek-parent "g_type_interface_peek_parent") :pointer
+    (g-iface :pointer))
+
+(defcfun (%g-type-default-interface-ref "g_type_default_interface_ref") :pointer
+    (g-type g-type))
+
+(defcfun (%g-type-default-interface-peek "g_type_default_interface_peek") :pointer
+    (g-type g-type))
+
+(defcfun (%g-type-default-interface-unref "g_type_default_interface_unref") :void
+    (g-iface :pointer))
+
+(defcfun (%g-type-children "g_type_children") (:pointer g-type)
+    (type g-type)
+    (n-children (:pointer guint)))
+
+(defcfun (%g-type-interfaces "g_type_interfaces") (:pointer g-type)
+    (type g-type)
+    (n-interfaces (:pointer guint)))
+
+(defcfun (%g-type-interface-prerequisites "g_type_interface_prerequisites") (:pointer g-type)
+    (interface-type g-type)
+    (n-prerequisites (:pointer guint)))
+
+(defcfun (%g-type-set-qdata "g_type_set_qdata") :void
+    (type g-type)
+    (quark g-quark)
+    (data :pointer))
+
+(defcfun (%g-type-get-qdata "g_type_get_qdata") :pointer
+    (type g-type)
+    (quark g-quark))
+
+(defcfun (%g-type-query "g_type_query") :void
+    (type g-type)
+    (query (:pointer g-type-query)))
+
+(defcfun (%g-type-add-interface-static "g_type_add_interface_static") :void
+    (instance-type g-type)
+    (interface-type g-type)
+    (info :pointer))
+
+(defcfun (%g-type-interface-add-prerequisite "g_type_interface_add_prerequisite") :void
+    (interface-type g-type)
+    (prerequisite-type g-type))
 
