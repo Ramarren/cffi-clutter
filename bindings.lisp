@@ -3708,6 +3708,21 @@
     (func :pointer)
     (data :pointer))
 
+(defcfun (%g-signal-has-handler-pending "g_signal_has_handler_pending") gboolean
+    (instance :pointer)
+    (signal-id guint)
+    (detail g-quark)
+    (may-be-blocked gboolean))
+
+(defcfun (%g-signal-stop-emission "g_signal_stop_emission") :void
+    (instance :pointer)
+    (signal-id guint)
+    (detail g-quark))
+
+(defcfun (%g-signal-stop-emission-by-name "g_signal_stop_emission_by_name") :void
+    (instance :pointer)
+    (detailed-signal :string))
+
 (defcfun (%g-signal-handler-is-connected "g_signal_handler_is_connected") gboolean
     (instance :pointer)
     (handler-id gulong))
