@@ -1139,4 +1139,7 @@
    #:instance-size
    #:n-preallocs
    #:instance-init
-   #:value-table))
+   #:value-table
+   #:%g-type-class-peek
+   #:%g-type-class-peek-static
+   #:%g-type-class-peek-parent))
