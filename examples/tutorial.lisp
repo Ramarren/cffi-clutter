@@ -274,7 +274,7 @@
                                                    (%alpha-get-timeline alpha))))))
           (let ((path-behaviour (make-behaviour-path-with-knots alpha 10 10 150 150)))
             (%behaviour-apply path-behaviour rect)
-            (main-with-cleanup stage timeline)))))))
+            (main-with-cleanup stage timeline path-behaviour)))))))
 
 (defun chapter-9 ()
   (with-colors ((stage-color 0 0 0)

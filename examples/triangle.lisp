@@ -74,4 +74,4 @@
                                                    (%alpha-get-timeline alpha))))))
           (let ((behave (%behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
             (%behaviour-apply behave (actor-of triangle))
-            (main-with-cleanup stage timeline)))))))
+            (main-with-cleanup stage timeline behave)))))))
