@@ -1,6 +1,8 @@
 (in-package :clutter-examples)
 
 ;; example of subclassing a ClutterActor on GObject level
+;; mixes triangle definition with bits of infrastructure, which should be abstracted away
+;; the problem is how to do it without adding ridiculous overhead
 
 ;; should use a macro to autogenerate those
 (declaim (inline triangle-prop-id triangle-prop-symbol))
@@ -11,9 +13,9 @@
   (ecase symbol
     (:color 1)))
 
-;; don't need class level fields, so reuse ClutterActorClassLayout
+;; don't need class level fields, so reuse ClutterActorClass layout
 ;; define triangle instance layout
-;; ignore the prinvate subobject distinction
+;; ignore the private subobject distinction
 (defcstruct triangle
   (actor-instance actor)
   (color color))
