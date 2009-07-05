@@ -24,12 +24,14 @@
 (defcallback triangle-paint :void
     ((triangle :pointer))
   (destructuring-bind (r g b a) (get-color (foreign-slot-value triangle 'triangle 'color))
-    (paint-triangle-with-color triangle r g b a)))
+    (let ((paint-opacity (%actor-get-paint-opacity triangle)))
+      (paint-triangle-with-color triangle r g b (truncate (* paint-opacity a) 255)))))
 
 (defcallback triangle-pick :void
     ((triangle :pointer) (color :pointer))
-  (destructuring-bind (r g b a) (get-color color)
-    (paint-triangle-with-color triangle r g b a)))
+  (when (eql +true+ (%actor-should-pick-paint triangle))
+   (destructuring-bind (r g b a) (get-color color)
+     (paint-triangle-with-color triangle r g b a))))
 
 ;; class callbacks:
 
@@ -136,11 +138,17 @@
         (%actor-show triangle2)
         (%timeline-set-loop timeline +true+)
         (%timeline-start timeline)
-        (let ((alpha (alpha-new-with-function timeline
-                                              #'(lambda (alpha)
-                                                  (%timeline-get-progress
-                                                   (%alpha-get-timeline alpha))))))
-          (let ((behave (%behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
+        (let ((alpha (%alpha-new-full timeline (animation-mode :linear)))
+              (alpha2 (alpha-new-with-function timeline
+                                               #'(lambda (alpha)
+                                                   (expt (sin
+                                                          (* 2 pi
+                                                             (%timeline-get-progress
+                                                              (%alpha-get-timeline alpha))))
+                                                         2)))))
+          (let ((behave (%behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0))
+                (behave2 (%behaviour-opacity-new alpha2 0 255)))
             (%behaviour-apply behave triangle)
             (%behaviour-apply behave triangle2)
-            (main-with-cleanup stage timeline behave)))))))
+            (%behaviour-apply behave2 triangle)
+            (main-with-cleanup stage timeline behave behave2)))))))
