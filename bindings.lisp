@@ -256,71 +256,71 @@
 ;; function definitions
 
 (defcfun (%actor-set-flags "clutter_actor_set_flags") :void
-    (self :pointer)
+    (self (:pointer actor))
     (flags actor-flags-composite-enum))
 
 (defcfun (%actor-unset-flags "clutter_actor_unset_flags") :void
-    (self :pointer)
+    (self (:pointer actor))
     (flags actor-flags-composite-enum))
 
 (defcfun (%actor-get-flags "clutter_actor_get_flags") actor-flags-composite-enum
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-show "clutter_actor_show") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-show-all "clutter_actor_show_all") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-hide "clutter_actor_hide") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-hide-all "clutter_actor_hide_all") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-realize "clutter_actor_realize") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-unrealize "clutter_actor_unrealize") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-paint "clutter_actor_paint") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-queue-redraw "clutter_actor_queue_redraw") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-queue-relayout "clutter_actor_queue_relayout") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-destroy "clutter_actor_destroy") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-event "clutter_actor_event") gboolean
-    (actor :pointer)
+    (actor (:pointer actor))
     (event :pointer)
     (capture gboolean))
 
 (defcfun (%actor-should-pick-paint "clutter_actor_should_pick_paint") gboolean
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-map "clutter_actor_map") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-unmap "clutter_actor_unmap") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-allocate "clutter_actor_allocate") :void
-    (self :pointer)
-    (box :pointer)
+    (self (:pointer actor))
+    (box (:pointer actor-box))
     (flags allocation-flags-composite-enum))
 
 (defcfun (%actor-allocate-preferred-size "clutter_actor_allocate_preferred_size") :void
-    (self :pointer)
+    (self (:pointer actor))
     (flags allocation-flags-composite-enum))
 
 (defcfun (%actor-allocate-available-size "clutter_actor_allocate_available_size") :void
-    (self :pointer)
+    (self (:pointer actor))
     (x :float)
     (y :float)
     (available-width :float)
@@ -328,107 +328,107 @@
     (flags allocation-flags-composite-enum))
 
 (defcfun (%actor-get-allocation-box "clutter_actor_get_allocation_box") :void
-    (self :pointer)
-    (box :pointer))
+    (self (:pointer actor))
+    (box (:pointer actor-box)))
 
 (defcfun (%actor-get-allocation-geometry "clutter_actor_get_allocation_geometry") :void
-    (self :pointer)
+    (self (:pointer actor))
     (geom (:pointer geometry)))
 
 (defcfun (%actor-get-allocation-vertices "clutter_actor_get_allocation_vertices") :void
-    (self :pointer)
-    (ancestor :pointer)
+    (self (:pointer actor))
+    (ancestor (:pointer actor))
     (verts[4] vertex))
 
 (defcfun (%actor-get-preferred-size "clutter_actor_get_preferred_size") :void
-    (self :pointer)
+    (self (:pointer actor))
     (min-width-p (:pointer :float))
     (min-height-p (:pointer :float))
     (natural-width-p (:pointer :float))
     (natural-height-p (:pointer :float)))
 
 (defcfun (%actor-get-preferred-width "clutter_actor_get_preferred_width") :void
-    (self :pointer)
+    (self (:pointer actor))
     (for-height :float)
     (min-width-p (:pointer :float))
     (natural-width-p (:pointer :float)))
 
 (defcfun (%actor-get-preferred-height "clutter_actor_get_preferred_height") :void
-    (self :pointer)
+    (self (:pointer actor))
     (for-width :float)
     (min-height-p (:pointer :float))
     (natural-height-p (:pointer :float)))
 
 (defcfun (%actor-set-fixed-position-set "clutter_actor_set_fixed_position_set") :void
-    (self :pointer)
+    (self (:pointer actor))
     (is-set gboolean))
 
 (defcfun (%actor-get-fixed-position-set "clutter_actor_get_fixed_position_set") gboolean
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-geometry "clutter_actor_set_geometry") :void
-    (self :pointer)
+    (self (:pointer actor))
     (geometry (:pointer geometry)))
 
 (defcfun (%actor-get-geometry "clutter_actor_get_geometry") :void
-    (self :pointer)
+    (self (:pointer actor))
     (geometry (:pointer geometry)))
 
 (defcfun (%actor-set-size "clutter_actor_set_size") :void
-    (self :pointer)
+    (self (:pointer actor))
     (width :float)
     (height :float))
 
 (defcfun (%actor-get-size "clutter_actor_get_size") :void
-    (self :pointer)
+    (self (:pointer actor))
     (width (:pointer :float))
     (height (:pointer :float)))
 
 (defcfun (%actor-set-position "clutter_actor_set_position") :void
-    (self :pointer)
+    (self (:pointer actor))
     (x :float)
     (y :float))
 
 (defcfun (%actor-get-position "clutter_actor_get_position") :void
-    (self :pointer)
+    (self (:pointer actor))
     (x (:pointer :float))
     (y (:pointer :float)))
 
 (defcfun (%actor-set-width "clutter_actor_set_width") :void
-    (self :pointer)
+    (self (:pointer actor))
     (width :float))
 
 (defcfun (%actor-get-width "clutter_actor_get_width") :float
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-height "clutter_actor_set_height") :void
-    (self :pointer)
+    (self (:pointer actor))
     (height :float))
 
 (defcfun (%actor-get-height "clutter_actor_get_height") :float
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-x "clutter_actor_set_x") :void
-    (self :pointer)
+    (self (:pointer actor))
     (x :float))
 
 (defcfun (%actor-get-x "clutter_actor_get_x") :float
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-y "clutter_actor_set_y") :void
-    (self :pointer)
+    (self (:pointer actor))
     (y :float))
 
 (defcfun (%actor-get-y "clutter_actor_get_y") :float
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-move-by "clutter_actor_move_by") :void
-    (self :pointer)
+    (self (:pointer actor))
     (dx :float)
     (dy :float))
 
 (defcfun (%actor-set-rotation "clutter_actor_set_rotation") :void
-    (self :pointer)
+    (self (:pointer actor))
     (axis rotate-axis)
     (angle :double)
     (x :float)
@@ -436,290 +436,290 @@
     (z :float))
 
 (defcfun (%actor-set-z-rotation-from-gravity "clutter_actor_set_z_rotation_from_gravity") :void
-    (self :pointer)
+    (self (:pointer actor))
     (angle :double)
     (gravity gravity))
 
 (defcfun (%actor-get-rotation "clutter_actor_get_rotation") :double
-    (self :pointer)
+    (self (:pointer actor))
     (axis rotate-axis)
     (x (:pointer :float))
     (y (:pointer :float))
     (z (:pointer :float)))
 
 (defcfun (%actor-get-z-rotation-gravity "clutter_actor_get_z_rotation_gravity") gravity
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-is-rotated "clutter_actor_is_rotated") gboolean
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-opacity "clutter_actor_set_opacity") :void
-    (self :pointer)
+    (self (:pointer actor))
     (opacity guint8))
 
 (defcfun (%actor-get-opacity "clutter_actor_get_opacity") guint8
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-name "clutter_actor_set_name") :void
-    (self :pointer)
+    (self (:pointer actor))
     (name :string))
 
 (defcfun (%actor-get-name "clutter_actor_get_name") :string
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-get-gid "clutter_actor_get_gid") guint32
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-clip "clutter_actor_set_clip") :void
-    (self :pointer)
+    (self (:pointer actor))
     (xoff :float)
     (yoff :float)
     (width :float)
     (height :float))
 
 (defcfun (%actor-remove-clip "clutter_actor_remove_clip") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-has-clip "clutter_actor_has_clip") gboolean
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-get-clip "clutter_actor_get_clip") :void
-    (self :pointer)
+    (self (:pointer actor))
     (xoff (:pointer :float))
     (yoff (:pointer :float))
     (width (:pointer :float))
     (height (:pointer :float)))
 
 (defcfun (%actor-set-parent "clutter_actor_set_parent") :void
-    (self :pointer)
-    (parent :pointer))
+    (self (:pointer actor))
+    (parent (:pointer actor)))
 
-(defcfun (%actor-get-parent "clutter_actor_get_parent") :pointer
-    (self :pointer))
+(defcfun (%actor-get-parent "clutter_actor_get_parent") (:pointer actor)
+    (self (:pointer actor)))
 
 (defcfun (%actor-reparent "clutter_actor_reparent") :void
-    (self :pointer)
-    (new-parent :pointer))
+    (self (:pointer actor))
+    (new-parent (:pointer actor)))
 
 (defcfun (%actor-unparent "clutter_actor_unparent") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-raise "clutter_actor_raise") :void
-    (self :pointer)
-    (below :pointer))
+    (self (:pointer actor))
+    (below (:pointer actor)))
 
 (defcfun (%actor-lower "clutter_actor_lower") :void
-    (self :pointer)
-    (above :pointer))
+    (self (:pointer actor))
+    (above (:pointer actor)))
 
 (defcfun (%actor-raise-top "clutter_actor_raise_top") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-lower-bottom "clutter_actor_lower_bottom") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
-(defcfun (%actor-get-stage "clutter_actor_get_stage") :pointer
-    (actor :pointer))
+(defcfun (%actor-get-stage "clutter_actor_get_stage") (:pointer actor)
+    (actor (:pointer actor)))
 
 (defcfun (%actor-set-depth "clutter_actor_set_depth") :void
-    (self :pointer)
+    (self (:pointer actor))
     (depth :float))
 
 (defcfun (%actor-get-depth "clutter_actor_get_depth") :float
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-scale "clutter_actor_set_scale") :void
-    (self :pointer)
+    (self (:pointer actor))
     (scale-x :double)
     (scale-y :double))
 
 (defcfun (%actor-set-scale-full "clutter_actor_set_scale_full") :void
-    (self :pointer)
+    (self (:pointer actor))
     (scale-x :double)
     (scale-y :double)
     (center-x :float)
     (center-y :float))
 
 (defcfun (%actor-set-scale-with-gravity "clutter_actor_set_scale_with_gravity") :void
-    (self :pointer)
+    (self (:pointer actor))
     (scale-x :double)
     (scale-y :double)
     (gravity gravity))
 
 (defcfun (%actor-get-scale "clutter_actor_get_scale") :void
-    (self :pointer)
+    (self (:pointer actor))
     (scale-x (:pointer :double))
     (scale-y (:pointer :double)))
 
 (defcfun (%actor-get-scale-center "clutter_actor_get_scale_center") :void
-    (self :pointer)
+    (self (:pointer actor))
     (center-x (:pointer :float))
     (center-y (:pointer :float)))
 
 (defcfun (%actor-get-scale-gravity "clutter_actor_get_scale_gravity") gravity
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-is-scaled "clutter_actor_is_scaled") gboolean
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-apply-transform-to-point "clutter_actor_apply_transform_to_point") :void
-    (self :pointer)
+    (self (:pointer actor))
     (point (:pointer vertex))
     (vertex (:pointer vertex)))
 
 (defcfun (%actor-transform-stage-point "clutter_actor_transform_stage_point") gboolean
-    (self :pointer)
+    (self (:pointer actor))
     (x :float)
     (y :float)
     (x-out (:pointer :float))
     (y-out (:pointer :float)))
 
 (defcfun (%actor-apply-relative-transform-to-point "clutter_actor_apply_relative_transform_to_point") :void
-    (self :pointer)
-    (ancestor :pointer)
+    (self (:pointer actor))
+    (ancestor (:pointer actor))
     (point (:pointer vertex))
     (vertex (:pointer vertex)))
 
 (defcfun (%actor-get-transformed-position "clutter_actor_get_transformed_position") :void
-    (self :pointer)
+    (self (:pointer actor))
     (x (:pointer :float))
     (y (:pointer :float)))
 
 (defcfun (%actor-get-transformed-size "clutter_actor_get_transformed_size") :void
-    (self :pointer)
+    (self (:pointer actor))
     (width (:pointer :float))
     (height (:pointer :float)))
 
 (defcfun (%actor-get-paint-opacity "clutter_actor_get_paint_opacity") guint8
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-get-paint-visibility "clutter_actor_get_paint_visibility") gboolean
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-get-abs-allocation-vertices "clutter_actor_get_abs_allocation_vertices") :void
-    (self :pointer)
+    (self (:pointer actor))
     (verts[4] vertex))
 
 (defcfun (%actor-get-transformation-matrix "clutter_actor_get_transformation_matrix") :void
-    (self :pointer)
+    (self (:pointer actor))
     (matrix :pointer))
 
 (defcfun (%actor-set-anchor-point "clutter_actor_set_anchor_point") :void
-    (self :pointer)
+    (self (:pointer actor))
     (anchor-x :float)
     (anchor-y :float))
 
 (defcfun (%actor-get-anchor-point "clutter_actor_get_anchor_point") :void
-    (self :pointer)
+    (self (:pointer actor))
     (anchor-x (:pointer :float))
     (anchor-y (:pointer :float)))
 
 (defcfun (%actor-set-anchor-point-from-gravity "clutter_actor_set_anchor_point_from_gravity") :void
-    (self :pointer)
+    (self (:pointer actor))
     (gravity gravity))
 
 (defcfun (%actor-get-anchor-point-gravity "clutter_actor_get_anchor_point_gravity") gravity
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-move-anchor-point "clutter_actor_move_anchor_point") :void
-    (self :pointer)
+    (self (:pointer actor))
     (anchor-x :float)
     (anchor-y :float))
 
 (defcfun (%actor-move-anchor-point-from-gravity "clutter_actor_move_anchor_point_from_gravity") :void
-    (self :pointer)
+    (self (:pointer actor))
     (gravity gravity))
 
 (defcfun (%actor-set-reactive "clutter_actor_set_reactive") :void
-    (actor :pointer)
+    (actor (:pointer actor))
     (reactive gboolean))
 
 (defcfun (%actor-get-reactive "clutter_actor_get_reactive") gboolean
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%actor-set-shader "clutter_actor_set_shader") gboolean
-    (self :pointer)
+    (self (:pointer actor))
     (shader :pointer))
 
 (defcfun (%actor-get-shader "clutter_actor_get_shader") :pointer
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-set-shader-param "clutter_actor_set_shader_param") :void
-    (self :pointer)
+    (self (:pointer actor))
     (param :string)
     (value (:pointer g-value)))
 
 (defcfun (%actor-set-shader-param-float "clutter_actor_set_shader_param_float") :void
-    (self :pointer)
+    (self (:pointer actor))
     (param :string)
     (value :float))
 
 (defcfun (%actor-set-shader-param-int "clutter_actor_set_shader_param_int") :void
-    (self :pointer)
+    (self (:pointer actor))
     (param :string)
     (value gint))
 
 (defcfun (%actor-grab-key-focus "clutter_actor_grab_key_focus") :void
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-get-pango-context "clutter_actor_get_pango_context") :pointer
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-create-pango-context "clutter_actor_create_pango_context") :pointer
-    (self :pointer))
+    (self (:pointer actor)))
 
 (defcfun (%actor-create-pango-layout "clutter_actor_create_pango_layout") :pointer
-    (self :pointer)
+    (self (:pointer actor))
     (text :string))
 
-(defcfun (%actor-box-new "clutter_actor_box_new") :pointer
+(defcfun (%actor-box-new "clutter_actor_box_new") (:pointer actor-box)
     (x-1 :float)
     (y-1 :float)
     (x-2 :float)
     (y-2 :float))
 
-(defcfun (%actor-box-copy "clutter_actor_box_copy") :pointer
-    (box :pointer))
+(defcfun (%actor-box-copy "clutter_actor_box_copy") (:pointer actor-box)
+    (box (:pointer actor-box)))
 
 (defcfun (%actor-box-free "clutter_actor_box_free") :void
-    (box :pointer))
+    (box (:pointer actor-box)))
 
 (defcfun (%actor-box-equal "clutter_actor_box_equal") gboolean
-    (box-a :pointer)
-    (box-b :pointer))
+    (box-a (:pointer actor-box))
+    (box-b (:pointer actor-box)))
 
 (defcfun (%actor-box-get-x "clutter_actor_box_get_x") :float
-    (box :pointer))
+    (box (:pointer actor-box)))
 
 (defcfun (%actor-box-get-y "clutter_actor_box_get_y") :float
-    (box :pointer))
+    (box (:pointer actor-box)))
 
 (defcfun (%actor-box-get-width "clutter_actor_box_get_width") :float
-    (box :pointer))
+    (box (:pointer actor-box)))
 
 (defcfun (%actor-box-get-height "clutter_actor_box_get_height") :float
-    (box :pointer))
+    (box (:pointer actor-box)))
 
 (defcfun (%actor-box-get-origin "clutter_actor_box_get_origin") :void
-    (box :pointer)
+    (box (:pointer actor-box))
     (x (:pointer :float))
     (y (:pointer :float)))
 
 (defcfun (%actor-box-get-size "clutter_actor_box_get_size") :void
-    (box :pointer)
+    (box (:pointer actor-box))
     (width (:pointer :float))
     (height (:pointer :float)))
 
 (defcfun (%actor-box-get-area "clutter_actor_box_get_area") :float
-    (box :pointer))
+    (box (:pointer actor-box)))
 
 (defcfun (%actor-box-contains "clutter_actor_box_contains") gboolean
-    (box :pointer)
+    (box (:pointer actor-box))
     (x :float)
     (y :float))
 
 (defcfun (%actor-box-from-vertices "clutter_actor_box_from_vertices") :void
-    (box :pointer)
+    (box (:pointer actor-box))
     (verts (:pointer vertex)))
 
 (defcfun (%vertex-new "clutter_vertex_new") (:pointer vertex)
@@ -739,20 +739,20 @@
 
 (defcfun (%container-add-actor "clutter_container_add_actor") :void
     (container :pointer)
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%container-add-valist "clutter_container_add_valist") :void
     (container :pointer)
-    (first-actor :pointer)
+    (first-actor (:pointer actor))
     (var-args va-list))
 
 (defcfun (%container-remove-actor "clutter_container_remove_actor") :void
     (container :pointer)
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%container-remove-valist "clutter_container_remove_valist") :void
     (container :pointer)
-    (first-actor :pointer)
+    (first-actor (:pointer actor))
     (var-args va-list))
 
 (defcfun (%container-get-children "clutter_container_get_children") :pointer
@@ -768,51 +768,51 @@
     (callback function-pointer)
     (user-data :pointer))
 
-(defcfun (%container-find-child-by-name "clutter_container_find_child_by_name") :pointer
+(defcfun (%container-find-child-by-name "clutter_container_find_child_by_name") (:pointer actor)
     (container :pointer)
     (child-name :string))
 
 (defcfun (%container-raise-child "clutter_container_raise_child") :void
     (container :pointer)
-    (actor :pointer)
-    (sibling :pointer))
+    (actor (:pointer actor))
+    (sibling (:pointer actor)))
 
 (defcfun (%container-lower-child "clutter_container_lower_child") :void
     (container :pointer)
-    (actor :pointer)
-    (sibling :pointer))
+    (actor (:pointer actor))
+    (sibling (:pointer actor)))
 
 (defcfun (%container-sort-depth-order "clutter_container_sort_depth_order") :void
     (container :pointer))
 
 (defcfun (%container-class-find-child-property "clutter_container_class_find_child_property") (:pointer g-param-spec)
-    (klass :pointer)
+    (klass (:pointer g-object-class))
     (property-name :string))
 
 (defcfun (%container-class-list-child-properties "clutter_container_class_list_child_properties") :pointer
-    (klass :pointer)
+    (klass (:pointer g-object-class))
     (n-properties (:pointer guint)))
 
 (defcfun (%container-child-set-property "clutter_container_child_set_property") :void
     (container :pointer)
-    (child :pointer)
+    (child (:pointer actor))
     (property :string)
     (value (:pointer g-value)))
 
 (defcfun (%container-child-get-property "clutter_container_child_get_property") :void
     (container :pointer)
-    (child :pointer)
+    (child (:pointer actor))
     (property :string)
     (value (:pointer g-value)))
 
 (defcfun (%container-get-child-meta "clutter_container_get_child_meta") :pointer
     (container :pointer)
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%child-meta-get-container "clutter_child_meta_get_container") :pointer
     (data :pointer))
 
-(defcfun (%child-meta-get-actor "clutter_child_meta_get_actor") :pointer
+(defcfun (%child-meta-get-actor "clutter_child_meta_get_actor") (:pointer actor)
     (data :pointer))
 
 (defcfun (%media-set-uri "clutter_media_set_uri") :void
@@ -856,9 +856,9 @@
     (media :pointer)
     (filename :string))
 
-(defcfun (%rectangle-new "clutter_rectangle_new") :pointer)
+(defcfun (%rectangle-new "clutter_rectangle_new") (:pointer actor))
 
-(defcfun (%rectangle-new-with-color "clutter_rectangle_new_with_color") :pointer
+(defcfun (%rectangle-new-with-color "clutter_rectangle_new_with_color") (:pointer actor)
     (color (:pointer color)))
 
 (defcfun (%rectangle-get-color "clutter_rectangle_get_color") :void
@@ -884,14 +884,14 @@
     (rectangle :pointer)
     (width guint))
 
-(defcfun (%texture-new "clutter_texture_new") :pointer)
+(defcfun (%texture-new "clutter_texture_new") (:pointer actor))
 
-(defcfun (%texture-new-from-file "clutter_texture_new_from_file") :pointer
+(defcfun (%texture-new-from-file "clutter_texture_new_from_file") (:pointer actor)
     (filename :string)
     (error :pointer))
 
-(defcfun (%texture-new-from-actor "clutter_texture_new_from_actor") :pointer
-    (actor :pointer))
+(defcfun (%texture-new-from-actor "clutter_texture_new_from_actor") (:pointer actor)
+    (actor (:pointer actor)))
 
 (defcfun (%texture-set-from-file "clutter_texture_set_from_file") gboolean
     (texture :pointer)
@@ -1000,24 +1000,24 @@
     (texture :pointer)
     (load-async gboolean))
 
-(defcfun (%clone-new "clutter_clone_new") :pointer
-    (source :pointer))
+(defcfun (%clone-new "clutter_clone_new") (:pointer actor)
+    (source (:pointer actor)))
 
 (defcfun (%clone-set-source "clutter_clone_set_source") :void
     (clone :pointer)
-    (source :pointer))
+    (source (:pointer actor)))
 
-(defcfun (%clone-get-source "clutter_clone_get_source") :pointer
+(defcfun (%clone-get-source "clutter_clone_get_source") (:pointer actor)
     (clone :pointer))
 
-(defcfun (%text-new "clutter_text_new") :pointer)
+(defcfun (%text-new "clutter_text_new") (:pointer actor))
 
-(defcfun (%text-new-full "clutter_text_new_full") :pointer
+(defcfun (%text-new-full "clutter_text_new_full") (:pointer actor)
     (font-name :string)
     (text :string)
     (color (:pointer color)))
 
-(defcfun (%text-new-with-text "clutter_text_new_with_text") :pointer
+(defcfun (%text-new-with-text "clutter_text_new_with_text") (:pointer actor)
     (font-name :string)
     (text :string))
 
@@ -1229,7 +1229,7 @@
     (y (:pointer :float))
     (line-height (:pointer :float)))
 
-(defcfun (%cairo-texture-new "clutter_cairo_texture_new") :pointer
+(defcfun (%cairo-texture-new "clutter_cairo_texture_new") (:pointer actor)
     (width guint)
     (height guint))
 
@@ -1260,7 +1260,7 @@
     (cr :pointer)
     (color (:pointer color)))
 
-(defcfun (%group-new "clutter_group_new") :pointer)
+(defcfun (%group-new "clutter_group_new") (:pointer actor))
 
 (defcfun (%group-remove-all "clutter_group_remove_all") :void
     (group :pointer))
@@ -1268,13 +1268,13 @@
 (defcfun (%group-get-n-children "clutter_group_get_n_children") gint
     (self :pointer))
 
-(defcfun (%group-get-nth-child "clutter_group_get_nth_child") :pointer
+(defcfun (%group-get-nth-child "clutter_group_get_nth_child") (:pointer actor)
     (self :pointer)
     (index- gint))
 
-(defcfun (%stage-get-default "clutter_stage_get_default") :pointer)
+(defcfun (%stage-get-default "clutter_stage_get_default") (:pointer actor))
 
-(defcfun (%stage-new "clutter_stage_new") :pointer)
+(defcfun (%stage-new "clutter_stage_new") (:pointer actor))
 
 (defcfun (%stage-is-default "clutter_stage_is_default") gboolean
     (stage :pointer))
@@ -1300,7 +1300,7 @@
 (defcfun (%stage-hide-cursor "clutter_stage_hide_cursor") :void
     (stage :pointer))
 
-(defcfun (%stage-get-actor-at-pos "clutter_stage_get_actor_at_pos") :pointer
+(defcfun (%stage-get-actor-at-pos "clutter_stage_get_actor_at_pos") (:pointer actor)
     (stage :pointer)
     (pick-mode pick-mode)
     (x gint)
@@ -1324,9 +1324,9 @@
 
 (defcfun (%stage-set-key-focus "clutter_stage_set_key_focus") :void
     (stage :pointer)
-    (actor :pointer))
+    (actor (:pointer actor)))
 
-(defcfun (%stage-get-key-focus "clutter_stage_get_key_focus") :pointer
+(defcfun (%stage-get-key-focus "clutter_stage_get_key_focus") (:pointer actor)
     (stage :pointer))
 
 (defcfun (%stage-read-pixels "clutter_stage_read_pixels") (:pointer guchar)
@@ -1558,18 +1558,18 @@
 
 (defcfun (%behaviour-apply "clutter_behaviour_apply") :void
     (behave :pointer)
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%behaviour-remove "clutter_behaviour_remove") :void
     (behave :pointer)
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%behaviour-remove-all "clutter_behaviour_remove_all") :void
     (behave :pointer))
 
 (defcfun (%behaviour-is-applied "clutter_behaviour_is_applied") gboolean
     (behave :pointer)
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%behaviour-actors-foreach "clutter_behaviour_actors_foreach") :void
     (behave :pointer)
@@ -1582,7 +1582,7 @@
 (defcfun (%behaviour-get-n-actors "clutter_behaviour_get_n_actors") gint
     (behave :pointer))
 
-(defcfun (%behaviour-get-nth-actor "clutter_behaviour_get_nth_actor") :pointer
+(defcfun (%behaviour-get-nth-actor "clutter_behaviour_get_nth_actor") (:pointer actor)
     (behave :pointer)
     (index- gint))
 
@@ -1963,9 +1963,9 @@
 
 (defcfun (%animation-set-object "clutter_animation_set_object") :void
     (animation :pointer)
-    (object :pointer))
+    (object (:pointer g-object)))
 
-(defcfun (%animation-get-object "clutter_animation_get_object") :pointer
+(defcfun (%animation-get-object "clutter_animation_get_object") (:pointer g-object)
     (animation :pointer))
 
 (defcfun (%animation-set-mode "clutter_animation_set_mode") :void
@@ -2034,7 +2034,7 @@
     (property-name :string))
 
 (defcfun (%actor-animatev "clutter_actor_animatev") :pointer
-    (actor :pointer)
+    (actor (:pointer actor))
     (mode gulong)
     (duration guint)
     (n-properties gint)
@@ -2042,7 +2042,7 @@
     (values (:pointer g-value)))
 
 (defcfun (%actor-animate-with-timelinev "clutter_actor_animate_with_timelinev") :pointer
-    (actor :pointer)
+    (actor (:pointer actor))
     (mode gulong)
     (timeline :pointer)
     (n-properties gint)
@@ -2050,14 +2050,14 @@
     (values (:pointer g-value)))
 
 (defcfun (%actor-animate-with-alphav "clutter_actor_animate_with_alphav") :pointer
-    (actor :pointer)
+    (actor (:pointer actor))
     (alpha :pointer)
     (n-properties gint)
     (properties :pointer)
     (values (:pointer g-value)))
 
 (defcfun (%actor-get-animation "clutter_actor_get_animation") :pointer
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%animatable-animate-property "clutter_animatable_animate_property") gboolean
     (animatable :pointer)
@@ -2211,7 +2211,7 @@
     (pool :pointer)
     (key-val guint)
     (modifiers modifier-type-composite-enum)
-    (gobject :pointer))
+    (gobject (:pointer g-object)))
 
 (defcfun (%event-new "clutter_event_new") :pointer
     (type event-type))
@@ -2236,7 +2236,7 @@
 (defcfun (%event-get-time "clutter_event_get_time") guint32
     (event :pointer))
 
-(defcfun (%event-get-source "clutter_event_get_source") :pointer
+(defcfun (%event-get-source "clutter_event_get_source") (:pointer actor)
     (event :pointer))
 
 (defcfun (%event-get-stage "clutter_event_get_stage") :pointer
@@ -2272,7 +2272,7 @@
 (defcfun (%keysym-to-unicode "clutter_keysym_to_unicode") guint32
     (keyval guint))
 
-(defcfun (%event-get-related "clutter_event_get_related") :pointer
+(defcfun (%event-get-related "clutter_event_get_related") (:pointer actor)
     (event :pointer))
 
 (defcfun (%event-get-scroll-direction "clutter_event_get_scroll_direction") scroll-direction
@@ -2326,7 +2326,7 @@
 
 (defcfun (%get-timestamp "clutter_get_timestamp") gulong)
 
-(defcfun (%get-actor-by-gid "clutter_get_actor_by_gid") :pointer
+(defcfun (%get-actor-by-gid "clutter_get_actor_by_gid") (:pointer actor)
     (id guint32))
 
 (defcfun (%set-default-frame-rate "clutter_set_default_frame_rate") :void
@@ -2400,22 +2400,22 @@
 (defcfun (%threads-remove-repaint-func "clutter_threads_remove_repaint_func") :void
     (handle-id guint))
 
-(defcfun (%get-keyboard-grab "clutter_get_keyboard_grab") :pointer)
+(defcfun (%get-keyboard-grab "clutter_get_keyboard_grab") (:pointer actor))
 
-(defcfun (%get-pointer-grab "clutter_get_pointer_grab") :pointer)
+(defcfun (%get-pointer-grab "clutter_get_pointer_grab") (:pointer actor))
 
 (defcfun (%grab-keyboard "clutter_grab_keyboard") :void
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%grab-pointer "clutter_grab_pointer") :void
-    (actor :pointer))
+    (actor (:pointer actor)))
 
 (defcfun (%ungrab-keyboard "clutter_ungrab_keyboard") :void)
 
 (defcfun (%ungrab-pointer "clutter_ungrab_pointer") :void)
 
 (defcfun (%grab-pointer-for-device "clutter_grab_pointer_for_device") :void
-    (actor :pointer)
+    (actor (:pointer actor))
     (id gint))
 
 (defcfun (%ungrab-pointer-for-device "clutter_ungrab_pointer_for_device") :void
@@ -2627,7 +2627,7 @@
     (script :pointer)
     (filename :string))
 
-(defcfun (%script-get-object "clutter_script_get_object") :pointer
+(defcfun (%script-get-object "clutter_script_get_object") (:pointer g-object)
     (script :pointer)
     (name :string))
 
@@ -2655,7 +2655,7 @@
     (type-name :string))
 
 (defcfun (%get-script-id "clutter_get_script_id") :string
-    (gobject :pointer))
+    (gobject (:pointer g-object)))
 
 (defcfun (%scriptable-set-id "clutter_scriptable_set_id") :void
     (scriptable :pointer)
@@ -3687,12 +3687,12 @@
     (vtable :pointer))
 
 (defcfun (%g-object-set-property "g_object_set_property") :void
-    (object :pointer)
+    (object (:pointer g-object))
     (property-name :string)
     (value (:pointer g-value)))
 
 (defcfun (%g-object-get-property "g_object_get_property") :void
-    (object :pointer)
+    (object (:pointer g-object))
     (property-name :string)
     (value (:pointer g-value)))
 
@@ -3947,41 +3947,41 @@
     (object :pointer))
 
 (defcfun (%g-object-force-floating "g_object_force_floating") :void
-    (object :pointer))
+    (object (:pointer g-object)))
 
 (defcfun (%g-object-weak-ref "g_object_weak_ref") :void
-    (object :pointer)
+    (object (:pointer g-object))
     (notify function-pointer)
     (data :pointer))
 
 (defcfun (%g-object-weak-unref "g_object_weak_unref") :void
-    (object :pointer)
+    (object (:pointer g-object))
     (notify function-pointer)
     (data :pointer))
 
 (defcfun (%g-object-add-weak-pointer "g_object_add_weak_pointer") :void
-    (object :pointer)
+    (object (:pointer g-object))
     (weak-pointer-location (:pointer :pointer)))
 
 (defcfun (%g-object-remove-weak-pointer "g_object_remove_weak_pointer") :void
-    (object :pointer)
+    (object (:pointer g-object))
     (weak-pointer-location (:pointer :pointer)))
 
 (defcfun (%g-object-add-toggle-ref "g_object_add_toggle_ref") :void
-    (object :pointer)
+    (object (:pointer g-object))
     (notify function-pointer)
     (data :pointer))
 
 (defcfun (%g-object-remove-toggle-ref "g_object_remove_toggle_ref") :void
-    (object :pointer)
+    (object (:pointer g-object))
     (notify function-pointer)
     (data :pointer))
 
 (defcfun (%g-object-freeze-notify "g_object_freeze_notify") :void
-    (object :pointer))
+    (object (:pointer g-object)))
 
 (defcfun (%g-object-thaw-notify "g_object_thaw_notify") :void
-    (object :pointer))
+    (object (:pointer g-object)))
 
 (defcfun (%g-type-register-static "g_type_register_static") g-type
     (parent-type g-type)
@@ -4083,4 +4083,39 @@
 (defcfun (%g-type-interface-add-prerequisite "g_type_interface_add_prerequisite") :void
     (interface-type g-type)
     (prerequisite-type g-type))
+
+(defcfun (%g-object-class-install-property "g_object_class_install_property") :void
+    (oclass (:pointer g-object-class))
+    (property-id guint)
+    (pspec (:pointer g-param-spec)))
+
+(defcfun (%g-object-class-find-property "g_object_class_find_property") (:pointer g-param-spec)
+    (oclass (:pointer g-object-class))
+    (property-name :string))
+
+(defcfun (%g-object-class-list-properties "g_object_class_list_properties") :pointer
+    (oclass (:pointer g-object-class))
+    (n-properties (:pointer guint)))
+
+(defcfun (%g-object-class-override-property "g_object_class_override_property") :void
+    (oclass (:pointer g-object-class))
+    (property-id guint)
+    (name :string))
+
+(defcfun (%g-object-interface-install-property "g_object_interface_install_property") :void
+    (g-iface :pointer)
+    (pspec (:pointer g-param-spec)))
+
+(defcfun (%g-object-interface-find-property "g_object_interface_find_property") (:pointer g-param-spec)
+    (g-iface :pointer)
+    (property-name :string))
+
+(defcfun (%g-object-interface-list-properties "g_object_interface_list_properties") :pointer
+    (g-iface :pointer)
+    (n-properties-p (:pointer guint)))
+
+(defcfun (%g-object-newv "g_object_newv") :pointer
+    (object-type g-type)
+    (n-parameters guint)
+    (parameters (:pointer g-parameter)))
 

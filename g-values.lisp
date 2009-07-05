@@ -40,12 +40,13 @@
         (:double (%g-value-get-double g-value))
         (:string (%g-value-get-string g-value))))))
 
-(defun make-g-value (g-type &optional value)
+(defun make-g-value (g-type &optional (value 0.0 value-supplied-p))
   (let ((g-value (foreign-alloc 'g-value)))
     (loop for i from 0 below size-of-g-value
           do (setf (mem-aref (inc-pointer g-value i) :uint8) 0))
     (%g-value-init g-value g-type)
-    (setf (g-value g-value) value)
+    (when value-supplied-p
+      (setf (g-value g-value) value))
     g-value))
 
 (defun free-g-value (g-value)

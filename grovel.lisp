@@ -448,6 +448,12 @@
          (y "y" :type :float)
          (z "z" :type :float))
 
+(cstruct actor-box "ClutterActorBox"
+         (x1 "x1" :type :float)
+         (y1 "y1" :type :float)
+         (x2 "x2" :type :float)
+         (y2 "y2" :type :float))
+
 (cstruct button-event "ClutterButtonEvent"
          (type "type" :type event-type)
          (time "time" :type guint32)
@@ -552,14 +558,14 @@
 
 (cstruct g-type-info "GTypeInfo"
          (class-size "class_size" :type guint16)
-         (base-init "base_init" :type function-pointer)
-         (base-finalize "base_finalize" :type function-pointer)
-         (class-init "class_init" :type function-pointer)
-         (class-finalize "class_finalize" :type function-pointer)
+         (base-init "base_init" :type :pointer)
+         (base-finalize "base_finalize" :type :pointer)
+         (class-init "class_init" :type :pointer)
+         (class-finalize "class_finalize" :type :pointer)
          (class-data "class_data" :type :pointer)
          (instance-size "instance_size" :type guint16)
          (n-preallocs "n_preallocs" :type guint16)
-         (instance-init "instance_init" :type function-pointer)
+         (instance-init "instance_init" :type :pointer)
          (value-table "value_table" :type :pointer))
 
 (cstruct g-type-value-table "GTypeValueTable")
@@ -569,6 +575,61 @@
          (type-name "type_name" :type :string)
          (class-size "class_size" :type guint)
          (instance-size "instance_size" :type guint))
+
+(cstruct g-object-construct-param "GObjectConstructParam"
+         (pspec "pspec" :type :pointer)
+         (value "value" :type :pointer))
+
+(cstruct g-object-class "GObjectClass"
+         (g-type-class "g_type_class" :type g-type-class)
+         (constructor "constructor" :type :pointer)
+         (set-property "set_property" :type :pointer)
+         (get-property "get_property" :type :pointer)
+         (dispose "dispose" :type :pointer)
+         (finalize "finalize" :type :pointer)
+         (dispatch-properties-changed "dispatch_properties_changed" :type :pointer)
+         (notify "notify" :type :pointer)
+         (constructed "constructed" :type :pointer))
+
+(cstruct g-object "GObject")
+
+(cstruct actor "ClutterActor"
+         (flags "flags" :type guint32))
+
+(cstruct actor-class "ClutterActorClass"
+         (show "show" :type :pointer)
+         (show-all "show_all" :type :pointer)
+         (hide "hide" :type :pointer)
+         (hide-all "hide_all" :type :pointer)
+         (realize "realize" :type :pointer)
+         (unrealize "unrealize" :type :pointer)
+         (map "map" :type :pointer)
+         (unmap "unmap" :type :pointer)
+         (paint "paint" :type :pointer)
+         (parent-set "parent_set" :type :pointer)
+         (destroy "destroy" :type :pointer)
+         (pick "pick" :type :pointer)
+         (queue-redraw "queue_redraw" :type :pointer)
+         (get-preferred-width "get_preferred_width" :type :pointer)
+         (get-preferred-height "get_preferred_height" :type :pointer)
+         (allocate "allocate" :type :pointer)
+         (apply-transform "apply_transform" :type :pointer)
+         (event "event" :type :pointer)
+         (button-press-event "button_press_event" :type :pointer)
+         (button-release-event "button_release_event" :type :pointer)
+         (scroll-event "scroll_event" :type :pointer)
+         (key-press-event "key_press_event" :type :pointer)
+         (key-release-event "key_release_event" :type :pointer)
+         (motion-event "motion_event" :type :pointer)
+         (enter-event "enter_event" :type :pointer)
+         (leave-event "leave_event" :type :pointer)
+         (captured-event "captured_event" :type :pointer)
+         (key-focus-in "key_focus_in" :type :pointer)
+         (key-focus-out "key_focus_out" :type :pointer))
+
+(cstruct g-parameter "GParameter"
+         (name "name" :type :string)
+         (value "value" :type g-value))
 
 
 ;; unions
