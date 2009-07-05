@@ -52,13 +52,19 @@
 
 (defvar *default-triangle-color* (make-color 255 255 255 255))
 
-(defcallback triangle-class-init :void
-    ((g-class :pointer) (data :pointer))
-  (declare (ignore data))
+;; callbacks change address when redefined
+;; use something like: (attach-triangle-callbacks (%g-type-class-peek (get-g-type 'triangle "CustomClutterTriangle")))
+;; to reconnect
+(defun attach-triangle-callbacks (g-class)
   (setf (foreign-slot-value g-class 'actor-class 'paint) (callback triangle-paint)
         (foreign-slot-value g-class 'actor-class 'pick) (callback triangle-pick)
         (foreign-slot-value g-class 'g-object-class 'set-property) (callback triangle-set-property)
-        (foreign-slot-value g-class 'g-object-class 'get-property) (callback triangle-get-property))
+        (foreign-slot-value g-class 'g-object-class 'get-property) (callback triangle-get-property)))
+
+(defcallback triangle-class-init :void
+    ((g-class :pointer) (data :pointer))
+  (declare (ignore data))
+  (attach-triangle-callbacks)
   (let ((pspec (%param-spec-color "color"
                                   "Color"
                                   "The color of the triangle"
