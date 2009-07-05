@@ -9,4 +9,5 @@
                         :components
                         ((:file "package")
                          (:file "tutorial" :depends-on ("package"))
-                         (:file "triangle" :depends-on ("package"))))))
+                         (:file "triangle" :depends-on ("package"))
+                         (:file "subclass" :depends-on ("package" "triangle"))))))
