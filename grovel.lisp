@@ -70,6 +70,7 @@
 (ctype gchar "gchar")
 (ctype gulong "gulong")
 (ctype guint8 "guint8")
+(ctype gint8 "gint8")
 (ctype guint32 "guint32")
 (ctype guint16 "guint16")
 (ctype guint "guint")

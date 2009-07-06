@@ -1142,4 +1142,45 @@
    #:value-table
    #:%g-type-class-peek
    #:%g-type-class-peek-static
-   #:%g-type-class-peek-parent))
+   #:%g-type-class-peek-parent
+   #:%g-param-spec-boolean
+   #:%g-param-spec-char
+   #:%g-param-spec-uchar
+   #:%g-param-spec-int
+   #:%g-param-spec-uint
+   #:%g-param-spec-long
+   #:%g-param-spec-ulong
+   #:%g-param-spec-int64
+   #:%g-param-spec-uint64
+   #:%g-param-spec-float
+   #:%g-param-spec-double
+   #:%g-param-spec-enum
+   #:%g-param-spec-flags
+   #:%g-param-spec-string
+   #:%g-param-spec-param
+   #:%g-param-spec-boxed
+   #:%g-param-spec-pointer
+   #:%g-param-spec-object
+   #:%g-param-spec-unichar
+   #:%g-param-spec-gtype
+   #:%g-value-set-param
+   #:%g-value-take-param
+   #:%g-value-get-param
+   #:%g-value-dup-param
+   #:%g-value-set-boxed
+   #:%g-value-set-static-boxed
+   #:%g-value-take-boxed
+   #:%g-value-set-boxed-take-ownership
+   #:%g-value-get-boxed
+   #:%g-value-dup-boxed
+   #:%g-value-set-pointer
+   #:%g-value-get-pointer
+   #:%g-value-set-object
+   #:%g-value-take-object
+   #:%g-value-set-object-take-ownership
+   #:%g-value-get-object
+   #:%g-value-dup-object
+   #:%g-param-spec-value-array
+   #:%g-value-get-gtype
+   #:%g-value-set-gtype
+   #:%g-object-notify))

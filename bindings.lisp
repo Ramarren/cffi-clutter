@@ -3815,6 +3815,167 @@
 (defcfun (%g-strdup-value-contents "g_strdup_value_contents") :string
     (value (:pointer g-value)))
 
+(defcfun (%g-param-spec-boolean "g_param_spec_boolean") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (default-value gboolean)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-char "g_param_spec_char") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum gint8)
+    (maximum gint8)
+    (default-value gint8)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-uchar "g_param_spec_uchar") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum guint8)
+    (maximum guint8)
+    (default-value guint8)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-int "g_param_spec_int") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum gint)
+    (maximum gint)
+    (default-value gint)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-uint "g_param_spec_uint") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum guint)
+    (maximum guint)
+    (default-value guint)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-long "g_param_spec_long") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum glong)
+    (maximum glong)
+    (default-value glong)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-ulong "g_param_spec_ulong") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum gulong)
+    (maximum gulong)
+    (default-value gulong)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-int64 "g_param_spec_int64") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum gint64)
+    (maximum gint64)
+    (default-value gint64)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-uint64 "g_param_spec_uint64") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum guint64)
+    (maximum guint64)
+    (default-value guint64)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-float "g_param_spec_float") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum :float)
+    (maximum :float)
+    (default-value :float)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-double "g_param_spec_double") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (minimum :double)
+    (maximum :double)
+    (default-value :double)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-enum "g_param_spec_enum") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (enum-type g-type)
+    (default-value gint)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-flags "g_param_spec_flags") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (flags-type g-type)
+    (default-value guint)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-string "g_param_spec_string") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (default-value :string)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-param "g_param_spec_param") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (param-type g-type)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-boxed "g_param_spec_boxed") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (boxed-type g-type)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-pointer "g_param_spec_pointer") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-object "g_param_spec_object") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (object-type g-type)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-unichar "g_param_spec_unichar") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (default-value gunichar)
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-param-spec-gtype "g_param_spec_gtype") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (is-a-type g-type)
+    (flags g-param-flags-composite-enum))
+
 (defcfun (%g-value-set-boolean "g_value_set_boolean") :void
     (value (:pointer g-value))
     (v-boolean gboolean))
@@ -3928,6 +4089,81 @@
 (defcfun (%g-value-dup-string "g_value_dup_string") :string
     (value (:pointer g-value)))
 
+(defcfun (%g-value-set-param "g_value_set_param") :void
+    (value (:pointer g-value))
+    (param (:pointer g-param-spec)))
+
+(defcfun (%g-value-take-param "g_value_take_param") :void
+    (value (:pointer g-value))
+    (param (:pointer g-param-spec)))
+
+(defcfun (%g-value-get-param "g_value_get_param") (:pointer g-param-spec)
+    (value (:pointer g-value)))
+
+(defcfun (%g-value-dup-param "g_value_dup_param") (:pointer g-param-spec)
+    (value (:pointer g-value)))
+
+(defcfun (%g-value-set-boxed "g_value_set_boxed") :void
+    (value (:pointer g-value))
+    (v-boxed :pointer))
+
+(defcfun (%g-value-set-static-boxed "g_value_set_static_boxed") :void
+    (value (:pointer g-value))
+    (v-boxed :pointer))
+
+(defcfun (%g-value-take-boxed "g_value_take_boxed") :void
+    (value (:pointer g-value))
+    (v-boxed :pointer))
+
+(defcfun (%g-value-set-boxed-take-ownership "g_value_set_boxed_take_ownership") :void
+    (value (:pointer g-value))
+    (v-boxed :pointer))
+
+(defcfun (%g-value-get-boxed "g_value_get_boxed") :pointer
+    (value (:pointer g-value)))
+
+(defcfun (%g-value-dup-boxed "g_value_dup_boxed") :pointer
+    (value (:pointer g-value)))
+
+(defcfun (%g-value-set-pointer "g_value_set_pointer") :void
+    (value (:pointer g-value))
+    (v-pointer :pointer))
+
+(defcfun (%g-value-get-pointer "g_value_get_pointer") :pointer
+    (value (:pointer g-value)))
+
+(defcfun (%g-value-set-object "g_value_set_object") :void
+    (value (:pointer g-value))
+    (v-object :pointer))
+
+(defcfun (%g-value-take-object "g_value_take_object") :void
+    (value (:pointer g-value))
+    (v-object :pointer))
+
+(defcfun (%g-value-set-object-take-ownership "g_value_set_object_take_ownership") :void
+    (value (:pointer g-value))
+    (v-object :pointer))
+
+(defcfun (%g-value-get-object "g_value_get_object") :pointer
+    (value (:pointer g-value)))
+
+(defcfun (%g-value-dup-object "g_value_dup_object") :pointer
+    (value (:pointer g-value)))
+
+(defcfun (%g-param-spec-value-array "g_param_spec_value_array") (:pointer g-param-spec)
+    (name :string)
+    (nick :string)
+    (blurb :string)
+    (element-spec (:pointer g-param-spec))
+    (flags g-param-flags-composite-enum))
+
+(defcfun (%g-value-get-gtype "g_value_get_gtype") g-type
+    (value (:pointer g-value)))
+
+(defcfun (%g-value-set-gtype "g_value_set_gtype") :void
+    (value (:pointer g-value))
+    (v-gtype g-type))
+
 (defcfun (%g-type-from-name "g_type_from_name") g-type
     (name :string))
 
@@ -3976,6 +4212,10 @@
     (object (:pointer g-object))
     (notify function-pointer)
     (data :pointer))
+
+(defcfun (%g-object-notify "g_object_notify") :void
+    (object (:pointer g-object))
+    (property-name :string))
 
 (defcfun (%g-object-freeze-notify "g_object_freeze_notify") :void
     (object (:pointer g-object)))

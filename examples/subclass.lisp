@@ -41,7 +41,8 @@
   (ecase (triangle-prop-id prop-id)
     (:color
        (apply #'set-color (foreign-slot-value object 'triangle 'color)
-              (get-color (%value-get-color value))))))
+              (get-color (%value-get-color value)))
+       (%g-object-notify object "color"))))
 
 (defcallback triangle-get-property :void
     ((object :pointer) (prop-id guint) (value (:pointer g-value)) (pspec (:pointer g-param-spec)))
