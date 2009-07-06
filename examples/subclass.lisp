@@ -65,7 +65,7 @@
 (defcallback triangle-class-init :void
     ((g-class :pointer) (data :pointer))
   (declare (ignore data))
-  (attach-triangle-callbacks)
+  (attach-triangle-callbacks g-class)
   (let ((pspec (%param-spec-color "color"
                                   "Color"
                                   "The color of the triangle"
