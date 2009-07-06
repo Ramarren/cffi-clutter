@@ -169,13 +169,14 @@
     ("gpointer" :pointer)
     ("gboolean" 'gboolean)))
 
-(defparameter *g-type-cache* (make-hash-table))
+(defparameter *g-type-to-ffi-cache* (make-hash-table))
 
 (defun g-type-to-ffi-type (g-type)
-  (let ((cache (gethash g-type *g-type-cache*)))
+  (let ((cache (gethash g-type *g-type-to-ffi-cache*)))
     (if cache
         cache
-        (g-name-to-ffi-type (%g-type-name g-type)))))
+        (setf (gethash g-type *g-type-to-ffi-cache*)
+              (g-name-to-ffi-type (%g-type-name g-type))))))
 
 (defun type-for-property (property)
   (let ((cache (gethash property *property-type-cache*)))

@@ -1183,4 +1183,6 @@
    #:%g-param-spec-value-array
    #:%g-value-get-gtype
    #:%g-value-set-gtype
-   #:%g-object-notify))
+   #:%g-object-notify
+   #:get-g-type
+   #:define-properties-id-map))

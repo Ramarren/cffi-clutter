@@ -4,14 +4,8 @@
 ;; mixes triangle definition with bits of infrastructure, which should be abstracted away
 ;; the problem is how to do it without adding ridiculous overhead
 
-;; should use a macro to autogenerate those
-(declaim (inline triangle-prop-id triangle-prop-symbol))
-(defun triangle-prop-id (prop-id)
-  (ecase prop-id
-    (1 :color)))
-(defun triangle-prop-symbol (symbol)
-  (ecase symbol
-    (:color 1)))
+(define-properties-id-map (triangle-prop-id triangle-prop-symbol)
+    :color)
 
 ;; don't need class level fields, so reuse ClutterActorClass layout
 ;; define triangle instance layout
@@ -81,13 +75,6 @@
          (get-color *default-triangle-color*)))
 
 (defparameter *triangle-g-name* "CustomClutterTriangle")
-(defvar *g-type-cache* (make-hash-table))
-
-(defun get-g-type (symbol namestring)
-  (if-let ((cache (gethash symbol *g-type-cache*)))
-    cache
-    (setf (gethash symbol *g-type-cache*)
-          (%g-type-from-name namestring))))
 
 (defun register-triangle ()
   (unless (gethash 'triangle *g-type-cache*)
