@@ -5,15 +5,10 @@
 ;; note that signals connected to stage just pile up if not disconnected, since the default stage
 ;; is created once on init-clutter
 
-(defvar *callbacks* (make-hash-table))
-(defvar *callback-counter* 0)
-
 (declaim (inline call-lisp-callback))
 (defun call-lisp-callback (user-data &rest arguments)
-  (let ((lisp-callback (car (gethash (mem-ref user-data :uint64) *callbacks*))))
-    (if (null lisp-callback)
-        (warn "Tried to call inexistent callback nr. ~a" (mem-ref user-data :uint64))
-        (apply lisp-callback arguments))))
+  (let ((lisp-callback (car (resource user-data))))
+    (apply lisp-callback arguments)))
 
 ;;; Now add callback wrappers for all Clutter signal signatures
 
@@ -64,14 +59,12 @@
         (callback knot-reached-callback)))
 
 (defun register-lisp-callback (lisp-callback c-dispatch)
-  (let ((foreign-counter (foreign-alloc :uint64 :initial-element *callback-counter*)))
-    (setf (gethash *callback-counter* *callbacks*)
-          (list lisp-callback foreign-counter c-dispatch))
-    (incf *callback-counter*)
+  (let ((foreign-counter (foreign-alloc :uint64)))
+    (register-resource (cons lisp-callback c-dispatch) foreign-counter)
     foreign-counter))
 
 (defun unregister-lisp-callback (foreign-counter)
-  (remhash (mem-ref foreign-counter :uint64) *callbacks*)
+  (unregister-resource foreign-counter)
   (foreign-free foreign-counter)
   (values))
 
@@ -129,18 +122,17 @@
      (null-pointer))))
 
 (defun disconnect-lisp-signal (instance callback-number)
-  "Disconnect signal using Lisp side callback number (returned by connect-signal)"
-  (let ((lisp-callback (gethash callback-number *callbacks*)))
-    (assert lisp-callback)
-    (assert (eql (mem-ref (second lisp-callback) :uint64) callback-number))
+  "Disconnect signal using Lisp side callback number (returned by connect function)"
+  (destructuring-bind ((lisp-handler . c-dispatch) n counter) (resource-meta-by-number callback-number)
+    (declare (ignore lisp-handler n))
     (%g-signal-handlers-disconnect-matched
      instance
      '(:func :data)
      0
      0
      (null-pointer)
-     (third lisp-callback)
-     (second lisp-callback))))
+     c-dispatch
+     counter)))
 
 ;; callbacks for idle/timeouts
 

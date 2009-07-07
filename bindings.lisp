@@ -13,10 +13,14 @@
 (use-foreign-library glib)
 (use-foreign-library gobject)
 
-(defun g-type-from-instance (instance)
+(declaim (inline g-type-from-class g-type-from-instance))
+(defun g-type-from-class (class)
   (foreign-slot-value
-   (foreign-slot-value instance 'g-type-instance 'g-class)
+   class
    'g-type-class 'g-type))
+
+(defun g-type-from-instance (instance)
+  (g-type-from-class (foreign-slot-value instance 'g-type-instance 'g-class)))
 
 (defctype function-pointer :pointer)
 

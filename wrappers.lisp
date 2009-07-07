@@ -46,27 +46,33 @@
 
 (defvar *clutter-initialized* nil)
 
+(defvar *clutter-initialization-addons* nil)
+
 (defun init-clutter (&key (clutter-argument-list nil) (threading t))
   (unless *clutter-initialized*
     (setf *clutter-initialized* t)
     (when threading
       (%g-thread-init (null-pointer))
       (%threads-init))
-    (if clutter-argument-list
-        (let ((argc (length clutter-argument-list))
-              (argvs (mapcar #'foreign-string-alloc clutter-argument-list)))
-          (with-foreign-objects ((argc-pointer :int)
-                                 (argv-pointer :pointer argc))
-            (loop for p in argvs
-                  for i from 0
-                  do (setf (mem-aref argv-pointer :pointer i) p))
-            (setf (mem-ref argc-pointer :int) argc)
-            (unwind-protect
-                 (%init argc-pointer argvs)
-              (mapc #'foreign-string-free argvs))))
-        (with-foreign-object (argc :int)
-          (setf (mem-ref argc :int) 0)
-          (%init argc (null-pointer))))))
+    (let ((result
+           (if clutter-argument-list
+               (let ((argc (length clutter-argument-list))
+                     (argvs (mapcar #'foreign-string-alloc clutter-argument-list)))
+                 (with-foreign-objects ((argc-pointer :int)
+                                        (argv-pointer :pointer argc))
+                   (loop for p in argvs
+                         for i from 0
+                         do (setf (mem-aref argv-pointer :pointer i) p))
+                   (setf (mem-ref argc-pointer :int) argc)
+                   (unwind-protect
+                        (%init argc-pointer argvs)
+                     (mapc #'foreign-string-free argvs))))
+               (with-foreign-object (argc :int)
+                 (setf (mem-ref argc :int) 0)
+                 (%init argc (null-pointer))))))
+      (dolist (symbol *clutter-initialization-addons*)
+        (funcall symbol))
+      (values result))))
 
 (defun main-with-cleanup (stage &rest objects-to-unref)
   (%actor-show stage)

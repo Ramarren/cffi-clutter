@@ -1185,4 +1185,12 @@
    #:%g-value-set-gtype
    #:%g-object-notify
    #:get-g-type
-   #:define-properties-id-map))
+   #:define-properties-id-map
+   #:unregister-resource
+   #:register-resource
+   #:get-resource-meta
+   #:get-resource-meta-by-number
+   #:init-resource-function
+   #:lisp-actor-resource
+   #:register-lisp-actor
+   #:lisp-actor))

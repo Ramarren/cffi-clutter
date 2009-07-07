@@ -77,16 +77,15 @@
 (defparameter *triangle-g-name* "CustomClutterTriangle")
 
 (defun register-triangle ()
-  (unless (gethash 'triangle *g-type-cache*)
-    (setf (gethash 'triangle *g-type-cache*)
-          (%g-type-register-static-simple
-           (get-g-type 'actor "ClutterActor")
-           *triangle-g-name*
-           (foreign-type-size 'actor-class)
-           (callback triangle-class-init)
-           (foreign-type-size 'triangle)
-           (callback triangle-instance-init)
-           nil))))
+  (unless (get-g-type 'triangle *triangle-g-name*)
+    (%g-type-register-static-simple
+     (get-g-type 'actor "ClutterActor")
+     *triangle-g-name*
+     (foreign-type-size 'actor-class)
+     (callback triangle-class-init)
+     (foreign-type-size 'triangle)
+     (callback triangle-instance-init)
+     nil)))
 
 (defun make-subclassed-triangle (&rest color-components)
   (let ((g-type (get-g-type 'triangle *triangle-g-name*)))
