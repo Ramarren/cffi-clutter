@@ -28,7 +28,7 @@
                         collect (list (list 'quote symbol) i)))))))
 
 ;;; add an actor with a lisp resource
-;;; the class hold a number 
+;;; the class hold a number
 
 (defparameter *lisp-actor-parent-class* nil)
 
