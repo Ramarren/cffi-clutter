@@ -425,6 +425,15 @@
       ((:abstract "G_TYPE_FLAG_ABSTRACT"))
       ((:value-abstract "G_TYPE_FLAG_VALUE_ABSTRACT")))
 
+(cenum g-signal-flags
+      ((:run-first "G_SIGNAL_RUN_FIRST"))
+      ((:run-last "G_SIGNAL_RUN_LAST"))
+      ((:run-cleanup "G_SIGNAL_RUN_CLEANUP"))
+      ((:no-recurse "G_SIGNAL_NO_RECURSE"))
+      ((:detailed "G_SIGNAL_DETAILED"))
+      ((:action "G_SIGNAL_ACTION"))
+      ((:no-hooks "G_SIGNAL_NO_HOOKS")))
+
 
 ;; composite enums
 (ctype modifier-type-composite "ClutterModifierType")
@@ -442,6 +451,7 @@
 (ctype cogl-read-pixels-flags-composite "CoglReadPixelsFlags")
 (ctype cogl-buffer-target-composite "CoglBufferTarget")
 (ctype g-type-flags-composite "GTypeFlags")
+(ctype g-signal-flags-composite "GSignalFlags")
 
 ;; structs
 (cstruct vertex "ClutterVertex"

@@ -1193,4 +1193,39 @@
    #:init-resource-function
    #:lisp-actor-resource
    #:register-lisp-actor
-   #:lisp-actor))
+   #:lisp-actor
+   #:%g-signal-newv
+   #:%g-signal-new-valist
+   #:%g-signal-query
+   #:%g-signal-query
+   #:%g-signal-lookup
+   #:%g-signal-name
+   #:%g-signal-list-ids
+   #:%g-signal-emitv
+   #:%g-signal-emit-valist
+   #:%g-signal-connect-object
+   #:%g-signal-connect-data
+   #:%g-signal-connect-closure
+   #:%g-signal-connect-closure-by-id
+   #:%g-signal-handler-block
+   #:%g-signal-handler-unblock
+   #:%g-signal-handler-disconnect
+   #:%g-signal-handler-find
+   #:%g-signal-handlers-block-matched
+   #:%g-signal-handlers-unblock-matched
+   #:%g-signal-handlers-disconnect-matched
+   #:%g-signal-handler-is-connected
+   #:%g-signal-has-handler-pending
+   #:%g-signal-stop-emission
+   #:%g-signal-stop-emission-by-name
+   #:%g-signal-override-class-closure
+   #:%g-signal-chain-from-overridden
+   #:%g-signal-override-class-handler
+   #:%g-signal-add-emission-hook
+   #:%g-signal-remove-emission-hook
+   #:%g-signal-parse-name
+   #:%g-signal-get-invocation-hint
+   #:%g-signal-type-cclosure-new
+   #:%g-signal-accumulator-true-handled
+   #:%g-value-init
+   #:%g-value-copy))

@@ -257,6 +257,20 @@
 (defmethod translate-from-foreign (value (type g-type-flags-composite-enum))
    (cenum-deconstruct-value value 'g-type-flags))
 
+(define-foreign-type g-signal-flags-composite-enum ()
+   ()
+   (:actual-type g-signal-flags-composite)
+   (:simple-parser g-signal-flags-composite-enum))
+
+(define-parse-method g-signal-flags-composite-enum ()
+   (make-instance 'g-signal-flags-composite-enum))
+
+(defmethod translate-to-foreign (value (type g-signal-flags-composite-enum))
+   (cenum-collect-values value 'g-signal-flags))
+
+(defmethod translate-from-foreign (value (type g-signal-flags-composite-enum))
+   (cenum-deconstruct-value value 'g-signal-flags))
+
 ;; function definitions
 
 (defcfun (%actor-set-flags "clutter_actor_set_flags") :void
@@ -3700,6 +3714,64 @@
     (property-name :string)
     (value (:pointer g-value)))
 
+(defcfun (%g-signal-newv "g_signal_newv") guint
+    (signal-name :string)
+    (itype g-type)
+    (signal-flags g-signal-flags-composite-enum)
+    (class-closure :pointer)
+    (accumulator function-pointer)
+    (accu-data :pointer)
+    (c-marshaller function-pointer)
+    (return-type g-type)
+    (n-params guint)
+    (param-types (:pointer g-type)))
+
+(defcfun (%g-signal-new-valist "g_signal_new_valist") guint
+    (signal-name :string)
+    (itype g-type)
+    (signal-flags g-signal-flags-composite-enum)
+    (class-closure :pointer)
+    (accumulator function-pointer)
+    (accu-data :pointer)
+    (c-marshaller function-pointer)
+    (return-type g-type)
+    (n-params guint)
+    (args va-list))
+
+(defcfun (%g-signal-query "g_signal_query") :void
+    (signal-id guint)
+    (query :pointer))
+
+(defcfun (%g-signal-lookup "g_signal_lookup") guint
+    (name :string)
+    (itype g-type))
+
+(defcfun (%g-signal-name "g_signal_name") :string
+    (signal-id guint))
+
+(defcfun (%g-signal-list-ids "g_signal_list_ids") (:pointer guint)
+    (itype g-type)
+    (n-ids (:pointer guint)))
+
+(defcfun (%g-signal-emitv "g_signal_emitv") :void
+    (instance-and-params (:pointer g-value))
+    (signal-id guint)
+    (detail g-quark)
+    (return-value (:pointer g-value)))
+
+(defcfun (%g-signal-emit-valist "g_signal_emit_valist") :void
+    (instance :pointer)
+    (signal-id guint)
+    (detail g-quark)
+    (var-args va-list))
+
+(defcfun (%g-signal-connect-object "g_signal_connect_object") gulong
+    (instance :pointer)
+    (detailed-signal :string)
+    (c-handler function-pointer)
+    (gobject :pointer)
+    (connect-flags g-connect-flags-composite-enum))
+
 (defcfun (%g-signal-connect-data "g_signal_connect_data") gulong
     (instance :pointer)
     (detailed-signal :string)
@@ -3707,6 +3779,31 @@
     (data :pointer)
     (destroy-data function-pointer)
     (connect-flags g-connect-flags-composite-enum))
+
+(defcfun (%g-signal-connect-closure "g_signal_connect_closure") gulong
+    (instance :pointer)
+    (detailed-signal :string)
+    (closure :pointer)
+    (after gboolean))
+
+(defcfun (%g-signal-connect-closure-by-id "g_signal_connect_closure_by_id") gulong
+    (instance :pointer)
+    (signal-id guint)
+    (detail g-quark)
+    (closure :pointer)
+    (after gboolean))
+
+(defcfun (%g-signal-handler-block "g_signal_handler_block") :void
+    (instance :pointer)
+    (handler-id gulong))
+
+(defcfun (%g-signal-handler-unblock "g_signal_handler_unblock") :void
+    (instance :pointer)
+    (handler-id gulong))
+
+(defcfun (%g-signal-handler-disconnect "g_signal_handler_disconnect") :void
+    (instance :pointer)
+    (handler-id gulong))
 
 (defcfun (%g-signal-handler-find "g_signal_handler_find") gulong
     (instance :pointer)
@@ -3716,46 +3813,6 @@
     (closure :pointer)
     (func :pointer)
     (data :pointer))
-
-(defcfun (%g-signal-handlers-disconnect-matched "g_signal_handlers_disconnect_matched") guint
-    (instance :pointer)
-    (mask g-signal-match-type-composite-enum)
-    (signal-id guint)
-    (detail g-quark)
-    (closure :pointer)
-    (func :pointer)
-    (data :pointer))
-
-(defcfun (%g-signal-has-handler-pending "g_signal_has_handler_pending") gboolean
-    (instance :pointer)
-    (signal-id guint)
-    (detail g-quark)
-    (may-be-blocked gboolean))
-
-(defcfun (%g-signal-stop-emission "g_signal_stop_emission") :void
-    (instance :pointer)
-    (signal-id guint)
-    (detail g-quark))
-
-(defcfun (%g-signal-stop-emission-by-name "g_signal_stop_emission_by_name") :void
-    (instance :pointer)
-    (detailed-signal :string))
-
-(defcfun (%g-signal-handler-is-connected "g_signal_handler_is_connected") gboolean
-    (instance :pointer)
-    (handler-id gulong))
-
-(defcfun (%g-signal-handler-disconnect "g_signal_handler_disconnect") :void
-    (instance :pointer)
-    (handler-id gulong))
-
-(defcfun (%g-signal-handler-block "g_signal_handler_block") :void
-    (instance :pointer)
-    (handler-id gulong))
-
-(defcfun (%g-signal-handler-unblock "g_signal_handler_unblock") :void
-    (instance :pointer)
-    (handler-id gulong))
 
 (defcfun (%g-signal-handlers-block-matched "g_signal_handlers_block_matched") guint
     (instance :pointer)
@@ -3774,6 +3831,79 @@
     (closure :pointer)
     (func :pointer)
     (data :pointer))
+
+(defcfun (%g-signal-handlers-disconnect-matched "g_signal_handlers_disconnect_matched") guint
+    (instance :pointer)
+    (mask g-signal-match-type-composite-enum)
+    (signal-id guint)
+    (detail g-quark)
+    (closure :pointer)
+    (func :pointer)
+    (data :pointer))
+
+(defcfun (%g-signal-handler-is-connected "g_signal_handler_is_connected") gboolean
+    (instance :pointer)
+    (handler-id gulong))
+
+(defcfun (%g-signal-has-handler-pending "g_signal_has_handler_pending") gboolean
+    (instance :pointer)
+    (signal-id guint)
+    (detail g-quark)
+    (may-be-blocked gboolean))
+
+(defcfun (%g-signal-stop-emission "g_signal_stop_emission") :void
+    (instance :pointer)
+    (signal-id guint)
+    (detail g-quark))
+
+(defcfun (%g-signal-stop-emission-by-name "g_signal_stop_emission_by_name") :void
+    (instance :pointer)
+    (detailed-signal :string))
+
+(defcfun (%g-signal-override-class-closure "g_signal_override_class_closure") :void
+    (signal-id guint)
+    (instance-type g-type)
+    (class-closure :pointer))
+
+(defcfun (%g-signal-chain-from-overridden "g_signal_chain_from_overridden") :void
+    (instance-and-params (:pointer g-value))
+    (return-value (:pointer g-value)))
+
+(defcfun (%g-signal-override-class-handler "g_signal_override_class_handler") :void
+    (signal-name :string)
+    (instance-type g-type)
+    (class-handler function-pointer))
+
+(defcfun (%g-signal-add-emission-hook "g_signal_add_emission_hook") gulong
+    (signal-id guint)
+    (detail g-quark)
+    (hook-func function-pointer)
+    (hook-data :pointer)
+    (data-destroy function-pointer))
+
+(defcfun (%g-signal-remove-emission-hook "g_signal_remove_emission_hook") :void
+    (signal-id guint)
+    (hook-id gulong))
+
+(defcfun (%g-signal-parse-name "g_signal_parse_name") gboolean
+    (detailed-signal :string)
+    (itype g-type)
+    (signal-id-p (:pointer guint))
+    (detail-p (:pointer g-quark))
+    (force-detail-quark gboolean))
+
+(defcfun (%g-signal-get-invocation-hint "g_signal_get_invocation_hint") :pointer
+    (instance :pointer))
+
+(defcfun (%g-signal-type-cclosure-new "g_signal_type_cclosure_new") :pointer
+    (itype g-type)
+    (struct-offset guint))
+
+(defcfun (%g-signal-accumulator-true-handled "g_signal_accumulator_true_handled") gboolean
+    (ihint :pointer)
+    (return-accu (:pointer g-value))
+    (handler-return (:pointer g-value))
+    (dummy :pointer))
 
 (defcfun (%g-value-init "g_value_init") (:pointer g-value)
     (value (:pointer g-value))
