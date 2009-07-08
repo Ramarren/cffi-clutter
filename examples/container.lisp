@@ -287,4 +287,108 @@
         (let ((alpha (%alpha-new-full timeline (animation-mode :linear))))
           (let ((behave (%behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
             (%behaviour-apply behave group)
-            (main-with-cleanup stage timeline)))))))
+            (main-with-cleanup stage timeline behave)))))))
+
+;;; Using lisp-group layout container can be made just by overriding get-preferred-width,
+;;; get-preferred-height and allocate. In fact, one can just trampoline to Lisp methods, assuming
+;;; that relayouts happen rarely enough not to destroy performance.
+
+;; a fixed layout layout, identical to lisp-group, except with one more level of indirection
+(defclass layout-group-aux (lisp-group-aux)
+  ())
+
+(defgeneric preferred-width (self self-actor for-height)
+  (:method ((self layout-group-aux) self-actor for-height)
+    (declare (ignore for-height self-actor))
+    (fixed-layout-get-preferred-height (children-of self))))
+
+(defgeneric preferred-height (self self-actor for-width)
+  (:method ((self layout-group-aux) self-actor for-width)
+    (declare (ignore for-width self-actor))
+    (fixed-layout-get-preferred-width (children-of self))))
+
+(defgeneric allocate-layout (self self-actor box flags)
+  (:method ((self layout-group-aux) self-actor box flags)
+    (declare (ignore self-actor))
+    (fixed-layout-allocate (children-of self) flags)))
+
+(defcallback layout-group-preferred-width :void
+    ((self :pointer) (for-height :float) (min-width-pointer :pointer) (natural-width-pointer :pointer))
+  (multiple-value-bind (min-width natural-width) (preferred-width (lisp-actor-resource self) self for-height)
+    (setf (mem-ref min-width-pointer :float) min-width
+          (mem-ref natural-width-pointer :float) natural-width)))
+
+(defcallback layout-group-preferred-height :void
+    ((self :pointer) (for-width :float) (min-height-pointer :pointer) (natural-height-pointer :pointer))
+  (multiple-value-bind (min-height natural-height) (preferred-height (lisp-actor-resource self) self for-width)
+    (setf (mem-ref min-height-pointer :float) min-height
+          (mem-ref natural-height-pointer :float) natural-height)))
+
+(defcallback layout-group-allocate :void
+    ((self :pointer) (box :pointer) (flags allocation-flags))
+  (let ((parent-allocate (foreign-slot-value *lisp-group-parent-class* 'actor-class 'allocate)))
+    ;; use ClutterActor allocate to create allocation box
+    (foreign-funcall-pointer parent-allocate ()
+                             :pointer self :pointer box allocation-flags flags))
+  (allocate-layout (lisp-actor-resource self) self box flags))
+
+(defcallback layout-group-class-init :void
+    ((g-class :pointer))
+(with-foreign-slots ((paint pick show-all hide-all get-preferred-width get-preferred-height allocate)
+                     g-class actor-class)
+  (setf get-preferred-width (callback layout-group-preferred-width)
+        get-preferred-height (callback layout-group-preferred-height)
+        allocate (callback layout-group-allocate)))  
+  (setf (init-resource-function g-class)
+        #'(lambda (self class)
+            (declare (ignore self class))
+            (make-instance 'layout-group-aux))))
+
+(defun layout-group-new ()
+  (%g-object-newv (get-g-type 'layout-group "LayoutClutterGroup") 0 (null-pointer)))
+
+(defun register-layout-group ()
+  (unless (get-g-type 'layout-group "LayoutClutterGroup")
+    (register-lisp-group)
+    (%g-type-register-static-simple
+     (get-g-type 'lisp-group "LispClutterGroup")
+     "LayoutClutterGroup"
+     (foreign-type-size 'lisp-actor-class)
+     (callback layout-group-class-init)
+     (foreign-type-size 'lisp-actor)
+     (null-pointer)
+     nil))
+  (get-g-type 'lisp-group "LispClutterGroup"))
+
+(defun layout-group-example ()
+  (with-colors ((stage-color 0 0 0))
+    (init-clutter)
+    (register-triangle)
+    (register-layout-group)
+    (let ((stage (%stage-get-default)))
+      (%group-remove-all stage)
+      (%actor-set-size stage 200.0 200.0)
+      (%stage-set-color stage stage-color)
+      (let ((group (layout-group-new))
+            (triangle (make-subclassed-triangle 0 0 255 255))
+            (triangle2 (make-subclassed-triangle))
+            (timeline (%timeline-new 5000)))
+        (%actor-set-size triangle 60.0 60.0)
+        (%actor-set-position triangle 20.0 20.0)
+        (%container-add-actor group triangle)
+        (%actor-show triangle)
+        (%actor-set-size triangle2 20.0 20.0)
+        (%actor-set-position triangle2 40.0 40.0)
+        (%container-add-actor group triangle2)
+        (%actor-show triangle2)
+        (%timeline-set-loop timeline +true+)
+        (%timeline-start timeline)
+        (%container-add-actor stage group)
+        (%actor-set-position group 100.0 100.0)
+        (let ((alpha (%alpha-new-full timeline (animation-mode :linear))))
+          (let ((behave (%behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
+            (%behaviour-apply behave group)
+            (main-with-cleanup stage timeline behave)))))))
+
+;;; Now new layout classes can be made just by overriding class-init to set appropriate resource
+;;; creator and specializing methods above.
