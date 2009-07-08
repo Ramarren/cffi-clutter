@@ -11,4 +11,4 @@
                          (:file "tutorial" :depends-on ("package"))
                          (:file "triangle" :depends-on ("package"))
                          (:file "subclass" :depends-on ("package" "triangle"))
-                         (:file "container" :depends-on ("package"))))))
+                         (:file "container" :depends-on ("package" "triangle"))))))
