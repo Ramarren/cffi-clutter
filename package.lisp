@@ -1243,4 +1243,9 @@
    #:get-child-meta
    #:actor-added
    #:actor-removed
-   #:child-notify))
+   #:child-notify
+   #:%g-type-add-interface-static
+   #:g-interface-info
+   #:interface-init
+   #:interface-finalize
+   #:interface-data))

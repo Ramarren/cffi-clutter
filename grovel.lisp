@@ -658,6 +658,11 @@
          (actor-removed "actor_removed" :type :pointer)
          (child-notify "child_notify" :type :pointer))
 
+(cstruct g-interface-info "GInterfaceInfo"
+         (interface-init "interface_init" :type :pointer)
+         (interface-finalize "interface_finalize" :type :pointer)
+         (interface-data "interface_data" :type :pointer))
+
 
 ;; unions
 (cunion event "ClutterEvent"

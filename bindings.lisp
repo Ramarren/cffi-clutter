@@ -4452,7 +4452,7 @@
 (defcfun (%g-type-add-interface-static "g_type_add_interface_static") :void
     (instance-type g-type)
     (interface-type g-type)
-    (info :pointer))
+    (info (:pointer g-interface-info)))
 
 (defcfun (%g-type-interface-add-prerequisite "g_type_interface_add_prerequisite") :void
     (interface-type g-type)
