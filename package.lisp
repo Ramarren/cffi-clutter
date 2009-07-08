@@ -1228,4 +1228,19 @@
    #:%g-signal-type-cclosure-new
    #:%g-signal-accumulator-true-handled
    #:%g-value-init
-   #:%g-value-copy))
+   #:%g-value-copy
+   #:function-pointer
+   #:container-iface
+   #:add
+   #:foreach
+   #:foreach-with-internals
+   #:raise
+   #:lower
+   #:sort-depth-order
+   #:child-meta-type
+   #:create-child-meta
+   #:destroy-child-meta
+   #:get-child-meta
+   #:actor-added
+   #:actor-removed
+   #:child-notify))

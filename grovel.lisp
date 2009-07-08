@@ -642,6 +642,22 @@
          (name "name" :type :string)
          (value "value" :type g-value))
 
+(cstruct container-iface "ClutterContainerIface"
+         (add "add" :type :pointer)
+         (remove "remove" :type :pointer)
+         (foreach "foreach" :type :pointer)
+         (foreach-with-internals "foreach_with_internals" :type :pointer)
+         (raise "raise" :type :pointer)
+         (lower "lower" :type :pointer)
+         (sort-depth-order "sort_depth_order" :type :pointer)
+         (child-meta-type "child_meta_type" :type g-type)
+         (create-child-meta "create_child_meta" :type :pointer)
+         (destroy-child-meta "destroy_child_meta" :type :pointer)
+         (get-child-meta "get_child_meta" :type :pointer)
+         (actor-added "actor_added" :type :pointer)
+         (actor-removed "actor_removed" :type :pointer)
+         (child-notify "child_notify" :type :pointer))
+
 
 ;; unions
 (cunion event "ClutterEvent"
