@@ -85,7 +85,8 @@
      (callback triangle-class-init)
      (foreign-type-size 'triangle)
      (callback triangle-instance-init)
-     nil)))
+     nil))
+  (get-g-type 'triangle *triangle-g-name*))
 
 (defun make-subclassed-triangle (&rest color-components)
   (let ((g-type (get-g-type 'triangle *triangle-g-name*)))

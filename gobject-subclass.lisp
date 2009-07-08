@@ -107,6 +107,7 @@
       (%g-type-register-static (get-g-type 'actor "ClutterActor")
                                "LispClutterActor"
                                type-info
-                               :abstract))))
+                               :abstract)))
+  (get-g-type 'lisp-actor "LispClutterActor"))
 
 (pushnew 'register-lisp-actor *clutter-initialization-addons*)
