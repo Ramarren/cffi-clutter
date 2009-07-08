@@ -90,9 +90,9 @@
 
 (defcallback lisp-group-allocate :void
     ((self :pointer) (box :pointer) (flags allocation-flags))
-  (foreign-funcall-pointer (foreign-slot-value *lisp-group-parent-class* 'actor-class 'allocate)
-                           ()
-                           :pointer self :pointer box allocation-flags flags)
+  (let ((parent-allocate (foreign-slot-value *lisp-group-parent-class* 'actor-class 'allocate)))
+    (foreign-funcall-pointer parent-allocate ()
+                             :pointer self :pointer box allocation-flags flags))
   (fixed-layout-allocate (children-of (lisp-actor-resource self)) flags))
 
 (defcallback lisp-group-dispose :void
@@ -202,21 +202,22 @@
 
 (defcallback lisp-group-class-init :void
     ((g-class :pointer))
- (with-foreign-slots ((dispose) g-class g-object-class)
-   (setf dispose (callback lisp-group-dispose)))
- (with-foreign-slots ((paint pick show-all hide-all get-preferred-width get-preferred-height allocate)
-                      g-class actor-class)
-   (setf paint (callback lisp-group-paint)
-         pick (callback lisp-group-pick)
-         show-all (callback lisp-group-real-show-all)
-         hide-all (callback lisp-group-read-hide-all)
-         get-preferred-width (callback lisp-group-preferred-width)
-         get-preferred-height (callback lisp-group-preferred-height)
-         allocate (callback lisp-group-allocate)))
- (setf (init-resource-function g-class)
-       #'(lambda (self class)
-           (declare (ignore self class))
-           (make-instance 'lisp-group-aux))))
+  (setf *lisp-group-parent-class* (%g-type-class-peek (get-g-type 'lisp-actor "LispClutterActor")))
+  (with-foreign-slots ((dispose) g-class g-object-class)
+    (setf dispose (callback lisp-group-dispose)))
+  (with-foreign-slots ((paint pick show-all hide-all get-preferred-width get-preferred-height allocate)
+                       g-class actor-class)
+    (setf paint (callback lisp-group-paint)
+          pick (callback lisp-group-pick)
+          show-all (callback lisp-group-real-show-all)
+          hide-all (callback lisp-group-real-hide-all)
+          get-preferred-width (callback lisp-group-preferred-width)
+          get-preferred-height (callback lisp-group-preferred-height)
+          allocate (callback lisp-group-allocate)))
+  (setf (init-resource-function g-class)
+        #'(lambda (self class)
+            (declare (ignore self class))
+            (make-instance 'lisp-group-aux))))
 
 (defcallback lisp-group-init :void ((self :pointer))
   (declare (ignore self))
@@ -237,7 +238,6 @@
 
 (defun register-lisp-group ()
   (unless (get-g-type 'lisp-group "LispClutterGroup")
-    (setf *lisp-group-parent-class* (%g-type-class-peek (get-g-type 'lisp-actor "LispClutterActor")))
     (%g-type-register-static-simple
      (get-g-type 'lisp-actor "LispClutterActor")
      "LispClutterGroup"
@@ -254,7 +254,8 @@
         (%g-type-add-interface-static
          (get-g-type 'lisp-group "LispClutterGroup")
          (get-g-type 'container-iface "ClutterContainer")
-         iface-info)))))
+         iface-info))))
+  (get-g-type 'lisp-group "LispClutterGroup"))
 
 ;;; Example using lisp-group
 
@@ -282,7 +283,7 @@
         (%timeline-set-loop timeline +true+)
         (%timeline-start timeline)
         (%container-add-actor stage group)
-        (%actor-set-position group 30.0 30.0)
+        (%actor-set-position group 100.0 100.0)
         (let ((alpha (%alpha-new-full timeline (animation-mode :linear))))
           (let ((behave (%behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
             (%behaviour-apply behave group)

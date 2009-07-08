@@ -1248,4 +1248,6 @@
    #:g-interface-info
    #:interface-init
    #:interface-finalize
-   #:interface-data))
+   #:interface-data
+   #:lisp-actor-class
+   #:lisp-actor))
