@@ -62,8 +62,7 @@
 
 (defun unregister-resource (foreign-pointer)
   (destructuring-bind (resource i f-pointer) (get-resource-meta foreign-pointer)
-    (declare (ignore resource))
-    (declare (ignore f-pointer))
+    (declare (ignore resource f-pointer))
     (setf (svref *resources* i) nil)
     (decf *resource-counter*)
     (unless (eql i *resource-counter*)
