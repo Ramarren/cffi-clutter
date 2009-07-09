@@ -1,11 +1,15 @@
 (in-package :cffi-clutter)
 
 (defun g-type-for-object-property (object property)
-  (foreign-slot-value (%g-object-class-find-property
+  (let ((param-spec (%g-object-class-find-property
                        (foreign-slot-value object 'g-type-instance 'g-class)
-                       property)
-                      'g-param-spec
-                      'value-type))
+                       property)))
+    (if (null-pointer-p)
+        (error "Object ~a of type ~a does not have property ~s"
+               object
+               (%g-type-name (g-type-from-instance object))
+               property)
+        (foreign-slot-value param-spec 'g-param-spec 'value-type))))
 
 (defun call-with-properties (function actor properties)
   (assert (zerop (mod (length properties) 2)))
