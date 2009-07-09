@@ -1,5 +1,34 @@
 (in-package :cffi-clutter)
 
+(defparameter *g-type-to-ffi-cache* (make-hash-table))
+
+(defun g-name-to-ffi-type (g-name)
+  (eswitch (g-name :test #'string=)
+    ("ClutterRequestMode" 'request-mode)
+    ("CoglPixelFormat" 'cogl-pixel-format)
+    ("guchar" 'guchar)
+    ("gulong" 'gulong)
+    ("PangoWrapMode" 'pango-wrap-mode)
+    ("PangoAlignment" 'pango-alignment)
+    ("ClutterTextureQuality" 'texture-quality)
+    ("PangoEllipsizeMode" 'pango-ellipsize-mode)
+    ("ClutterRotateDirection" 'rotate-direction)
+    ("gint" 'gint)
+    ("guint" 'guint)
+    ("ClutterRotateAxis" 'rotate-axis)
+    ("gdouble" :double)
+    ("gfloat" :float)
+    ("ClutterGravity" 'gravity)
+    ("gpointer" :pointer)
+    ("gboolean" 'gboolean)))
+
+(defun g-type-to-ffi-type (g-type)
+  (let ((cache (gethash g-type *g-type-to-ffi-cache*)))
+    (if cache
+        cache
+        (setf (gethash g-type *g-type-to-ffi-cache*)
+              (g-name-to-ffi-type (%g-type-name g-type))))))
+
 (defun (setf g-value) (new-value g-value)
   (ecase (g-type-to-ffi-type (foreign-slot-value g-value 'g-value 'g-type))
     ((request-mode cogl-pixel-format pango-wrap-mode
