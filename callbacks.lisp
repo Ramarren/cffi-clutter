@@ -74,12 +74,12 @@
   (unregister-lisp-callback data))
 
 (defun g-signal-connect (instance detailed-signal c-handler &key (data nil) (destroy-data nil) (flags nil))
-  (%g-signal-connect-data instance
-                          detailed-signal
-                          c-handler
-                          (if data data (null-pointer))
-                          (if destroy-data destroy-data (null-pointer))
-                          flags))
+  (g-signal-connect-data instance
+                         detailed-signal
+                         c-handler
+                         (if data data (null-pointer))
+                         (if destroy-data destroy-data (null-pointer))
+                         flags))
 
 (defun connect-lisp-handler (instance detailed-signal lisp-handler c-dispatch &key (flags nil))
   (let ((foreign-counter (register-lisp-callback lisp-handler c-dispatch)))
@@ -112,7 +112,7 @@
 
 (defun disconnect-lisp-signals (instance &optional (callbacks *lisp-signal-wrappers*))
   (dolist (c-dispatch (ensure-list callbacks))
-    (%g-signal-handlers-disconnect-matched
+    (g-signal-handlers-disconnect-matched
      instance
      :func
      0
@@ -125,7 +125,7 @@
   "Disconnect signal using Lisp side callback number (returned by connect function)"
   (destructuring-bind ((lisp-handler . c-dispatch) n counter) (resource-meta-by-number callback-number)
     (declare (ignore lisp-handler n))
-    (%g-signal-handlers-disconnect-matched
+    (g-signal-handlers-disconnect-matched
      instance
      '(:func :data)
      0
@@ -148,36 +148,36 @@
 
 (defun add-idle (idle-function &key (priority +priority-default-idle+))
   (let ((foreign-counter (register-lisp-callback idle-function (callback source-callback))))
-    (%threads-add-idle-full priority
-                            (callback source-callback)
-                            foreign-counter
-                            (callback destroy-notify-callback))))
+    (threads-add-idle-full priority
+                           (callback source-callback)
+                           foreign-counter
+                           (callback destroy-notify-callback))))
 
 (defun add-timeout (timeout-function interval &key (priority +priority-default+))
-    (let ((foreign-counter (register-lisp-callback timeout-function (callback source-callback))))
-      (%threads-add-timeout-full priority
-                                 interval
-                                 (callback source-callback)
-                                 foreign-counter
-                                 (callback destroy-notify-callback))))
+  (let ((foreign-counter (register-lisp-callback timeout-function (callback source-callback))))
+    (threads-add-timeout-full priority
+                              interval
+                              (callback source-callback)
+                              foreign-counter
+                              (callback destroy-notify-callback))))
 
 (defun add-frame-source (frame-source-function fps &key (priority +priority-default+))
   (let ((foreign-counter (register-lisp-callback frame-source-function (callback source-callback))))
-    (%threads-add-frame-source-full priority
-                                    fps
-                                    (callback source-callback)
-                                    foreign-counter
-                                    (callback destroy-notify-callback))))
+    (threads-add-frame-source-full priority
+                                   fps
+                                   (callback source-callback)
+                                   foreign-counter
+                                   (callback destroy-notify-callback))))
 
 
 (defun add-repaint-function (repaint-function)
   (let ((foreign-counter (register-lisp-callback repaint-function (callback source-callback))))
-    (%threads-add-repaint-func (callback source-callback)
+    (threads-add-repaint-func (callback source-callback)
                                foreign-counter
                                (callback destroy-notify-callback))))
 
 (defun remove-repaint-function (function-id)
-  (%threads-remove-repaint-func function-id))
+  (threads-remove-repaint-func function-id))
 
 ;; alpha functions
 
@@ -187,18 +187,18 @@
 
 (defun alpha-new-with-function (timeline function)
   (let ((foreign-counter (register-lisp-callback function (callback alpha-callback))))
-    (%alpha-new-with-func timeline
-                          (callback alpha-callback)
-                          foreign-counter
-                          (callback destroy-notify-callback))))
+    (alpha-new-with-func timeline
+                         (callback alpha-callback)
+                         foreign-counter
+                         (callback destroy-notify-callback))))
 
 (defun alpha-set-function (alpha function)
   (let ((foreign-counter (register-lisp-callback function (callback alpha-callback))))
-    (%alpha-set-func alpha
-                     (callback alpha-callback)
-                     foreign-counter
-                     (callback destroy-notify-callback))))
+    (alpha-set-func alpha
+                    (callback alpha-callback)
+                    foreign-counter
+                    (callback destroy-notify-callback))))
 
 (defun alpha-register-function (function)
   (let ((foreign-counter (register-lisp-callback function (callback alpha-callback))))
-    (%alpha-register-func (callback alpha-callback) foreign-counter)))
+    (alpha-register-func (callback alpha-callback) foreign-counter)))

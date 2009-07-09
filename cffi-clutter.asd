@@ -11,12 +11,13 @@
   :components ((:file "package")
 	       (cffi-grovel:grovel-file "grovel" :depends-on ("package"))
 	       (:file "bindings" :depends-on ("package" "grovel"))
-               (:file "g-values" :depends-on ("package" "grovel" "bindings"))
-               (:file "wrappers" :depends-on ("package" "grovel" "bindings" "callbacks"))
+               (:file "inline-wrappers" :depends-on ("package" "grovel" "bindings"))
+               (:file "g-values" :depends-on ("package" "grovel" "inline-wrappers"))
+               (:file "wrappers" :depends-on ("package" "grovel" "bindings" "callbacks" "inline-wrappers"))
                (:file "resource" :depends-on ("package"))
-               (:file "callbacks" :depends-on ("package" "grovel" "bindings" "resource"))
-               (:file "gobject-subclass" :depends-on ("package" "grovel" "bindings" "resource" "wrappers"))
-               (:file "animations" :depends-on ("package" "grovel" "bindings" "wrappers" "callbacks" "g-values"))))
+               (:file "callbacks" :depends-on ("package" "grovel" "inline-wrappers" "resource"))
+               (:file "gobject-subclass" :depends-on ("package" "grovel" "resource" "wrappers" "inline-wrappers"))
+               (:file "animations" :depends-on ("package" "grovel" "wrappers" "callbacks" "g-values"))))
 
 
 

@@ -14,20 +14,20 @@
 
 (defcallback lisp-group-paint :void
     ((actor :pointer))
-  (mapc #'%actor-paint (children-of (lisp-actor-resource actor))))
+  (mapc #'actor-paint (children-of (lisp-actor-resource actor))))
 
 (defcallback lisp-group-pick :void
     ((actor :pointer) (color :pointer))
   (foreign-funcall-pointer (foreign-slot-value *lisp-group-parent-class* 'actor-class 'pick)
                    ()
                    :pointer actor :pointer color)
-  (mapc #'%actor-paint (children-of (lisp-actor-resource actor))))
+  (mapc #'actor-paint (children-of (lisp-actor-resource actor))))
 
 (defun fixed-layout-get-preferred-width (children)
   (let ((min-left 0.0) (min-right 0.0)
         (natural-left 0.0) (natural-right 0.0))
     (iter (for child in children)
-          (for child-x = (%actor-get-x child))
+          (for child-x = (actor-get-x child))
           (for (values child-min nil child-natural nil) = (get-preferred-size child))
           (if (first-iteration-p)
               (setf min-left child-x
@@ -50,7 +50,7 @@
   (let ((min-top 0.0) (min-bottom 0.0)
         (natural-top 0.0) (natural-bottom 0.0))
     (iter (for child in children)
-          (for child-y = (%actor-get-y child))
+          (for child-y = (actor-get-y child))
           (for (values nil child-min nil child-natural) = (get-preferred-size child))
           (if (first-iteration-p)
               (setf min-top child-y
@@ -70,7 +70,7 @@
                                    (- (max natural-bottom 0.0) (max natural-top 0.0))))))))
 
 (defun fixed-layout-allocate (children flags)
-  (mapc (rcurry #'%actor-allocate-preferred-size flags) children))
+  (mapc (rcurry #'actor-allocate-preferred-size flags) children))
 
 (defcallback lisp-group-preferred-width :void
     ((self :pointer) (for-height :float) (min-width-pointer :pointer) (natural-width-pointer :pointer))
@@ -97,7 +97,7 @@
 
 (defcallback lisp-group-dispose :void
     ((object :pointer))
-  (mapc #'%actor-destroy (children-of (lisp-actor-resource object)))
+  (mapc #'actor-destroy (children-of (lisp-actor-resource object)))
   (setf (children-of (lisp-actor-resource object)) nil)
   (foreign-funcall-pointer (foreign-slot-value *lisp-group-parent-class* 'g-object-class 'dispose)
                            ()
@@ -105,42 +105,42 @@
 
 (defcallback lisp-group-real-show-all :void
     ((actor :pointer))
-  (mapc #'%actor-show (children-of (lisp-actor-resource actor)))
-  (%actor-show actor))
+  (mapc #'actor-show (children-of (lisp-actor-resource actor)))
+  (actor-show actor))
 
 (defcallback lisp-group-real-hide-all :void
     ((actor :pointer))
-  (%actor-hide actor)
-  (mapc #'%actor-hide (children-of (lisp-actor-resource actor))))
+  (actor-hide actor)
+  (mapc #'actor-hide (children-of (lisp-actor-resource actor))))
 
 (defcallback lisp-group-real-add :void
     ((container :pointer) (actor :pointer))
-  (%g-object-ref actor)
+  (g-object-ref actor)
   (let ((aux (lisp-actor-resource container)))
     (setf (children-of aux) (append (children-of aux) (list actor))))
-  (%actor-set-parent actor container)
-  (%actor-queue-relayout container)
+  (actor-set-parent actor container)
+  (actor-queue-relayout container)
   (foreign-funcall "g_signal_emit_by_name"
                    :pointer container
                    :string "actor-added"
                    :pointer actor)
-  (%container-sort-depth-order container)
-  (%g-object-unref actor))
+  (container-sort-depth-order container)
+  (g-object-unref actor))
 
 (defcallback lisp-group-real-remove :void
     ((container :pointer) (actor :pointer))
-  (%g-object-ref actor)
+  (g-object-ref actor)
   (let ((aux (lisp-actor-resource container)))
     (setf (children-of aux) (remove actor (children-of aux)))
-    (%actor-unparent actor)
-    (%actor-queue-relayout container)
+    (actor-unparent actor)
+    (actor-queue-relayout container)
     (foreign-funcall "g_signal_emit_by_name"
                      :pointer container
                      :string "actor-removed"
                      :pointer actor)
-    (when (member :visible (ensure-list (%actor-get-flags actor)))
-      (%actor-queue-redraw container))
-    (%g-object-unref actor)))
+    (when (member :visible (ensure-list (actor-get-flags actor)))
+      (actor-queue-redraw container))
+    (g-object-unref actor)))
 
 (defcallback lisp-group-real-foreach :void
     ((container :pointer) (callback function-pointer) (user-data :pointer))
@@ -159,11 +159,11 @@
                       (collect child)
                       (when (pointer-eq child sibling)
                         (collect actor))))))
-    (if (/= (%actor-get-depth sibling)
-            (%actor-get-depth actor))
-        (%actor-set-depth actor (%actor-get-depth sibling)))
-    (when (member :visible (ensure-list (%actor-get-flags actor)))
-      (%actor-queue-redraw container))))
+    (if (/= (actor-get-depth sibling)
+            (actor-get-depth actor))
+        (actor-set-depth actor (actor-get-depth sibling)))
+    (when (member :visible (ensure-list (actor-get-flags actor)))
+      (actor-queue-redraw container))))
 
 (defcallback lisp-group-real-lower :void
     ((container :pointer) (actor :pointer) (sibling :pointer))
@@ -176,19 +176,19 @@
                       (when (pointer-eq child sibling)
                         (collect actor))
                       (collect child)))))
-    (if (/= (%actor-get-depth sibling)
-            (%actor-get-depth actor))
-        (%actor-set-depth actor (%actor-get-depth sibling)))
-    (when (member :visible (ensure-list (%actor-get-flags actor)))
-      (%actor-queue-redraw container))))
+    (if (/= (actor-get-depth sibling)
+            (actor-get-depth actor))
+        (actor-set-depth actor (actor-get-depth sibling)))
+    (when (member :visible (ensure-list (actor-get-flags actor)))
+      (actor-queue-redraw container))))
 
 (defcallback lisp-group-real-sort-depth-order :void
     ((container :pointer))
   (let ((aux (lisp-actor-resource container)))
     (setf (children-of aux)
-          (sort (children-of aux) #'< :key #'%actor-get-depth))
-    (when (member :visible (ensure-list (%actor-get-flags container)))
-      (%actor-queue-redraw container))))
+          (sort (children-of aux) #'< :key #'actor-get-depth))
+    (when (member :visible (ensure-list (actor-get-flags container)))
+      (actor-queue-redraw container))))
 
 (defcallback lisp-group-container-iface-init :void
     ((iface :pointer))
@@ -202,7 +202,7 @@
 
 (defcallback lisp-group-class-init :void
     ((g-class :pointer))
-  (setf *lisp-group-parent-class* (%g-type-class-peek (get-g-type 'lisp-actor "LispClutterActor")))
+  (setf *lisp-group-parent-class* (g-type-class-peek (get-g-type 'lisp-actor "LispClutterActor")))
   (with-foreign-slots ((dispose) g-class g-object-class)
     (setf dispose (callback lisp-group-dispose)))
   (with-foreign-slots ((paint pick show-all hide-all get-preferred-width get-preferred-height allocate)
@@ -224,11 +224,11 @@
   (values))
 
 (defun lisp-group-new ()
-  (%g-object-newv (get-g-type 'lisp-group "LispClutterGroup") 0 (null-pointer)))
+  (g-object-newv (get-g-type 'lisp-group "LispClutterGroup") 0 (null-pointer)))
 
 (defun lisp-group-remove-all (group)
   (let ((children (copy-list (children-of (lisp-actor-resource group)))))
-    (mapc (curry #'%container-remove-actor group) children)))
+    (mapc (curry #'container-remove-actor group) children)))
 
 (defun lisp-group-get-n-children (group)
   (length (children-of (lisp-actor-resource group))))
@@ -238,7 +238,7 @@
 
 (defun register-lisp-group ()
   (unless (get-g-type 'lisp-group "LispClutterGroup")
-    (%g-type-register-static-simple
+    (g-type-register-static-simple
      (get-g-type 'lisp-actor "LispClutterActor")
      "LispClutterGroup"
      (foreign-type-size 'lisp-actor-class)
@@ -251,7 +251,7 @@
         (setf interface-init (callback lisp-group-container-iface-init)
               interface-finalize (null-pointer)
               interface-data (null-pointer))
-        (%g-type-add-interface-static
+        (g-type-add-interface-static
          (get-g-type 'lisp-group "LispClutterGroup")
          (get-g-type 'container-iface "ClutterContainer")
          iface-info))))
@@ -264,29 +264,29 @@
     (init-clutter)
     (register-triangle)
     (register-lisp-group)
-    (let ((stage (%stage-get-default)))
-      (%group-remove-all stage)
-      (%actor-set-size stage 200.0 200.0)
-      (%stage-set-color stage stage-color)
+    (let ((stage (stage-get-default)))
+      (group-remove-all stage)
+      (actor-set-size stage 200.0 200.0)
+      (stage-set-color stage stage-color)
       (let ((group (lisp-group-new))
             (triangle (make-subclassed-triangle 0 0 255 255))
             (triangle2 (make-subclassed-triangle))
-            (timeline (%timeline-new 5000)))
-        (%actor-set-size triangle 60.0 60.0)
-        (%actor-set-position triangle 20.0 20.0)
-        (%container-add-actor group triangle)
-        (%actor-show triangle)
-        (%actor-set-size triangle2 20.0 20.0)
-        (%actor-set-position triangle2 40.0 40.0)
-        (%container-add-actor group triangle2)
-        (%actor-show triangle2)
-        (%timeline-set-loop timeline +true+)
-        (%timeline-start timeline)
-        (%container-add-actor stage group)
-        (%actor-set-position group 100.0 100.0)
-        (let ((alpha (%alpha-new-full timeline (animation-mode :linear))))
-          (let ((behave (%behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
-            (%behaviour-apply behave group)
+            (timeline (timeline-new 5000)))
+        (actor-set-size triangle 60.0 60.0)
+        (actor-set-position triangle 20.0 20.0)
+        (container-add-actor group triangle)
+        (actor-show triangle)
+        (actor-set-size triangle2 20.0 20.0)
+        (actor-set-position triangle2 40.0 40.0)
+        (container-add-actor group triangle2)
+        (actor-show triangle2)
+        (timeline-set-loop timeline +true+)
+        (timeline-start timeline)
+        (container-add-actor stage group)
+        (actor-set-position group 100.0 100.0)
+        (let ((alpha (alpha-new-full timeline (animation-mode :linear))))
+          (let ((behave (behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
+            (behaviour-apply behave group)
             (main-with-cleanup stage timeline behave)))))))
 
 ;;; Using lisp-group layout container can be made just by overriding get-preferred-width,
@@ -345,12 +345,12 @@
             (make-instance 'layout-group-aux))))
 
 (defun layout-group-new ()
-  (%g-object-newv (get-g-type 'layout-group "LayoutClutterGroup") 0 (null-pointer)))
+  (g-object-newv (get-g-type 'layout-group "LayoutClutterGroup") 0 (null-pointer)))
 
 (defun register-layout-group ()
   (unless (get-g-type 'layout-group "LayoutClutterGroup")
     (register-lisp-group)
-    (%g-type-register-static-simple
+    (g-type-register-static-simple
      (get-g-type 'lisp-group "LispClutterGroup")
      "LayoutClutterGroup"
      (foreign-type-size 'lisp-actor-class)
@@ -365,29 +365,29 @@
     (init-clutter)
     (register-triangle)
     (register-layout-group)
-    (let ((stage (%stage-get-default)))
-      (%group-remove-all stage)
-      (%actor-set-size stage 200.0 200.0)
-      (%stage-set-color stage stage-color)
+    (let ((stage (stage-get-default)))
+      (group-remove-all stage)
+      (actor-set-size stage 200.0 200.0)
+      (stage-set-color stage stage-color)
       (let ((group (layout-group-new))
             (triangle (make-subclassed-triangle 0 0 255 255))
             (triangle2 (make-subclassed-triangle))
-            (timeline (%timeline-new 5000)))
-        (%actor-set-size triangle 60.0 60.0)
-        (%actor-set-position triangle 20.0 20.0)
-        (%container-add-actor group triangle)
-        (%actor-show triangle)
-        (%actor-set-size triangle2 20.0 20.0)
-        (%actor-set-position triangle2 40.0 40.0)
-        (%container-add-actor group triangle2)
-        (%actor-show triangle2)
-        (%timeline-set-loop timeline +true+)
-        (%timeline-start timeline)
-        (%container-add-actor stage group)
-        (%actor-set-position group 100.0 100.0)
-        (let ((alpha (%alpha-new-full timeline (animation-mode :linear))))
-          (let ((behave (%behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
-            (%behaviour-apply behave group)
+            (timeline (timeline-new 5000)))
+        (actor-set-size triangle 60.0 60.0)
+        (actor-set-position triangle 20.0 20.0)
+        (container-add-actor group triangle)
+        (actor-show triangle)
+        (actor-set-size triangle2 20.0 20.0)
+        (actor-set-position triangle2 40.0 40.0)
+        (container-add-actor group triangle2)
+        (actor-show triangle2)
+        (timeline-set-loop timeline +true+)
+        (timeline-start timeline)
+        (container-add-actor stage group)
+        (actor-set-position group 100.0 100.0)
+        (let ((alpha (alpha-new-full timeline (animation-mode :linear))))
+          (let ((behave (behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
+            (behaviour-apply behave group)
             (main-with-cleanup stage timeline behave)))))))
 
 ;;; Now new layout classes can be made just by overriding class-init to set appropriate resource

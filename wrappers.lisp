@@ -8,34 +8,22 @@
     (%event-get-coords event x y)
     (list (mem-ref x :float) (mem-ref y :float))))
 
-;; on the other hand, is there a point of those single line wrappers?
-(declaim (inline make-color free-color copy-color set-color))
-(defun make-color (red green blue &optional (alpha 255))
-  (%color-new red green blue alpha))
-
-(defun free-color (color)
-  (%color-free color))
-
-(defun copy-color (color)
-  (%color-copy color))
-
-(defun set-color (color r g b &optional (a 255))
-  (setf (foreign-slot-value color 'color 'red) r
-        (foreign-slot-value color 'color 'green) g
-        (foreign-slot-value color 'color 'blue) b
-        (foreign-slot-value color 'color 'alpha) a)
+(defun set-color (color r g b &optional (a (foreign-slot-value color 'color 'alpha)))
+  (with-foreign-slots ((red green blue alpha) color color)
+    (setf red r
+          green g
+          blue b
+          alpha a))
   color)
 
 (defun get-color (color)
-  (list (foreign-slot-value color 'color 'red)
-        (foreign-slot-value color 'color 'green)
-        (foreign-slot-value color 'color 'blue)
-        (foreign-slot-value color 'color 'alpha)))
+  (with-foreign-slots ((red green blue alpha) color color)
+    (list red green blue alpha)))
 
 (defmacro with-color ((var red green blue &optional (alpha 255)) &body body)
-  `(let ((,var (make-color ,red ,green ,blue ,alpha)))
+  `(let ((,var (color-new ,red ,green ,blue ,alpha)))
      (unwind-protect (progn ,@body)
-       (free-color ,var))))
+       (color-free ,var))))
 
 (defmacro with-colors (color-specs &body body)
   (if (cdr color-specs)
@@ -113,7 +101,7 @@
                        (foreign-slot-value knot 'knot 'y) y)))
       (%behaviour-path-new-with-knots alpha knots n))))
 
-(defun get-preferred-size (actor)
+(defun actor-get-preferred-size (actor)
   (with-foreign-objects ((min-width :float)
                          (min-height :float)
                          (natural-width :float)
@@ -122,14 +110,14 @@
     (values (mem-ref min-width :float) (mem-ref min-height :float)
             (mem-ref natural-width :float) (mem-ref natural-height :float))))
 
-(defun get-preferred-width (actor for-height)
+(defun actor-get-preferred-width (actor for-height)
   (with-foreign-objects ((min-width :float)
                          (natural-width :float))
     (%actor-get-preferred-width actor for-height min-width  natural-width)
     (values (mem-ref min-width :float) 
             (mem-ref natural-width :float))))
 
-(defun get-preferred-height (actor for-width)
+(defun actor-get-preferred-height (actor for-width)
   (with-foreign-objects ((min-height :float)
                          (natural-height :float))
     (%actor-get-preferred-height actor for-width min-height  natural-height)
@@ -137,14 +125,14 @@
             (mem-ref natural-height :float))))
 
 
-(defun get-size (actor)
+(defun actor-get-size (actor)
   (with-foreign-objects ((width :float)
                          (height :float))
     (%actor-get-size actor width height)
     (values (mem-ref width :float) 
             (mem-ref height :float)))) 
 
-(defun get-actor-at-position (stage pick-mode x y)
+(defun stage-get-actor-at-position (stage pick-mode x y)
   (let ((result (%stage-get-actor-at-pos stage pick-mode x y)))
     (if (null-pointer-p result)
         nil
@@ -153,7 +141,7 @@
 (defun score-append (score parent timeline)
   (%score-append score (if parent parent (null-pointer)) timeline))
 
-(defun get-geometry (actor)
+(defun actor-get-geometry (actor)
   (with-foreign-object (geometry 'geometry)
     (%actor-get-geometry actor geometry)
     (list (foreign-slot-value geometry 'geometry 'x)

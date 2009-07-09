@@ -7,7 +7,7 @@
 (defun get-g-type (symbol namestring)
   (if-let ((cache (gethash symbol *g-type-cache*)))
     cache
-    (let ((g-type (%g-type-from-name namestring)))
+    (let ((g-type (g-type-from-name namestring)))
       (when (not (zerop g-type))
         (setf (gethash symbol *g-type-cache*)
               g-type)))))
@@ -77,7 +77,7 @@
 (defcallback lisp-actor-class-init :void
     ((g-class :pointer) (class-data :pointer))
   (declare (ignore class-data))
-  (setf *lisp-actor-parent-class* (%g-type-class-peek-parent g-class))
+  (setf *lisp-actor-parent-class* (g-type-class-peek-parent g-class))
   (setf (foreign-slot-value g-class 'g-object-class 'finalize) (callback lisp-actor-finalize-instance)))
 
 ;; instance initialization
@@ -104,7 +104,7 @@
               n-preallocs 0
               instance-init (callback lisp-actor-instance-init)
               value-table (null-pointer)))
-      (%g-type-register-static (get-g-type 'actor "ClutterActor")
+      (g-type-register-static (get-g-type 'actor "ClutterActor")
                                "LispClutterActor"
                                type-info
                                :abstract)))

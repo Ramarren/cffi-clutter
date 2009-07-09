@@ -1,13 +1,13 @@
 (in-package :cffi-clutter)
 
 (defun g-type-for-object-property (object property)
-  (let ((param-spec (%g-object-class-find-property
+  (let ((param-spec (g-object-class-find-property
                        (foreign-slot-value object 'g-type-instance 'g-class)
                        property)))
-    (if (null-pointer-p)
+    (if (null-pointer-p object)
         (error "Object ~a of type ~a does not have property ~s"
                object
-               (%g-type-name (g-type-from-instance object))
+               (g-type-name (g-type-from-instance object))
                property)
         (foreign-slot-value param-spec 'g-param-spec 'value-type))))
 
@@ -28,10 +28,10 @@
                   do (foreign-string-free (mem-aref string-array :pointer i)))))))))
 
 (defun animate-actor (actor mode duration &rest properties)
-  (call-with-properties (curry #'%actor-animatev actor mode duration) actor properties))
+  (call-with-properties (curry #'actor-animatev actor mode duration) actor properties))
 
 (defun animate-actor-with-timeline (actor mode timeline &rest properties)
-  (call-with-properties (curry #'%actor-animate-with-timelinev actor mode timeline) actor properties))
+  (call-with-properties (curry #'actor-animate-with-timelinev actor mode timeline) actor properties))
 
 (defun animate-actor-with-alpha (actor alpha &rest properties)
-  (call-with-properties (curry #'%actor-animate-with-alphav actor alpha) actor properties))
+  (call-with-properties (curry #'actor-animate-with-alphav actor alpha) actor properties))
