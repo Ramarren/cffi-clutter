@@ -1241,4 +1241,12 @@
    #:interface-finalize
    #:interface-data
    #:lisp-actor-class
-   #:lisp-actor))
+   #:lisp-actor
+   #:*current-pool*
+   #:gobject-garbage-pool
+   #:collect-pool
+   #:with-pool
+   #:with-new-pool
+   #:pool
+   #:unpool
+   #:unpool-unref))
