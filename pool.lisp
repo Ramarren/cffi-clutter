@@ -16,7 +16,8 @@
                  (dotimes (i value)
                    (g-object-unref key)))
              (gobjects-of pool))
-    (setf (gobjects-of pool) (make-hash-table))))
+    (setf (gobjects-of pool) (make-hash-table))
+    pool))
 
 (defmacro with-pool (pool &body body)
   `(let ((*current-pool* ,pool))
@@ -28,7 +29,8 @@
      ,@body))
 
 (defun pool (object &optional (pool *current-pool*))
-  (incf (gethash object (gobjects-of pool) 0)))
+  (incf (gethash object (gobjects-of pool) 0))
+  object)
 
 (defun unpool (object &optional (pool *current-pool*))
   (let ((pool-count (gethash object (gobjects-of pool))))
@@ -36,8 +38,10 @@
            (error "Tried to unpool object which was not pooled."))
           ((= 1 pool-count)
            (remhash object (gobjects-of pool)))
-          (t (decf (gethash object (gobjects-of pool)))))))
+          (t (decf (gethash object (gobjects-of pool))))))
+  object)
 
 (defun unpool-unref (object &optional (pool *current-pool*))
   (unpool object pool)
-  (g-object-unref object))
+  (g-object-unref object)
+  (values))
