@@ -63,13 +63,14 @@
       (values result))))
 
 (defun main-with-cleanup (stage)
-  "Execute main loop, and when it ends remove everything from stage, disconnect all stage lisp signals and hide the stage."
+  "Execute main loop, and when it ends remove everything from stage, disconnect all stage lisp signals, cleanup current pool and hide the stage."
   (%actor-show stage)
   (%main)
   (add-idle (compose (constantly nil)
                      #'%main-quit))
   (%group-remove-all stage)
   (disconnect-lisp-signals stage)
+  (collect-pool *current-pool*)
   (%actor-hide stage)
   (%main))
 
