@@ -8,9 +8,13 @@
   ((gobjects :accessor gobjects-of :initform (make-hash-table))
    (name :accessor name-of :initform "Anonymous pool" :initarg :name)))
 
+(defmethod print-object ((object gobject-garbage-pool) stream)
+  (print-unreadable-object (object stream :type t :identity t)
+    (format stream "GOBJ: ~a" (hash-table-count (gobjects-of object)))))
+
 (defvar *current-pool* (make-instance 'gobject-garbage-pool :name "Top level pool"))
 
-(defgeneric collect-pool (pool)
+(defgeneric cleanup-pool (pool)
   (:method ((pool gobject-garbage-pool))
     (maphash #'(lambda (key value)
                  (dotimes (i value)
@@ -22,7 +26,7 @@
 (defmacro with-pool (pool &body body)
   `(let ((*current-pool* ,pool))
      (unwind-protect (progn ,@body)
-       (collect-pool *current-pool*))))
+       (cleanup-pool *current-pool*))))
 
 (defmacro with-new-pool (name &body body)
   `(with-pool (make-instance 'gobject-garbage-pool :name ,name)
