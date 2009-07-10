@@ -70,7 +70,7 @@
                      #'%main-quit))
   (%group-remove-all stage)
   (disconnect-lisp-signals stage)
-  (collect-pool *current-pool*)
+  (cleanup-pool *current-pool*)
   (%actor-hide stage)
   (%main))
 
