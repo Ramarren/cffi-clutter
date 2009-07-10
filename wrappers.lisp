@@ -62,7 +62,8 @@
         (funcall symbol))
       (values result))))
 
-(defun main-with-cleanup (stage &rest objects-to-unref)
+(defun main-with-cleanup (stage)
+  "Execute main loop, and when it ends remove everything from stage, disconnect all stage lisp signals and hide the stage."
   (%actor-show stage)
   (%main)
   (add-idle (compose (constantly nil)
@@ -70,8 +71,6 @@
   (%group-remove-all stage)
   (disconnect-lisp-signals stage)
   (%actor-hide stage)
-  (dolist (object objects-to-unref)
-    (%g-object-unref object))
   (%main))
 
 ;; if threads are not initialized %threads-enter/leave are a noop on C level

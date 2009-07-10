@@ -105,44 +105,45 @@
         (g-object-newv g-type 0 (null-pointer)))))
 
 (defun subclass-example ()
-  (with-colors ((stage-color 0 0 0))
-    (init-clutter)
-    (register-triangle)
-    (let ((stage (stage-get-default)))
-      (group-remove-all stage)
-      (actor-set-size stage 200.0 200.0)
-      (stage-set-color stage stage-color)
-      (let ((triangle (make-subclassed-triangle 0 0 255 255))
-            (triangle2 (make-subclassed-triangle))
-            (timeline (timeline-new 5000)))
-        (actor-set-size triangle 60.0 60.0)
-        (actor-set-position triangle 100.0 100.0)
-        (container-add-actor stage triangle)
-        (actor-set-reactive triangle +true+)
-        ;;check if picking picks correctly
-        (connect-event-handler triangle
-                               "button-press-event"
-                               #'(lambda (actor event)
-                                   (declare (ignore actor event))
-                                   (format t "Triangle is here!~&")))
-        (actor-show triangle)
-        (actor-set-size triangle2 20.0 20.0)
-        (actor-set-position triangle2 40.0 40.0)
-        (container-add-actor stage triangle2)
-        (actor-show triangle2)
-        (timeline-set-loop timeline +true+)
-        (timeline-start timeline)
-        (let ((alpha (alpha-new-full timeline (animation-mode :linear)))
-              (alpha2 (alpha-new-with-function timeline
-                                               #'(lambda (alpha)
-                                                   (expt (sin
-                                                          (* 2 pi
-                                                             (timeline-get-progress
-                                                              (alpha-get-timeline alpha))))
-                                                         2)))))
-          (let ((behave (behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0))
-                (behave2 (behaviour-opacity-new alpha2 0 255)))
-            (behaviour-apply behave triangle)
-            (behaviour-apply behave triangle2)
-            (behaviour-apply behave2 triangle)
-            (main-with-cleanup stage timeline behave behave2)))))))
+  (with-new-pool :main
+   (with-colors ((stage-color 0 0 0))
+     (init-clutter)
+     (register-triangle)
+     (let ((stage (stage-get-default)))
+       (group-remove-all stage)
+       (actor-set-size stage 200.0 200.0)
+       (stage-set-color stage stage-color)
+       (let ((triangle (make-subclassed-triangle 0 0 255 255))
+             (triangle2 (make-subclassed-triangle))
+             (timeline (pool (timeline-new 5000))))
+         (actor-set-size triangle 60.0 60.0)
+         (actor-set-position triangle 100.0 100.0)
+         (container-add-actor stage triangle)
+         (actor-set-reactive triangle +true+)
+         ;;check if picking picks correctly
+         (connect-event-handler triangle
+                                "button-press-event"
+                                #'(lambda (actor event)
+                                    (declare (ignore actor event))
+                                    (format t "Triangle is here!~&")))
+         (actor-show triangle)
+         (actor-set-size triangle2 20.0 20.0)
+         (actor-set-position triangle2 40.0 40.0)
+         (container-add-actor stage triangle2)
+         (actor-show triangle2)
+         (timeline-set-loop timeline +true+)
+         (timeline-start timeline)
+         (let ((alpha (alpha-new-full timeline (animation-mode :linear)))
+               (alpha2 (alpha-new-with-function timeline
+                                                #'(lambda (alpha)
+                                                    (expt (sin
+                                                           (* 2 pi
+                                                              (timeline-get-progress
+                                                               (alpha-get-timeline alpha))))
+                                                          2)))))
+           (let ((behave (pool (behaviour-rotate-new alpha :z-axis :rotate-cw 0d0 360d0)))
+                 (behave2 (pool (behaviour-opacity-new alpha2 0 255))))
+             (behaviour-apply behave triangle)
+             (behaviour-apply behave triangle2)
+             (behaviour-apply behave2 triangle)
+             (main-with-cleanup stage))))))))
