@@ -1,6 +1,6 @@
 # cffi-clutter
 
-This is a basis for Common Lisp bindings for [Clutter](http://clutter-project.org/) toolkit, version 0.9.6.
+This is a basis for Common Lisp bindings for [Clutter](http://clutter-project.org/) toolkit, version 0.9.8.
 
 It is mostly composed from semi-automatically generated bindings for Clutter and parts of GLib and GObject. The Lisp layer is pretty thin, so C APIs remain only documentation.
 

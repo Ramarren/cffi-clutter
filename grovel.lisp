@@ -1,7 +1,7 @@
 (in-package :cffi-clutter)
 
-(flag "-I/home/ramarren/C/Clutter/clutter-0.9.6/")
-(flag "-I/home/ramarren/C/Clutter/clutter-0.9.6/clutter/")
+(flag "-I/home/ramarren/C/Clutter/clutter-0.9.8/")
+(flag "-I/home/ramarren/C/Clutter/clutter-0.9.8/clutter/")
 (flag "-I/usr/include/pango-1.0")
 (flag "-I/usr/include/glib-2.0")
 (flag "-I/usr/lib/glib-2.0/include")

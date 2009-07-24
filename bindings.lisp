@@ -1,7 +1,7 @@
 (in-package :cffi-clutter)
 
 (define-foreign-library clutter
-  (:unix "/home/ramarren/C/Clutter/clutter-0.9.6/clutter/.libs/libclutter-glx-0.9.so"))
+  (:unix "/home/ramarren/C/Clutter/clutter-0.9.8/clutter/.libs/libclutter-glx-0.9.so"))
 
 (define-foreign-library glib
   (:unix "/usr/lib/libglib.so"))
