@@ -11,7 +11,7 @@
 
 (defun paint-triangle-with-color (actor r g b a)
   (when (eql +true+ (actor-get-paint-visibility actor))
-    (multiple-value-bind (w h) (get-size actor)
+    (multiple-value-bind (w h) (actor-get-size actor)
       (cogl-push-matrix)
       (cogl-set-source-color4ub r g b a)
       (cogl-path-new)
