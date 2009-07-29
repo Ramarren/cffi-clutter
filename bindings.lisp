@@ -1,7 +1,7 @@
 (in-package :cffi-clutter)
 
 (define-foreign-library clutter
-  (:unix "/home/ramarren/C/Clutter/clutter-0.9.8/clutter/.libs/libclutter-glx-0.9.so"))
+  (:unix "/home/ramarren/C/Clutter/clutter-1.0.0/clutter/.libs/libclutter-glx-1.0.so"))
 
 (define-foreign-library glib
   (:unix "/usr/lib/libglib.so"))
@@ -25,6 +25,7 @@
 (defctype function-pointer :pointer)
 
 ;; composite enum construction/deconstruction
+;; not using bitfields because it seems that they can't be grovelled for
 
 (defun cenum-collect-values (keyword-list type)
   (cond ((null keyword-list) 0)
