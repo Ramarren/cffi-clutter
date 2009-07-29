@@ -251,7 +251,6 @@
                                                 #'(lambda (alpha)
                                                     (timeline-get-progress
                                                      (alpha-get-timeline alpha))))))
-            ;; doesn't work in 9.6.0 due to http://bugzilla.openedhand.com/show_bug.cgi?id=1674
             (animate-actor-with-alpha rect alpha "x" 150.0 "y" 150.0 "opacity" 0)
             (main-with-cleanup stage)))))))
 
