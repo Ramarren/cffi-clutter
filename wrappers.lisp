@@ -148,3 +148,23 @@
           (foreign-slot-value geometry 'geometry 'y)
           (foreign-slot-value geometry 'geometry 'width)
           (foreign-slot-value geometry 'geometry 'height))))
+
+(defmacro with-perspective ((var fovy aspect z-near z-far) &body body)
+  `(with-foreign-object (,var 'perspective)
+     (setf (foreign-slot-value ,var 'perspective 'fovy) ,fovy
+           (foreign-slot-value ,var 'perspective 'aspect) ,aspect
+           (foreign-slot-value ,var 'perspective 'z-near) ,z-near
+           (foreign-slot-value ,var 'perspective 'z-far) ,z-far)
+     ,@body))
+
+(defun set-perspective (perspective f a near far)
+  (with-foreign-slots ((fovy aspect z-near z-far) perspective perspective)
+    (setf fovy f
+          aspect a
+          z-near near
+          z-far far))
+  perspective)
+
+(defun get-perspective (perspective)
+  (with-foreign-slots ((fovy aspect z-near z-far) perspective perspective)
+    (list fovy aspect z-near z-far)))
