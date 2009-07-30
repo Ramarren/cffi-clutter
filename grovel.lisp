@@ -662,6 +662,12 @@
          (interface-finalize "interface_finalize" :type :pointer)
          (interface-data "interface_data" :type :pointer))
 
+(cstruct perspective "ClutterPerspective"
+         (fovy "fovy" :type :float)
+         (aspect "aspect" :type :float)
+         (z-near "z_near" :type :float)
+         (z-far "z_far" :type :float))
+
 
 ;; unions
 (cunion event "ClutterEvent"

@@ -1347,11 +1347,11 @@
 
 (defcfun (%stage-set-perspective "clutter_stage_set_perspective") :void
     (stage :pointer)
-    (perspective :pointer))
+    (perspective (:pointer perspective)))
 
 (defcfun (%stage-get-perspective "clutter_stage_get_perspective") :void
     (stage :pointer)
-    (perspective :pointer))
+    (perspective (:pointer perspective)))
 
 (defcfun (%stage-set-title "clutter_stage_set_title") :void
     (stage :pointer)
