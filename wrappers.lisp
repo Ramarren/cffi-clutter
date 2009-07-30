@@ -168,3 +168,14 @@
 (defun get-perspective (perspective)
   (with-foreign-slots ((fovy aspect z-near z-far) perspective perspective)
     (list fovy aspect z-near z-far)))
+
+(defun get-stage-perspective (stage)
+  "Wrapper around stage-get-perspective"
+  (with-foreign-object (perspective 'perspective)
+    (stage-get-perspective stage perspective)
+    (get-perspective perspective)))
+
+(defun set-stage-perspective (stage fovy aspect z-near z-far)
+  "Wrapper around stage-set-perspective"
+  (with-perspective (perspective fovy aspect z-near z-far)
+    (stage-set-perspective stage perspective)))
