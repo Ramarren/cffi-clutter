@@ -223,7 +223,7 @@
                                                                               rect-color
                                                                               '(0 0 255 255)
                                                                               '(0 255 0 255)))
-          (connect-new-frame-handler timeline2 
+          (connect-new-frame-handler timeline2
                                      (make-chapter-6-2-on-new-frame-move rect))
           (score-append score nil timeline1)
           (score-append score timeline1 timeline2)

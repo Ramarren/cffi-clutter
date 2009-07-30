@@ -114,14 +114,14 @@
   (with-foreign-objects ((min-width :float)
                          (natural-width :float))
     (%actor-get-preferred-width actor for-height min-width  natural-width)
-    (values (mem-ref min-width :float) 
+    (values (mem-ref min-width :float)
             (mem-ref natural-width :float))))
 
 (defun actor-get-preferred-height (actor for-width)
   (with-foreign-objects ((min-height :float)
                          (natural-height :float))
     (%actor-get-preferred-height actor for-width min-height  natural-height)
-    (values (mem-ref min-height :float) 
+    (values (mem-ref min-height :float)
             (mem-ref natural-height :float))))
 
 
@@ -129,8 +129,8 @@
   (with-foreign-objects ((width :float)
                          (height :float))
     (%actor-get-size actor width height)
-    (values (mem-ref width :float) 
-            (mem-ref height :float)))) 
+    (values (mem-ref width :float)
+            (mem-ref height :float))))
 
 (defun stage-get-actor-at-position (stage pick-mode x y)
   (let ((result (%stage-get-actor-at-pos stage pick-mode x y)))

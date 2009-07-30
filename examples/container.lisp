@@ -339,7 +339,7 @@
                      g-class actor-class)
   (setf get-preferred-width (callback layout-group-preferred-width)
         get-preferred-height (callback layout-group-preferred-height)
-        allocate (callback layout-group-allocate)))  
+        allocate (callback layout-group-allocate)))
   (setf (init-resource-function g-class)
         #'(lambda (self class)
             (declare (ignore self class))
