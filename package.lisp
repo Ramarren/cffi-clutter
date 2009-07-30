@@ -1249,4 +1249,9 @@
    #:with-new-pool
    #:pool
    #:unpool
-   #:unpool-unref))
+   #:unpool-unref
+   #:with-perspective
+   #:set-perspective
+   #:get-perspective
+   #:get-stage-perspective
+   #:set-stage-perspective))
