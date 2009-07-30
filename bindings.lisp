@@ -760,19 +760,9 @@
     (container :pointer)
     (actor (:pointer actor)))
 
-(defcfun (%container-add-valist "clutter_container_add_valist") :void
-    (container :pointer)
-    (first-actor (:pointer actor))
-    (var-args va-list))
-
 (defcfun (%container-remove-actor "clutter_container_remove_actor") :void
     (container :pointer)
     (actor (:pointer actor)))
-
-(defcfun (%container-remove-valist "clutter_container_remove_valist") :void
-    (container :pointer)
-    (first-actor (:pointer actor))
-    (var-args va-list))
 
 (defcfun (%container-get-children "clutter_container_get_children") :pointer
     (container :pointer))
@@ -2801,18 +2791,10 @@
 (defcfun (%model-iter-copy "clutter_model_iter_copy") :pointer
     (iter :pointer))
 
-(defcfun (%model-iter-get-valist "clutter_model_iter_get_valist") :void
-    (iter :pointer)
-    (args va-list))
-
 (defcfun (%model-iter-get-value "clutter_model_iter_get_value") :void
     (iter :pointer)
     (column guint)
     (value (:pointer g-value)))
-
-(defcfun (%model-iter-set-valist "clutter_model_iter_set_valist") :void
-    (iter :pointer)
-    (args va-list))
 
 (defcfun (%model-iter-set-value "clutter_model_iter_set_value") :void
     (iter :pointer)
@@ -3727,18 +3709,6 @@
     (n-params guint)
     (param-types (:pointer g-type)))
 
-(defcfun (%g-signal-new-valist "g_signal_new_valist") guint
-    (signal-name :string)
-    (itype g-type)
-    (signal-flags g-signal-flags-composite-enum)
-    (class-closure :pointer)
-    (accumulator function-pointer)
-    (accu-data :pointer)
-    (c-marshaller function-pointer)
-    (return-type g-type)
-    (n-params guint)
-    (args va-list))
-
 (defcfun (%g-signal-query "g_signal_query") :void
     (signal-id guint)
     (query :pointer))
@@ -3759,12 +3729,6 @@
     (signal-id guint)
     (detail g-quark)
     (return-value (:pointer g-value)))
-
-(defcfun (%g-signal-emit-valist "g_signal_emit_valist") :void
-    (instance :pointer)
-    (signal-id guint)
-    (detail g-quark)
-    (var-args va-list))
 
 (defcfun (%g-signal-connect-object "g_signal_connect_object") gulong
     (instance :pointer)

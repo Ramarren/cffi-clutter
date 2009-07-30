@@ -61,7 +61,6 @@
 ;; typedefs
 (ctype g-lenum "GLenum")
 (ctype g-luint "GLuint")
-(ctype va-list "va_list")
 (ctype gunichar "gunichar")
 (ctype guint64 "guint64")
 (ctype gint64 "gint64")

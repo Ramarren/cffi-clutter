@@ -460,17 +460,9 @@
 (defun container-add-actor (container actor)
   (%container-add-actor container actor))
 
-(declaim (inline container-add-valist))
-(defun container-add-valist (container first-actor var-args)
-  (%container-add-valist container first-actor var-args))
-
 (declaim (inline container-remove-actor))
 (defun container-remove-actor (container actor)
   (%container-remove-actor container actor))
-
-(declaim (inline container-remove-valist))
-(defun container-remove-valist (container first-actor var-args)
-  (%container-remove-valist container first-actor var-args))
 
 (declaim (inline container-get-children))
 (defun container-get-children (container)
@@ -2512,17 +2504,9 @@
 (defun model-iter-copy (iter)
   (%model-iter-copy iter))
 
-(declaim (inline model-iter-get-valist))
-(defun model-iter-get-valist (iter args)
-  (%model-iter-get-valist iter args))
-
 (declaim (inline model-iter-get-value))
 (defun model-iter-get-value (iter column value)
   (%model-iter-get-value iter column value))
-
-(declaim (inline model-iter-set-valist))
-(defun model-iter-set-valist (iter args)
-  (%model-iter-set-valist iter args))
 
 (declaim (inline model-iter-set-value))
 (defun model-iter-set-value (iter column value)
@@ -3408,10 +3392,6 @@
 (defun g-signal-newv (signal-name itype signal-flags class-closure accumulator accu-data c-marshaller return-type n-params param-types)
   (%g-signal-newv signal-name itype signal-flags class-closure accumulator accu-data c-marshaller return-type n-params param-types))
 
-(declaim (inline g-signal-new-valist))
-(defun g-signal-new-valist (signal-name itype signal-flags class-closure accumulator accu-data c-marshaller return-type n-params args)
-  (%g-signal-new-valist signal-name itype signal-flags class-closure accumulator accu-data c-marshaller return-type n-params args))
-
 (declaim (inline g-signal-query))
 (defun g-signal-query (signal-id query)
   (%g-signal-query signal-id query))
@@ -3431,10 +3411,6 @@
 (declaim (inline g-signal-emitv))
 (defun g-signal-emitv (instance-and-params signal-id detail return-value)
   (%g-signal-emitv instance-and-params signal-id detail return-value))
-
-(declaim (inline g-signal-emit-valist))
-(defun g-signal-emit-valist (instance signal-id detail var-args)
-  (%g-signal-emit-valist instance signal-id detail var-args))
 
 (declaim (inline g-signal-connect-object))
 (defun g-signal-connect-object (instance detailed-signal c-handler gobject connect-flags)
