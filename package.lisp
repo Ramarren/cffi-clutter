@@ -27,7 +27,6 @@
    #:cenum-collect-values
    #:cenum-deconstruct-value
    ;; foreign types
-   #:va-list
    #:gunichar
    #:guint64
    #:gint64
