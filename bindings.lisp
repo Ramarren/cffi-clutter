@@ -1,10 +1,14 @@
 (in-package :cffi-clutter)
 
 (define-foreign-library clutter
-  (:unix "/home/ramarren/C/Clutter/clutter-1.0.0/clutter/.libs/libclutter-glx-1.0.so"))
+  (:unix
+   (:or "/usr/lib/libclutter-glx-1.0.so"
+        "/home/ramarren/C/Clutter/clutter-1.0.0/clutter/.libs/libclutter-glx-1.0.so")))
 
 (define-foreign-library glib
-  (:unix "/usr/lib/libglib.so"))
+  (:unix 
+   (:or "/usr/lib/libglib-2.0.so"
+        "/usr/lib/libglib.so")))
 
 (define-foreign-library gobject
   (:unix "/usr/lib/libgobject-2.0.so"))

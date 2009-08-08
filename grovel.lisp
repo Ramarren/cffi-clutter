@@ -1,7 +1,7 @@
 (in-package :cffi-clutter)
 
-(flag "-I/home/ramarren/C/Clutter/clutter-1.0.0/")
-(flag "-I/home/ramarren/C/Clutter/clutter-1.0.0/clutter/")
+(flag "-I/usr/include/clutter-1.0/clutter")
+(flag "-I/usr/include/clutter-1.0")
 (flag "-I/usr/include/pango-1.0")
 (flag "-I/usr/include/glib-2.0")
 (flag "-I/usr/lib/glib-2.0/include")
@@ -12,8 +12,10 @@
 (flag "-I/usr/include/pixman-1")
 
 (include "clutter/clutter.h")
-(include "clutter/cogl/cogl.h")
+(include "cogl/cogl.h")
+#+clutter-private-api
 (include "clutter/cogl/common/cogl-blend-string.h")
+#+clutter-private-api
 (include "clutter/cogl/common/cogl-current-matrix.h")
 
 ;; constants
@@ -320,11 +322,13 @@
       ((:gequal "COGL_MATERIAL_ALPHA_FUNC_GEQUAL"))
       ((:always "COGL_MATERIAL_ALPHA_FUNC_ALWAYS")))
 
+#+clutter-private-api
 (cenum cogl-blend-string-channel-mask
       ((:rgb "COGL_BLEND_STRING_CHANNEL_MASK_RGB"))
       ((:alpha "COGL_BLEND_STRING_CHANNEL_MASK_ALPHA"))
       ((:rgba "COGL_BLEND_STRING_CHANNEL_MASK_RGBA")))
 
+#+clutter-private-api
 (cenum cogl-blend-string-color-source-type
       ((:src-color "COGL_BLEND_STRING_COLOR_SOURCE_SRC_COLOR"))
       ((:dst-color "COGL_BLEND_STRING_COLOR_SOURCE_DST_COLOR"))
@@ -334,6 +338,7 @@
       ((:primary "COGL_BLEND_STRING_COLOR_SOURCE_PRIMARY"))
       ((:previous "COGL_BLEND_STRING_COLOR_SOURCE_PREVIOUS")))
 
+#+clutter-private-api
 (cenum cogl-blend-string-context
       ((:blending "COGL_BLEND_STRING_CONTEXT_BLENDING"))
       ((:texture-combine "COGL_BLEND_STRING_CONTEXT_TEXTURE_COMBINE")))
@@ -344,6 +349,7 @@
       ((:invalid-error "COGL_BLEND_STRING_ERROR_INVALID_ERROR"))
       ((:gpu-unsupported-error "COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR")))
 
+#+clutter-private-api
 (cenum cogl-blend-string-function-type
       ((:auto-composite "COGL_BLEND_STRING_FUNCTION_AUTO_COMPOSITE"))
       ((:add "COGL_BLEND_STRING_FUNCTION_ADD"))
@@ -367,6 +373,7 @@
       ((:unsigned-byte "COGL_INDICES_TYPE_UNSIGNED_BYTE"))
       ((:unsigned-short "COGL_INDICES_TYPE_UNSIGNED_SHORT")))
 
+#+clutter-private-api
 (cenum cogl-matrix-mode
       ((:modelview "COGL_MATRIX_MODELVIEW"))
       ((:projection "COGL_MATRIX_PROJECTION"))
