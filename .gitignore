@@ -1,0 +1,23 @@
+\#*
+*~
+*.swp
+*.fas
+*.fasb
+*.fasl
+*.x86f
+
+# ECL intermediate
+*.c
+*.h
+*.data
+*.o
+*.a
+
+# ECL on win32
+*.manifest
+*.lib
+*.implib
+*.exp
+*.obj
+*.ilk
+*.pdb
