@@ -9,8 +9,8 @@
   :licence "BSD-style"
   :depends-on (:cffi :alexandria)
   :components ((:file "package")
-	       (cffi-grovel:grovel-file "grovel" :depends-on ("package"))
-	       (:file "bindings" :depends-on ("package" "grovel"))
+               (cffi-grovel:grovel-file "grovel" :depends-on ("package"))
+               (:file "bindings" :depends-on ("package" "grovel"))
                (:file "inline-wrappers" :depends-on ("package" "grovel" "bindings"))
                (:file "pool" :depends-on ("package" "inline-wrappers"))
                (:file "g-values" :depends-on ("package" "grovel" "inline-wrappers"))
@@ -19,6 +19,3 @@
                (:file "callbacks" :depends-on ("package" "grovel" "inline-wrappers" "resource"))
                (:file "gobject-subclass" :depends-on ("package" "grovel" "resource" "wrappers" "inline-wrappers"))
                (:file "animations" :depends-on ("package" "grovel" "wrappers" "callbacks" "g-values"))))
-
-
-

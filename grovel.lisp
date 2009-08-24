@@ -685,4 +685,3 @@
         (scroll "scroll" :type scroll-event)
         (stage-state "stage_state" :type stage-state-event)
         (crossing "crossing" :type crossing-event))
-

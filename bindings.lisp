@@ -6,7 +6,7 @@
         "/home/ramarren/C/Clutter/clutter-1.0.0/clutter/.libs/libclutter-glx-1.0.so")))
 
 (define-foreign-library glib
-  (:unix 
+  (:unix
    (:or "/usr/lib/libglib-2.0.so"
         "/usr/lib/libglib.so")))
 
@@ -4461,4 +4461,3 @@
     (object-type g-type)
     (n-parameters guint)
     (parameters (:pointer g-parameter)))
-

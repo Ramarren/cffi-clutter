@@ -4043,4 +4043,3 @@
 (declaim (inline g-object-newv))
 (defun g-object-newv (object-type n-parameters parameters)
   (%g-object-newv object-type n-parameters parameters))
-

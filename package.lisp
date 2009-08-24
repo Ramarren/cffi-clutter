@@ -8,7 +8,7 @@
    #:+priority-default+
    #:+priority-high-idle+
    #:+priority-default-idle+
-   #:+priority-low+           
+   #:+priority-low+
    ;; foreign structurs
    #:vertex
    #:button-event
