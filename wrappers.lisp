@@ -132,6 +132,13 @@
     (values (mem-ref width :float)
             (mem-ref height :float))))
 
+(defun actor-get-position (actor)
+  (with-foreign-objects ((x :float)
+                         (y :float))
+    (%actor-get-position actor x y)
+    (values (mem-ref x :float)
+            (mem-ref y :float))))
+
 (defun stage-get-actor-at-position (stage pick-mode x y)
   (let ((result (%stage-get-actor-at-pos stage pick-mode x y)))
     (if (null-pointer-p result)

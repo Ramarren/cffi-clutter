@@ -116,10 +116,6 @@
 (defun actor-set-position (self x y)
   (%actor-set-position self x y))
 
-(declaim (inline actor-get-position))
-(defun actor-get-position (self x y)
-  (%actor-get-position self x y))
-
 (declaim (inline actor-set-width))
 (defun actor-set-width (self width)
   (%actor-set-width self width))
