@@ -1,18 +1,24 @@
 (in-package :cffi-clutter)
 
-(flag "-I/usr/include/clutter-1.0/clutter")
-(flag "-I/usr/include/clutter-1.0")
-(flag "-I/usr/include/pango-1.0")
-(flag "-I/usr/include/glib-2.0")
-(flag "-I/usr/lib/glib-2.0/include")
-(flag "-I/usr/include/gtk-2.0")
-(flag "-I/usr/include/cairo")
-(flag "-I/usr/include/freetype2")
-(flag "-I/usr/include/libpng12")
-(flag "-I/usr/include/pixman-1")
+(cc-flags "-I/usr/include/clutter-1.0/clutter")
+(cc-flags "-I/usr/include/clutter-1.0")
+(cc-flags "-I/usr/include/cogl")
+(cc-flags "-I/usr/include/pango-1.0")
+(cc-flags "-I/usr/include/atk-1.0")
+(cc-flags "-I/usr/include/glib-2.0")
+(cc-flags "-I/usr/include/json-glib-1.0")
+
+(cc-flags
+ #+X86-64 "-I/usr/lib64/glib-2.0/include"
+ #+X86    "-I/usr/lib/glib-2.0/include")
+(cc-flags "-I/usr/include/cairo")
+(cc-flags "-I/usr/include/freetype2")
+(cc-flags "-I/usr/include/libpng12")
+(cc-flags "-I/usr/include/pixman-1")
 
 (include "clutter/clutter.h")
 (include "cogl/cogl.h")
+(include "GL/gl.h")
 #+clutter-private-api
 (include "clutter/cogl/common/cogl-blend-string.h")
 #+clutter-private-api
