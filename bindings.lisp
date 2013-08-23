@@ -2,16 +2,19 @@
 
 (define-foreign-library clutter
   (:unix
-   (:or "/usr/lib/libclutter-glx-1.0.so"
+   (:or #+x86-64 "/usr/lib64/libclutter-glx-1.0.so"
+        #+x86    "/usr/lib/libclutter-glx-1.0.so"
         "/home/ramarren/C/Clutter/clutter-1.0.0/clutter/.libs/libclutter-glx-1.0.so")))
 
 (define-foreign-library glib
   (:unix
-   (:or "/usr/lib/libglib-2.0.so"
+   (:or #+x86-64 "/usr/lib64/libglib-2.0.so"
+        #+x86    "/usr/lib/libglib-2.0.so"
         "/usr/lib/libglib.so")))
 
 (define-foreign-library gobject
-  (:unix "/usr/lib/libgobject-2.0.so"))
+  (:unix #+x86-64 "/usr/lib64/libgobject-2.0.so"
+         #+x86    "/usr/lib/libgobject-2.0.so"))
 
 (use-foreign-library clutter)
 (use-foreign-library glib)
